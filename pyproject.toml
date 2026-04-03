@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "youtube-scraper"
+version = "0.1.0"
+description = "Hybrid YouTube comments extraction and annotation app for research"
+requires-python = ">=3.10"
+dependencies = [
+  "streamlit>=1.40.0",
+  "pandas>=2.2.0",
+  "python-dotenv>=1.0.1",
+  "playwright>=1.49.0",
+  "yt-dlp>=2025.1.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

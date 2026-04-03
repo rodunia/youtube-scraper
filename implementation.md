@@ -1,9 +1,12 @@
 # YouTube Comments Scraper App - Implementation Plan
 
 ## Status
-- Planning phase only.
-- No code implementation before full outline is agreed.
-- Last updated: 2026-03-02.
+- Planning baseline below was frozen on 2026-03-02 and remains the decision log for scope/methodology.
+- The repository has progressed beyond planning and now includes a working Python package, Streamlit app, local SQLite database, and export artifacts.
+- As of 2026-03-21, the local DB snapshot contains `24` runs, `204` channels, `3,453` videos, `33,417` comments, and `174` saved annotations.
+- The confirmatory analytic focus is being readjusted toward a conformity-cascade framework centered on ranked skeptical cues, engagement magnitude, and cross-niche moderation.
+- Confirmatory hypothesis testing is not yet frozen: the planned `300`-comment double-coded annotation set is incomplete, and the final niche framing for the moderation hypothesis still needs to be locked.
+- Detailed statistical specification is maintained in `analysis_plan_v1.md` (formulas, robustness, tables, figures).
 
 ## Agreed Objectives
 - Build an app to collect YouTube comments data from selected YouTube accounts/channels.
@@ -58,14 +61,21 @@
 
 ### 5. Scraping/Collection Workflow
 - Input targets come from a static CSV containing 300 pre-selected channel IDs/URLs with niche labeling.
+- Content stream selection must support separate batch runs by content type:
+- `videos` (default, long-form feed).
+- `shorts` (Shorts feed).
+- The hybrid extraction engine remains available in both content modes (`auto`, `api_only`, `playwright_only`).
 - Per channel video selection rule: collect most recent uploads in reverse chronological order.
 - Video coverage per channel: adaptive range of 30-80 most recent videos depending on channel activity.
 - Per video comment selection:
 - Only top-level comments (no replies).
-- Select up to top 20 comments by like count ("top-by-likes") to approximate visible community consensus/market response.
+- Fetch a larger candidate pool (target scan up to 200 top-level comments when available), rank by like count, then keep up to 20 clean comments.
+- Clean inclusion rule for saved rows: exclude comments flagged as spam/template/duplicate before applying the 20-comment cap.
 - If a video has fewer than 20 top-level comments, collect all available comments and do not replace the video.
+- If fewer than 20 clean comments remain after filtering, save all clean comments and mark `not_enough_comments`.
 - For equal like counts, ranking tie-break should prefer older comment timestamp.
 - Video-level comment availability status must be stored (`ok`, `not_enough_comments`, `comments_disabled`).
+- For Shorts mode, channels with no Shorts feed should be explicitly flagged as `no_shorts_available=true` (channel-level) instead of `extraction_failed`.
 - Two execution modes are required:
 - Pilot batch.
 - Full batch.
@@ -82,7 +92,7 @@
 - Templated comment detection must combine:
 - Pilot-calibrated text similarity threshold (initial reference: 0.90, then locked after pilot QA).
 - Phrase/pattern repetition rules for near-duplicate bot-style variants.
-- Records must be retained with filter flags; no physical deletion from primary DB.
+- Current pilot execution policy: save only clean comments into `comments` table (spam/template/duplicate candidates are filtered out before insert).
 - Required boolean flags include: `is_spam`, `is_template`, `is_duplicate`.
 - Spam filtering baseline starts as rules-only for transparency and reproducibility.
 - Lightweight model scoring is optional only if pilot evidence shows rules-only underperformance.
@@ -199,6 +209,15 @@
 - Filter by video recency/age.
 - Filter by preprocessing flags (`is_spam`, `is_duplicate`, `is_template`).
 - Search across comment text and key identifiers.
+- Add dedicated AI disclosure search module:
+- Search both video metadata (`title`, `description`) and comment text.
+- Support keyword/regex search, run-level filtering, and niche filtering.
+- Provide inferred disclosure buckets for video metadata (`none`, `generic`, `specific`, `verifiable`) for pilot triage.
+- Allow CSV export of matched video and comment subsets for manual review and R workflows.
+- Add automatic analysis module in UI:
+- Rules-based auto-labeling for `skepticism`, `proof_demand`, and `normalization`.
+- Auto-generated video/channel/niche rate tables and hypothesis-proxy metrics.
+- CSV download for auto-labeled comments and auto-aggregated metrics.
 - Include export controls for CSV outputs (respecting active filters or predefined export profiles).
 - Manual Annotation view must support streamlined coding workflow for IRR validation subset:
 - Show target comment with adjacent video context (title/description metadata).
@@ -206,6 +225,10 @@
 - `skepticism_fake_callout` (0/1)
 - `proof_demand` (0/1)
 - `normalization_defense` (0/1)
+- Support efficient batch coding pages (multiple comments per screen) with tick/checkbox inputs and one-click page save.
+- Support optional auxiliary coding fields for exploratory tagging:
+- `extra_codes` (multi-tag list)
+- `other_flag` + `other_text`
 - Save confirmation and next-item continuity without losing position.
 - Annotation records must include at least: `annotator_id`, `coded_at`.
 - Data model and exports must support IRR metrics (Cohen's Kappa and/or Krippendorff's alpha).
@@ -227,14 +250,10 @@
 - Comment-level outcomes/labels.
 - Video-level context and engagement.
 - Channel-level niche and temporal structure.
-- Primary inference is co-primary across two levels:
-- Comment-level multilevel logistic models with random effects for video and channel (receiver-side hypotheses H1/H2/H3).
-- Video-level panel models for creator adaptation (H4), including lagged skepticism rate from prior video.
-- H4 dependent variable `disclosure_quality` is ordinal (0-3):
-- `0` = no disclosure.
-- `1` = generic disclosure.
-- `2` = specific/process disclosure.
-- `3` = verifiable cues.
+- Primary inference centers on comment-level conformity dynamics within videos:
+- whether a skeptical rank-1 cue is associated with skepticism in later comments.
+- whether the strength of that association varies with cue magnitude (`like_count`).
+- whether that association varies across creator ecosystems (`channel_niche`).
 - Time specification must include both:
 - Relative upload sequence index (within-channel dynamics).
 - Calendar fixed effects (month/year) for external shock control.
@@ -252,10 +271,8 @@
 - Required sensitivity analyses include:
 - Include vs exclude rows flagged as spam/template/duplicate.
 - Include vs exclude channels with `coverage_shortfall=true`.
-- Boundary-condition analysis (H5) requires explicit cross-niche comparisons with reported niche-specific coverage/attrition.
-- H4 lag structure:
-- Main specification uses `t-1` predictor.
-- `t-2` is included as robustness check only.
+- Restrict response sample to comments ranked `2-20`, excluding the top-ranked cue comment.
+- Boundary-condition analysis requires explicit cross-niche comparisons with reported niche-specific coverage/attrition.
 - NLP validation reporting is mandatory:
 - Report Precision, Recall, and F1 for automated classification against the 300-comment adjudicated gold-standard set.
 - Validation benchmark design is mandatory multi-model:
@@ -264,14 +281,119 @@
 - Current benchmark plan includes both advanced classifiers: GPT-4o and NLI/RoBERTa.
 - Final primary production classifier will be selected after pilot performance review.
 - Report absolute and relative performance gain of advanced classifier over baseline.
+- Pilot exploratory analytics must be available in UI before final modeling:
+- Compute pilot-ready descriptive metrics for Objectives, RQ1-RQ3, and H1-H3 from currently available data.
+- Until adjudicated labels are complete, display these as rule-based proxy estimates (not confirmatory inference).
+
+### 15. Conformity Cascade Module (Primary Confirmatory Focus)
+- Use the conformity-cascade mechanism as the primary confirmatory analytic framework:
+- Independent cue: whether the rank-1 (most-liked) comment is skeptical (`top_comment_skeptical`).
+- Dependent response: skepticism status in subsequent comments (ranks 2-20).
+- Ranking rule: within each `video_id`, sort by `like_count` desc, tie-break by `comment_timestamp` asc.
+- Modeling rule: logistic mixed-effects style model with channel-level random intercepts.
+- Implementation note: `statsmodels.formula.api` does not provide logistic `MixedLM`; use `BinomialBayesMixedGLM.from_formula` for binomial mixed modeling.
+- Required outputs:
+- fixed-effect table with log-odds, OR, and approximate 95% CI (`exp(beta ± 1.96*sd)`), plus approximate p-values.
+- interaction terms for niche moderation (`top_comment_skeptical * channel_niche`).
+- cue-magnitude moderation (`top_comment_skeptical * top_comment_like_count_z`).
+- temporal-decay moderation (`top_comment_skeptical * hours_since_top_comment_z`).
+- ICC decomposition from random intercepts for both channel and video using logistic residual variance `pi^2/3`.
+- Export a per-video analysis table containing top-comment cue indicators, cue magnitude, skepticism/proof-demand proxy rates, and niche group for downstream statistical work.
 - Required manuscript/reproducibility outputs:
 - STROBE-style data flow diagram (screened/eligible/included/filtered).
 - Niche-wise coverage and attrition table.
 - Human IRR table (agreement metrics and per-label agreement).
-- Main model coefficient tables (H1-H5).
+- Main model coefficient tables (H1-H3).
 - Robustness/sensitivity appendix tables.
 - Key trend plots over upload sequence and calendar time.
 - NLP classification performance table (Precision, Recall, F1 vs adjudicated gold standard).
+
+### 13. Objective/RQ/Hypothesis Coverage Checklist
+- This section links research goals to concrete scraping fields and planned analytics so coverage is auditable before full run.
+
+#### Objectives
+- O1 (build pipeline for Tech/Beauty/Lifestyle collection):
+- Scraping coverage: `channel_id`, `channel_niche`, `video_id`, `video_publish_ts`, top-level comments, `like_count`, `reply_count`, `comment_rank`.
+- Analytics/readout: batch QA coverage tables by niche, channel/video/comment counts, missingness/attrition.
+- Coverage status: covered.
+
+- O2 (produce queryable relational dataset):
+- Scraping coverage: hierarchical schema `channels -> videos -> comments`, run metadata, QA metadata, CSV exports.
+- Analytics/readout: reproducible extraction + export artifacts for R.
+- Coverage status: covered.
+
+- O3 (study receiver-side verification under degraded signals):
+- Scraping coverage: comment text + engagement + timing + channel/video context.
+- Analytics/readout: skepticism/proof-demand rates and multilevel models after annotation/classification.
+- Coverage status: partially covered (requires validated labels).
+
+#### Research Questions
+- RQ1 (to what extent is an algorithmically elevated forensic cue, operationalized as an AI-skeptical top-liked comment, associated with higher skepticism in subsequent audience discourse?):
+- Required inputs: ranked comments within video, top-comment skepticism label, subsequent-comment skepticism label.
+- Planned analysis: mixed-effects skepticism model on response comments (ranks `2-20`) with `top_comment_skeptical` as the focal predictor.
+- Coverage status: partially covered (ranking and comment metadata exist; confirmatory version requires adjudicated/validated skepticism labels).
+
+- RQ2 (how do algorithmic engagement metrics, especially top-comment like count, shape the strength of that association?):
+- Required inputs: top-comment skepticism label, top-comment like count, subsequent-comment skepticism label.
+- Planned analysis: interaction model adding `top_comment_skeptical * top_comment_like_count_z`.
+- Coverage status: partially covered (engagement metrics are collected; confirmatory version still depends on validated skepticism labels).
+
+- RQ3 (how does audience epistemic vigilance and narrative contestation vary across creator ecosystems with different stakes around perceived human authenticity?):
+- Required inputs: validated skepticism labels, channel niche labels, top-comment cue indicators, and response-comment outcomes.
+- Planned analysis: cross-niche moderation model with `top_comment_skeptical * channel_niche`, plus descriptive niche-wise skepticism and proof-demand rates.
+- Coverage status: partially covered (niche labels are collected; confirmatory version requires a final lock on the niche taxonomy, especially if `Faceless Lifestyle` is treated as a distinct analytic baseline).
+
+#### Hypotheses
+- H1 (conformity cascade): when the top-ranked comment expresses AI skepticism, subsequent comments are more likely to express skepticism as well.
+- Inputs covered by scraping: ranked comments, comment text, like counts, timestamps, channel/video structure.
+- Additional labeling required: validated skepticism labels.
+- Planned test: mixed-effects skepticism model with `top_comment_skeptical` as the focal predictor.
+- Coverage status: partial (pilot proxy-ready, confirmatory pending validated labels).
+
+- H2 (cue magnitude): the association between a skeptical top-ranked comment and subsequent skepticism is stronger when the top-ranked comment has a higher like count.
+- Inputs covered by scraping: same as H1 plus top-comment like counts.
+- Additional labeling required: validated skepticism labels.
+- Planned test: interaction model with `top_comment_skeptical * top_comment_like_count_z`.
+- Coverage status: partial.
+
+- H3 (boundary condition): the association between a skeptical top-ranked comment and subsequent skepticism is stronger in higher authenticity-stakes niches such as Tech and Beauty than in lower-stakes entertainment baselines such as Faceless Lifestyle.
+- Inputs covered by scraping: ranked comments, skepticism outcomes, `channel_niche`.
+- Additional labeling required: validated skepticism labels and a final coded mapping from current niche labels to the confirmatory niche contrast.
+- Planned test: moderation model with `top_comment_skeptical * channel_niche`, reported with niche-specific marginal effects.
+- Coverage status: partial.
+
+#### Mandatory Labeling/Model Readiness Before Confirmatory Inference
+- Complete 300-comment double-coding, compute IRR (target >=0.80), and adjudicate gold standard.
+- Benchmark baseline dictionary vs advanced classifiers (GPT-4o and NLI/RoBERTa) with Precision/Recall/F1.
+- Freeze the final top-comment skepticism coding rule for confirmatory use.
+- Freeze the final hypothesis-to-niche mapping for H3, including whether `Faceless Lifestyle` is a formal coded subgroup or an analytic recode of the broader `Lifestyle` category.
+
+### 14. Dual-Sampling Design (Agreed Next Phase)
+- A two-dataset strategy will be used to improve signal density while preserving panel validity.
+
+#### Dataset A: Core Channel Panel (Confirmatory)
+- Unit: selected channels -> recent uploads in sequence.
+- Purpose: primary confirmatory inference for H1-H3.
+- Sampling: channel-first (existing design), balanced niche quotas where feasible.
+- Modeling: multilevel comment/video/channel models centered on ranked skeptical cues and response comments.
+- Constraint: preserve within-video rank information and timestamps so top-comment cue ordering remains auditable.
+
+#### Dataset B: AI-Enriched Video Stratum (Exploratory/Power Augmentation)
+- Unit: videos selected by AI/disclosure-related metadata filters.
+- Purpose: increase event density for skepticism, proof-demand, and contestation analysis.
+- Selection logic (v1): include videos where title/description matches AI/disclosure lexicon.
+- Initial lexicon examples: `ai`, `artificial intelligence`, `chatgpt`, `gpt`, `midjourney`, `deepfake`, `made with ai`, `ai generated`.
+- This stratum may be pooled across channels but must keep channel/video IDs for linkage.
+
+#### Inference Boundary Rules
+- Confirmatory manuscript claims for H1-H3 rely on Dataset A as primary.
+- Dataset B is explicitly labeled exploratory/robustness unless a pre-registered integration rule is defined.
+- Report results separately (`core_panel`, `ai_enriched`) before any combined sensitivity analyses.
+
+#### Operational Requirements
+- Runs must store a dataset tag in metadata (`dataset_type`: `core_panel` or `ai_enriched`).
+- QA outputs must be stratified by `dataset_type` and niche.
+- Exports must include dataset tags so R models can separate confirmatory vs exploratory analyses.
 
 ## Open Questions
 ### Analytics Design
