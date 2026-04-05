@@ -1525,6 +1525,199 @@ def evidence_base_snapshot(_conn: sqlite3.Connection, run_ids: tuple[int, ...]) 
 
 
 @st.cache_data(ttl=20)
+def corpus_overview_snapshot(_conn: sqlite3.Connection) -> dict[str, int]:
+    row = _conn.execute(
+        """
+        SELECT
+            (SELECT COUNT(*) FROM runs) AS runs,
+            (SELECT COUNT(*) FROM channels) AS channels,
+            (SELECT COUNT(*) FROM videos) AS videos,
+            (SELECT COUNT(*) FROM comments) AS comments,
+            (SELECT COUNT(*) FROM annotations) AS annotations
+        """
+    ).fetchone()
+    return {
+        "runs": int(row["runs"] or 0),
+        "channels": int(row["channels"] or 0),
+        "videos": int(row["videos"] or 0),
+        "comments": int(row["comments"] or 0),
+        "annotations": int(row["annotations"] or 0),
+    }
+
+
+@st.cache_data(ttl=20)
+def labeled_comment_summary(_conn: sqlite3.Connection, run_ids: tuple[int, ...]) -> dict[str, int]:
+    if not run_ids:
+        return {
+            "labeled_comments": 0,
+            "double_coded_comments": 0,
+            "disagreement_comments": 0,
+            "adjudicated_comments": 0,
+            "resolved_comments": 0,
+        }
+    placeholders = ",".join(["?"] * len(run_ids))
+    row = _conn.execute(
+        f"""
+        WITH base AS (
+            SELECT
+                c.id AS comment_db_id,
+                COUNT(DISTINCT a.annotator_id) AS coder_count,
+                MAX(a.is_adjudicated) AS has_adjudicated,
+                MIN(COALESCE(a.skepticism_fake_callout, 0)) AS min_s,
+                MAX(COALESCE(a.skepticism_fake_callout, 0)) AS max_s,
+                MIN(COALESCE(a.proof_demand, 0)) AS min_p,
+                MAX(COALESCE(a.proof_demand, 0)) AS max_p,
+                MIN(COALESCE(a.normalization_defense, 0)) AS min_n,
+                MAX(COALESCE(a.normalization_defense, 0)) AS max_n,
+                MIN(COALESCE(a.other_flag, 0)) AS min_o,
+                MAX(COALESCE(a.other_flag, 0)) AS max_o,
+                MIN(COALESCE(a.extra_codes, '')) AS min_e,
+                MAX(COALESCE(a.extra_codes, '')) AS max_e
+            FROM comments c
+            JOIN annotations a ON a.comment_db_id = c.id
+            WHERE c.run_id IN ({placeholders})
+            GROUP BY c.id
+        )
+        SELECT
+            COUNT(*) AS labeled_comments,
+            SUM(CASE WHEN coder_count >= 2 THEN 1 ELSE 0 END) AS double_coded_comments,
+            SUM(
+                CASE
+                    WHEN coder_count >= 2 AND (
+                        min_s <> max_s
+                        OR min_p <> max_p
+                        OR min_n <> max_n
+                        OR min_o <> max_o
+                        OR min_e <> max_e
+                    ) THEN 1
+                    ELSE 0
+                END
+            ) AS disagreement_comments,
+            SUM(CASE WHEN has_adjudicated = 1 THEN 1 ELSE 0 END) AS adjudicated_comments,
+            SUM(
+                CASE
+                    WHEN coder_count >= 2 AND (
+                        has_adjudicated = 1
+                        OR (
+                            min_s = max_s
+                            AND min_p = max_p
+                            AND min_n = max_n
+                            AND min_o = max_o
+                            AND min_e = max_e
+                        )
+                    ) THEN 1
+                    ELSE 0
+                END
+            ) AS resolved_comments
+        FROM base
+        """,
+        tuple(run_ids),
+    ).fetchone()
+    return {
+        "labeled_comments": int(row["labeled_comments"] or 0),
+        "double_coded_comments": int(row["double_coded_comments"] or 0),
+        "disagreement_comments": int(row["disagreement_comments"] or 0),
+        "adjudicated_comments": int(row["adjudicated_comments"] or 0),
+        "resolved_comments": int(row["resolved_comments"] or 0),
+    }
+
+
+def validation_summary_table(
+    freeze_snapshot: dict[str, object],
+    *,
+    freeze_date: str,
+    freeze_name: str,
+    run_ids: tuple[int, ...],
+) -> pd.DataFrame:
+    summary = freeze_snapshot.get("summary", {}) if isinstance(freeze_snapshot, dict) else {}
+    return pd.DataFrame(
+        [
+            {"metric": "freeze_name", "value": freeze_name or "unsaved_current_selection"},
+            {"metric": "freeze_date", "value": freeze_date or "current_session"},
+            {"metric": "freeze_runs", "value": ", ".join(str(x) for x in run_ids)},
+            {"metric": "resolved_comments", "value": int(summary.get("resolved_comments", 0) or 0)},
+            {"metric": "double_coded_comments", "value": int(summary.get("double_coded_comments", 0) or 0)},
+            {"metric": "disagreement_comments", "value": int(summary.get("disagreement_comments", 0) or 0)},
+            {"metric": "unresolved_disagreements", "value": int(summary.get("unresolved_disagreements", 0) or 0)},
+            {"metric": "any_core_positive", "value": int(summary.get("any_core_positive", 0) or 0)},
+            {"metric": "skepticism_positive", "value": int(summary.get("skepticism_positive", 0) or 0)},
+            {"metric": "proof_positive", "value": int(summary.get("proof_positive", 0) or 0)},
+            {"metric": "normalization_positive", "value": int(summary.get("normalization_positive", 0) or 0)},
+            {"metric": "resolved_definition", "value": "double-coded and either agreed or adjudicated"},
+        ]
+    )
+
+
+def systems_summary_table(
+    corpus_summary: dict[str, int],
+    labeled_summary: dict[str, int],
+    freeze_snapshot: dict[str, object],
+) -> pd.DataFrame:
+    freeze_summary = freeze_snapshot.get("summary", {}) if isinstance(freeze_snapshot, dict) else {}
+    broader_comments = int(corpus_summary.get("comments", 0) or 0)
+    labeled_comments = int(labeled_summary.get("labeled_comments", 0) or 0)
+    resolved_comments = int(freeze_summary.get("resolved_comments", 0) or 0)
+    exploratory_remainder = max(0, broader_comments - resolved_comments)
+    return pd.DataFrame(
+        [
+            {
+                "layer": "Broader collected corpus",
+                "size_or_status": broader_comments,
+                "human_vs_assistive_role": "collection plus assistive diagnostics",
+                "analytical_use": "context only",
+            },
+            {
+                "layer": "Labeled comments in frozen runs",
+                "size_or_status": labeled_comments,
+                "human_vs_assistive_role": "human coding with assistive context",
+                "analytical_use": "candidate evidence layer",
+            },
+            {
+                "layer": "Frozen resolved evidence",
+                "size_or_status": resolved_comments,
+                "human_vs_assistive_role": "human validated",
+                "analytical_use": "main confirmatory analysis",
+            },
+            {
+                "layer": "Disagreement cases",
+                "size_or_status": int(labeled_summary.get("disagreement_comments", 0) or 0),
+                "human_vs_assistive_role": "human adjudication",
+                "analytical_use": "quality control",
+            },
+            {
+                "layer": "Unresolved disagreements at freeze",
+                "size_or_status": int(freeze_summary.get("unresolved_disagreements", 0) or 0),
+                "human_vs_assistive_role": "n/a",
+                "analytical_use": "frozen state",
+            },
+            {
+                "layer": "Exploratory remainder",
+                "size_or_status": exploratory_remainder,
+                "human_vs_assistive_role": "assistive screening only",
+                "analytical_use": "contextual mapping and future follow-up",
+            },
+        ]
+    )
+
+
+def workflow_boundary_figure_spec() -> str:
+    return "\n".join(
+        [
+            "Raw corpus",
+            "  -> Screened corpus",
+            "  -> Coded corpus",
+            "  -> Adjudicated / resolved corpus",
+            "  -> Frozen validated evidence",
+            "  -> Exploratory extension",
+            "",
+            "Figure note:",
+            "Validated claims rely only on the frozen resolved layer.",
+            "Automation supports screening, prioritization, and exploratory mapping, but does not expand the confirmatory evidence base.",
+        ]
+    )
+
+
+@st.cache_data(ttl=20)
 def annotation_workflow_metrics(_conn: sqlite3.Connection, run_ids: tuple[int, ...]) -> dict[str, object]:
     if not run_ids:
         return {
@@ -2140,6 +2333,51 @@ def _format_proxy_value(value: object) -> str:
     return f"{float(value):.4f}"
 
 
+def _format_effect_term(term: object) -> str:
+    raw = _safe_text(term)
+    if not raw:
+        return ""
+    if raw == "Intercept":
+        return "Baseline (intercept)"
+    if raw == "top_comment_skeptical":
+        return "H1: skeptical top cue"
+    if raw == "top_comment_like_count_z":
+        return "Top cue like count (z)"
+    if raw == "hours_since_top_comment_z":
+        return "Hours since top cue (z)"
+    if raw == "top_comment_skeptical:top_comment_like_count_z":
+        return "H2: skeptical cue x like count (z)"
+    if raw == "top_comment_skeptical:hours_since_top_comment_z":
+        return "Skeptical cue x time since top cue (z)"
+
+    niche_interaction = re.match(
+        r"top_comment_skeptical:C\(channel_niche, Treatment\(reference='([^']+)'\)\)\[T\.([^\]]+)\]",
+        raw,
+    )
+    if niche_interaction:
+        reference, niche = niche_interaction.groups()
+        return f"H1: skeptical cue x niche ({niche} vs {reference})"
+
+    niche_main = re.match(
+        r"C\(channel_niche, Treatment\(reference='([^']+)'\)\)\[T\.([^\]]+)\]",
+        raw,
+    )
+    if niche_main:
+        reference, niche = niche_main.groups()
+        return f"Niche main effect ({niche} vs {reference})"
+
+    return raw
+
+
+def _display_effects_df(effects_df: pd.DataFrame) -> pd.DataFrame:
+    if effects_df is None or effects_df.empty:
+        return effects_df
+    display = effects_df.copy()
+    if "term" in display.columns:
+        display["term"] = display["term"].apply(_format_effect_term)
+    return display
+
+
 def _label_source_label(label_source: str) -> str:
     for key, label in LABEL_SOURCE_OPTIONS:
         if key == label_source:
@@ -2505,6 +2743,28 @@ def render_note_banner(label: str, body: str) -> None:
     st.markdown(
         f"<div class='note-banner'><strong>{html.escape(label)}:</strong> {html.escape(body)}</div>",
         unsafe_allow_html=True,
+    )
+
+
+def render_evidence_boundary_banner(scope_label: str, body: str) -> None:
+    render_note_banner(scope_label, body)
+
+
+def _label_source_scope(label_source: str) -> tuple[str, str]:
+    normalized = _safe_text(label_source).strip().lower()
+    if normalized == "resolved_consensus":
+        return (
+            "Validated evidence layer",
+            "This view is using resolved human-coded evidence suitable for the paper's main confirmatory claims.",
+        )
+    if normalized == "adjudicated":
+        return (
+            "Human-coded but narrower layer",
+            "This view is using adjudicated labels only. It is human-coded, but not the paper's default validated evidence layer unless stated explicitly.",
+        )
+    return (
+        "Assistive / exploratory layer",
+        "This view is not using the frozen resolved-consensus evidence base. Treat it as exploratory, supportive, or analyst-specific rather than confirmatory.",
     )
 
 
@@ -3271,6 +3531,22 @@ def _apply_diversity_caps(
     return df.loc[keep_rows].copy()
 
 
+def _clear_post_annotation_caches() -> None:
+    for fn in [
+        annotation_queue_df,
+        resolved_consensus_run_ids,
+        evidence_base_snapshot,
+        annotation_workflow_metrics,
+        uncoded_extension_frames,
+        build_final_analysis_pack,
+        conformity_frames,
+        conformity_frames_multi,
+    ]:
+        clear_fn = getattr(fn, "clear", None)
+        if callable(clear_fn):
+            clear_fn()
+
+
 def save_annotation(
     conn: sqlite3.Connection,
     comment_db_id: int,
@@ -3363,6 +3639,7 @@ def save_annotation(
         ),
     )
     conn.commit()
+    _clear_post_annotation_caches()
 
 
 def save_annotations_batch(conn: sqlite3.Connection, rows: list[dict[str, object]]) -> int:
@@ -3445,6 +3722,7 @@ def save_annotations_batch(conn: sqlite3.Connection, rows: list[dict[str, object
         payload,
     )
     conn.commit()
+    _clear_post_annotation_caches()
     return len(payload)
 
 
@@ -3656,9 +3934,24 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             mime="application/json",
             use_container_width=True,
         )
+        with st.expander("Ethics and reproducibility note", expanded=False):
+            st.markdown(
+                "\n".join(
+                    [
+                        "- Public platform comments are handled as research material, but paper-facing exports should avoid unnecessary user-identifying detail.",
+                        "- The frozen evidence base is a scoped reproducibility artifact: it locks the selected runs, resolved labels, and prevalence tables used for the main claims.",
+                        "- Assistive heuristics and weak labels support screening and prioritization, but they do not expand the confirmatory evidence layer.",
+                        "- Named freezes, research bundles, and final-pack exports are the recommended audit trail for reporting and later verification.",
+                    ]
+                )
+            )
 
     with st.expander("Evidence Freeze, Extension, And Final Pack", expanded=True):
         st.markdown("**Step 1. Freeze The Main Evidence Base**")
+        render_evidence_boundary_banner(
+            "Validated evidence layer",
+            "Use this step to define the frozen resolved-consensus evidence base for the paper's main confirmatory claims.",
+        )
         legacy_freeze_payload = load_evidence_freeze(str(EVIDENCE_FREEZE_PATH))
         freeze_library = evidence_freezes_df(conn, annotator_id)
         selected_library_payload: dict[str, object] = {}
@@ -3702,6 +3995,17 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
         freeze_snapshot = evidence_base_snapshot(conn, evidence_run_ids)
         freeze_summary = freeze_snapshot.get("summary", {})
         if freeze_summary:
+            freeze_name_for_exports = _safe_text(
+                selected_library_payload.get("name")
+                or freeze_payload.get("name")
+                or "unsaved_current_selection"
+            )
+            freeze_date_for_exports = _safe_text(
+                selected_library_payload.get("created_at")
+                or freeze_payload.get("created_at")
+                or freeze_payload.get("generated_at")
+                or datetime.now(tz=timezone.utc).isoformat()
+            )
             render_metric_tiles(
                 [
                     {
@@ -3837,11 +4141,94 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
                 with w2:
                     st.markdown("**Positive yield by triage bucket**")
                     st.dataframe(workflow["by_triage"], use_container_width=True, height=240)
+
+            st.divider()
+            st.markdown("**Paper outputs**")
+            corpus_summary = corpus_overview_snapshot(conn)
+            labeled_summary = labeled_comment_summary(conn, evidence_run_ids)
+            validation_df = validation_summary_table(
+                freeze_snapshot,
+                freeze_date=freeze_date_for_exports,
+                freeze_name=freeze_name_for_exports,
+                run_ids=evidence_run_ids,
+            )
+            systems_df = systems_summary_table(corpus_summary, labeled_summary, freeze_snapshot)
+            render_metric_tiles(
+                [
+                    {
+                        "label": "Broader corpus",
+                        "value": int(corpus_summary.get("comments", 0) or 0),
+                        "note": "all collected comments",
+                        "tone": "accent",
+                    },
+                    {
+                        "label": "Labeled in frozen runs",
+                        "value": int(labeled_summary.get("labeled_comments", 0) or 0),
+                        "note": "human-coded rows",
+                        "tone": "sage",
+                    },
+                    {
+                        "label": "Disagreement cases",
+                        "value": int(labeled_summary.get("disagreement_comments", 0) or 0),
+                        "note": "quality-control workload",
+                        "tone": "gold",
+                    },
+                    {
+                        "label": "Resolved at freeze",
+                        "value": int(freeze_summary.get("resolved_comments", 0) or 0),
+                        "note": "main evidence rows",
+                        "tone": "accent",
+                    },
+                ]
+            )
+            p1, p2 = st.columns(2)
+            with p1:
+                st.markdown("**Validation summary table**")
+                st.dataframe(validation_df, use_container_width=True, height=360)
+                st.download_button(
+                    "Download validation summary CSV",
+                    data=validation_df.to_csv(index=False).encode("utf-8"),
+                    file_name=f"validation_summary_{'_'.join(str(x) for x in evidence_run_ids)}.csv",
+                    mime="text/csv",
+                    use_container_width=True,
+                )
+            with p2:
+                st.markdown("**System contribution table**")
+                st.dataframe(systems_df, use_container_width=True, height=360)
+                st.download_button(
+                    "Download system contribution CSV",
+                    data=systems_df.to_csv(index=False).encode("utf-8"),
+                    file_name=f"system_contribution_{'_'.join(str(x) for x in evidence_run_ids)}.csv",
+                    mime="text/csv",
+                    use_container_width=True,
+                )
+            figure_spec = workflow_boundary_figure_spec()
+            st.markdown("**Boundary figure spec**")
+            st.code(figure_spec, language="text")
+            q1, q2 = st.columns(2)
+            q1.download_button(
+                "Download boundary figure spec",
+                data=figure_spec.encode("utf-8"),
+                file_name=f"boundary_figure_spec_{'_'.join(str(x) for x in evidence_run_ids)}.txt",
+                mime="text/plain",
+                use_container_width=True,
+            )
+            q2.download_button(
+                "Download workflow metrics CSV",
+                data=workflow["by_priority"].to_csv(index=False).encode("utf-8"),
+                file_name=f"workflow_priority_metrics_{'_'.join(str(x) for x in evidence_run_ids)}.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
         else:
             st.info("No resolved-consensus comments available for the selected runs yet.")
 
         st.divider()
         st.markdown("**Step 2. Explore The Uncoded Pool Automatically**")
+        render_evidence_boundary_banner(
+            "Assistive / exploratory layer",
+            "This step is for contextual mapping and candidate discovery only. It does not expand the frozen validated evidence base.",
+        )
         show_uncoded_extension = st.checkbox(
             "Build uncoded extension analysis",
             value=False,
@@ -3923,6 +4310,10 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
 
         st.divider()
         st.markdown("**Step 3. Export The Final Tables And Appendix Pack**")
+        render_evidence_boundary_banner(
+            "Validated evidence exports",
+            "The main tables and model outputs here are intended to be generated from the selected frozen evidence runs.",
+        )
         show_final_pack = st.checkbox(
             "Build final analysis pack",
             value=False,
@@ -3985,7 +4376,7 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
                 st.markdown("**Prevalence by run and niche**")
                 st.dataframe(final_pack["snapshot"]["prevalence_by_run_niche"], use_container_width=True, height=220)
                 st.markdown("**Combined effects**")
-                st.dataframe(frames["effects_df"], use_container_width=True, height=260)
+                st.dataframe(_display_effects_df(frames["effects_df"]), use_container_width=True, height=260)
                 st.markdown("**ICC / variance**")
                 st.dataframe(frames["icc_df"], use_container_width=True, height=180)
 
@@ -4568,6 +4959,8 @@ def conformity_cascade_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
         format_func=_label_source_label,
         key="cascade_label_source",
     )
+    scope_label, scope_body = _label_source_scope(label_source)
+    render_evidence_boundary_banner(scope_label, scope_body)
 
     frames = conformity_frames(conn, selected_run, include_flagged, label_source, annotator_id)
     if frames["error"]:
@@ -4577,6 +4970,7 @@ def conformity_cascade_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
     summary = frames["summary_df"]
     response_df = frames["response_df"]
     effects_df = frames["effects_df"]
+    effects_display = _display_effects_df(effects_df)
     icc_df = frames["icc_df"]
     ranked_df = frames["ranked_df"]
     niche_df = frames["niche_df"]
@@ -4640,7 +5034,7 @@ def conformity_cascade_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
     mid_left, mid_right = st.columns(2)
     with mid_left:
         st.markdown("**Model Effects (proxy labels)**")
-        st.dataframe(effects_df, use_container_width=True, height=320)
+        st.dataframe(effects_display, use_container_width=True, height=320)
         st.download_button(
             "Download model effects CSV",
             data=effects_df.to_csv(index=False).encode("utf-8"),
@@ -4710,6 +5104,8 @@ def pilot_analysis_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
         format_func=_label_source_label,
         key="pilot_label_source",
     )
+    scope_label, scope_body = _label_source_scope(label_source)
+    render_evidence_boundary_banner(scope_label, scope_body)
     counts = run_counts(conn, selected_run)
     run_row = runs[runs["id"] == selected_run].iloc[0]
 
@@ -4944,6 +5340,8 @@ def combined_hypotheses_tab(conn: sqlite3.Connection, annotator_id: str) -> None
         format_func=_label_source_label,
         key="combined_hypothesis_label_source",
     )
+    scope_label, scope_body = _label_source_scope(label_source)
+    render_evidence_boundary_banner(scope_label, scope_body)
 
     if not selected_runs:
         st.info("Select at least one run.")
@@ -5027,7 +5425,7 @@ def combined_hypotheses_tab(conn: sqlite3.Connection, annotator_id: str) -> None
     mid_left, mid_right = st.columns(2)
     with mid_left:
         st.markdown("**Combined Model Effects**")
-        st.dataframe(frames["effects_df"], use_container_width=True, height=320)
+        st.dataframe(_display_effects_df(frames["effects_df"]), use_container_width=True, height=320)
     with mid_right:
         st.markdown("**ICC / Variance Breakdown**")
         st.dataframe(frames["icc_df"], use_container_width=True, height=220)
@@ -5081,6 +5479,10 @@ def auto_analysis_tab(conn: sqlite3.Connection) -> None:
     if runs.empty:
         st.info("No runs available.")
         return
+    render_evidence_boundary_banner(
+        "Assistive / exploratory layer",
+        "Auto-labeled signals are for screening, lexical cleanup, and follow-up prioritization. They are not the paper's validated evidence layer.",
+    )
 
     selected_run = st.selectbox(
         "Run ID",
@@ -5363,6 +5765,27 @@ def annotation_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
         key="annotation_workflow_mode",
     )
     _sync_annotation_mode_state(workflow_mode)
+    if workflow_mode == "Adjudication":
+        render_evidence_boundary_banner(
+            "Validation / adjudication mode",
+            "Use this mode to resolve coder disagreements and strengthen the validated evidence layer. Adjudication decisions are human-only.",
+        )
+    else:
+        render_evidence_boundary_banner(
+            "Validated evidence production",
+            "Use this mode to create first-pass human labels. Assistive hints may help you navigate the queue, but they do not determine the labels.",
+        )
+    with st.expander("Core label guide", expanded=False):
+        st.markdown(
+            "\n".join(
+                [
+                    "- `Skepticism`: the comment questions authenticity, deception, or whether the content is fake / AI-generated.",
+                    "- `Proof-demand`: the comment asks for evidence, disclosure, verification, or a demonstration that the claim/content is real.",
+                    "- `Normalization / defense`: the comment dismisses concern, treats the issue as normal/acceptable, or defends the content against skepticism.",
+                    "- `Other` and extra tags are descriptive support fields. They help organize review work, but the paper's core evidence layer is built from the three core labels above.",
+                ]
+            )
+        )
     subset_file = st.selectbox(
         "Shared subset file",
         options=subset_options,

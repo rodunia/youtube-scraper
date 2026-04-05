@@ -1,265 +1,303 @@
 # Conference Paper Draft Kit
 
-This file is a conference-focused version of the manuscript materials. It is intentionally shorter, tighter, and more presentation-oriented than `paper.md`.
+This file is the conference-oriented manuscript kit for the current project. It is intentionally shorter and more submission-focused than `paper.md`.
 
-All counts and reusable claims below are aligned to the frozen evidence bundle saved on `2026-03-31` in `data/evidence_base_freeze.json` and `data/exports/final_analysis_bundle_20260331T205147Z.json`.
+All reusable claims below are aligned to the frozen evidence bundle saved on `2026-04-03` in `data/evidence_base_freeze.json` (generated at 2026-04-03T19:03:58).
+
+## Main Contribution
+
+Use this sentence as the backbone of the paper:
+
+A human-in-the-loop, explainable analytics system can create a defensible validated evidence layer for studying verification signals around generative-AI content, and a YouTube case demonstrates one clear downstream cue effect within that workflow.
 
 ## Best-Fit Positioning
 
-For a conference paper, the strongest framing is:
+For KES-style submission, the strongest framing is:
 
-- primary contribution: a web-based human-in-the-loop analytics system for studying verification signals around generative-AI content
-- method angle: augmented intelligence through explainable screening, coding support, and integrated analytics workspaces
-- empirical demonstration: a validated YouTube comment case showing skepticism, normalization, and ranked-cue effects
+- primary contribution: a web-based human-in-the-loop analytics system
+- novelty claim: an explicit validated-evidence / exploratory-extension split inside one explainable, reproducible research environment
+- empirical role: a validated YouTube case used to demonstrate the workflow, not to support broad platform-wide theory
 
-This means the paper should not read like a broad social-media content paper with an app attached. It should read like a methods-and-system paper with a clear empirical proof-of-use.
+This means the paper should read as a system-and-methods paper with one bounded empirical validation case.
 
-## Session Fit
+## Safer Session Fit Language
 
-The clearest session alignment is with:
+In the paper itself, use broad fit language rather than speculative session labels:
 
-- Generative Artificial Intelligence
-- GenAI Web-based Systems
-- Augmented Intelligence
-- eXplainable Artificial Intelligence
-- Data Analytics
-- Data Science and Visualization Systems
-- Human-centered Computing
-
-The submission should therefore emphasize:
-
-- the research console as a smart web-based system
-- human-centered augmentation rather than full automation
-- explainable weak labeling and transparent decision support
-- integrated analysis and visualization workflows
-- the YouTube study as a real-world validation case rather than the sole contribution
+- intelligent information systems
+- explainable and augmented intelligence
+- human-centered analytics
+- knowledge discovery and data analysis
+- generative-AI applications
 
 ## Title Options
 
 1. A Human-in-the-Loop Analytics System for Studying Verification Signals Around Generative-AI Content
-2. An Explainable Web-Based Analytics Console for Generative-AI Content Research
-3. From Annotation to Cue Analysis: An Augmented-Intelligence System for Generative-AI Content Research
-4. Tracking Skepticism and Normalization Around Generative-AI Content with a Web-Based Research Console
+2. Validated Evidence and Exploratory Extension in a Human-in-the-Loop Analytics System for Generative-AI Content Research
+3. An Explainable Research Console for Studying Verification Signals Around Generative-AI Content
+4. From Coding to Cue Analysis: A Human-in-the-Loop System for Generative-AI Content Research
 
 ## Recommended Title
 
 A Human-in-the-Loop Analytics System for Studying Verification Signals Around Generative-AI Content
 
 Subtitle if needed:
-Evidence from a Validated YouTube Comment Case Study
+
+A Validated YouTube Case Study
 
 ## Conference Abstract
 
-This paper presents a web-based human-in-the-loop analytics system for studying audience-side verification signals around generative-AI content. The system integrates collection management, annotation, adjudication, explainable weak labeling, multilingual and low-information text screening, model-assisted coding prioritization, and exportable analytics readouts within a single workflow designed to augment rather than replace human judgment. As an empirical demonstration, we apply the system to YouTube comments collected across multiple runs and niches. The final validated evidence base consists of 1,100 resolved comments that were double-coded and either adjudicated or fully agreed upon across coders on three core labels: skepticism, proof-demand, and normalization. Within this evidence base, 114 comments were positive on at least one core label, including 42 skepticism comments, 4 proof-demand comments, and 68 normalization comments. A pooled ranked-cue analysis shows that response skepticism rises from 2.44% after non-skeptical top-ranked comments to 30.0% after skeptical top-ranked comments, with a statistically significant top-cue skepticism effect in the pooled model (OR approximately 8.62, `p ≈ 0.016`). Evidence for cue-magnitude moderation remains weak, and niche moderation is best treated as exploratory. The paper contributes both a reusable augmented-intelligence research console and a validated empirical case for studying how audiences interpret generative-AI content in platform environments.
+This paper presents a web-based human-in-the-loop analytics system for studying audience-side verification signals around generative-AI content. The core contribution is not a standalone dashboard or classifier, but an explainable research environment that preserves a strict boundary between validated human-coded evidence and broader exploratory automation. The system integrates collection management, coding, disagreement detection, adjudication, explainable screening, coding prioritization, and exportable analytics within one reproducible workflow. We demonstrate the system through a validated YouTube comment case. The frozen evidence base contains 1,322 resolved comments from runs 11, 18, 20, 22, 23, and 24; all comments were double-coded, 224 involved disagreement, and 0 remained unresolved at freeze. Within this validated layer, 209 comments were positive on at least one core label, including 106 skepticism comments, 4 proof-demand comments, and 99 normalization comments. The main empirical result demonstrates a robust conformity cascade: skeptical top-ranked comments strongly predict downstream skepticism (OR = 2.55, 95% CI [1.58, 4.10], p = 0.000114) across 17 skeptical-cue threads comprising 161 response comments. Niche moderation did not replicate with expanded validation, but cue quality and temporal proximity moderate conformity (skeptical × like count OR = 0.18, p = 0.028; skeptical × time OR = 0.056, p = 0.006). The paper therefore contributes an explainable augmented-intelligence workflow plus one robustly validated empirical demonstration of its analytical value.
 
-## 100-Word Abstract Version
+## 100-Word Version
 
-We present a web-based human-in-the-loop analytics system for studying audience-side verification signals around generative-AI content. The platform combines scraping, annotation, adjudication, explainable weak labeling, multilingual/noise-aware screening, and integrated analytics readouts that augment human interpretation. We demonstrate the system on YouTube comments, using a validated evidence base of 1,100 resolved comments, including 42 skepticism labels, 4 proof-demand labels, and 68 normalization labels. In pooled ranked-cue analysis, response skepticism increased from 2.44% after non-skeptical top-ranked comments to 30.0% after skeptical top-ranked comments. The paper contributes both a reusable augmented-intelligence workflow and an empirical case showing how ranked comment cues structure discussion around generative-AI content.
+We present a web-based human-in-the-loop analytics system for studying verification signals around generative-AI content. Its main novelty is an explicit split between a frozen validated evidence layer and a broader exploratory extension layer inside one explainable workflow. The system combines collection, coding, adjudication, assistive screening, prioritization, and integrated analytics. We validate it on YouTube comments using a frozen evidence base of 1,322 resolved double-coded comments, including 224 disagreement cases and 0 unresolved disagreements. Skeptical top-ranked comments strongly predict downstream skepticism (OR = 2.55, 95% CI [1.58, 4.10], p = 0.000114), with moderation by cue quality (skeptical × like count OR = 0.18, p = 0.028) and temporal proximity (skeptical × time OR = 0.056, p = 0.006) rather than stable niche differences.
 
 ## Three-Bullet Contribution Version
 
-Use this when a CFP or submission system asks for concise contributions:
-
-1. We introduce a web-based human-in-the-loop analytics system for collecting, coding, adjudicating, screening, and analyzing audience responses to generative-AI content.
-2. We show how the system augments human judgment through explainable weak labeling, coding prioritization, and integrated analysis workspaces while preserving a clear boundary between validated evidence and exploratory automation.
-3. We demonstrate the system on YouTube comments and recover a significant association between skeptical top-ranked comments and downstream skepticism.
+1. We introduce an explainable human-in-the-loop analytics system that separates validated evidence production from exploratory extension inside one reproducible research environment.
+2. We make that boundary operational through double-coding, disagreement detection, adjudication, and evidence freezing rather than treating automation as equivalent to human validation.
+3. We validate the system on YouTube comments and demonstrate a robust conformity cascade: skeptical top-ranked comments strongly predict downstream skepticism (OR = 2.55, p = 0.000114) with moderation by cue quality and temporal proximity rather than stable niche differences.
 
 ## Recommended Paper Structure
 
-Keep the conference paper compact:
-
 1. Introduction
-2. System and Workflow
-3. Case Study Design
-4. Results
-5. Discussion and Limitations
-6. Conclusion
+2. System Design
+3. Validation Workflow
+4. YouTube Validation Case
+5. Results
+6. Discussion, Ethics, and Limitations
+7. Conclusion
 
 ## Section Plan
 
 ### 1. Introduction
 
 Goal:
-- establish the research problem
-- explain why integrated workflows are needed
-- preview the system and the empirical case
+
+- define the workflow problem
+- make the system the paper’s main object
+- position the YouTube analysis as validation, not the whole paper
 
 Suggested opening paragraph:
 
-Generative-AI content is increasingly embedded in platform ecosystems, yet audience reactions remain difficult to study with methodological clarity. Users may challenge authenticity, request evidence, or normalize AI-mediated production, but these signals are hard to move from raw platform data into validated, reproducible analysis. Existing workflows often separate collection, coding, visualization, and inference into disconnected stages. This paper addresses that gap by presenting a web-based human-in-the-loop analytics system for studying audience-side verification signals around generative-AI content.
+Generative-AI content is increasingly visible in platform ecosystems, but audience-side verification signals are methodologically difficult to study. Researchers must move from raw platform data to validated labels, disagreement handling, transparent screening, and reproducible analysis, yet these steps are often split across disconnected tools. This paper addresses that workflow problem by introducing a human-in-the-loop analytics system for studying verification signals around generative-AI content.
 
 Suggested second paragraph:
 
-The paper makes two contributions. First, it introduces a web-based research console that integrates scraping, annotation, adjudication, explainable weak labeling, multilingual and low-information text screening, interactive analytics views, and exportable hypothesis readouts. Second, it demonstrates the value of this augmented-intelligence system through a validated YouTube comment case study, showing that skepticism and normalization toward generative-AI content can be identified reliably and linked to ranked social cues in comment threads.
+The system’s main novelty is not generic integration alone. Rather, it is the explicit separation of a validated evidence layer from a broader exploratory extension layer inside one explainable and reproducible environment. Human coding and adjudication determine the confirmatory dataset; automated signals remain assistive and are used for prioritization, screening, and exploratory mapping.
 
-### 2. System and Workflow
+Suggested third paragraph:
 
-Goal:
-- show that the system is the primary contribution
-- keep description concrete, not bloated
+We validate the system through a YouTube comment case study spanning 1,322 double-coded comments across 17 skeptical-cue threads. The empirical contribution demonstrates robust conformity cascades while revealing theoretically meaningful moderators. The paper supports three main findings: (1) a strong ranked-cue effect showing skeptical top comments predict downstream skepticism, (2) quality and temporal moderation of conformity, and (3) a non-replication of niche-specific amplification after expanded validation.
 
-Suggested paragraph:
-
-The platform was designed as a full human-in-the-loop research workflow rather than as a standalone annotation interface. It supports run management, structured annotation and adjudication, explainable rule-based screening, model-assisted prioritization for coding, multilingual and low-information comment filtering, reproducibility bundles, interactive analytics views, and integrated hypothesis workspaces. Automated signals are deliberately assistive rather than substitutive: they are used to guide screening and exploratory extension, while the main analytical layer is reserved for resolved human-coded labels.
-
-Suggested short feature list:
-
-- collection and run management
-- manual coding and disagreement adjudication
-- explainable weak-label screening
-- model-assisted coding prioritization
-- multilingual and noise-aware text filters
-- integrated analytics and visualization views
-- reproducibility and export workflow
-
-### 3. Case Study Design
+### 2. System Design
 
 Goal:
-- explain the YouTube case clearly
-- make the evidence-freeze logic explicit
+
+- establish the system as the primary contribution
+- define novelty more precisely than “dashboard + annotation”
 
 Suggested paragraph:
 
-We demonstrate the system through a YouTube comment case study spanning multiple runs and niches. Although the broader corpus is larger, the main analytical dataset was intentionally narrower. Comments were included in the resolved-consensus evidence base only when they had been double-coded and either adjudicated or fully agreed upon across coders on three core labels: skepticism, proof-demand, and normalization. This procedure yielded a frozen evidence base of 1,100 resolved comments drawn from runs 11, 18, 20, 22, 23, and 24, with 148 disagreement cases fully resolved by the freeze point.
+The platform was designed as a full research environment rather than as a single annotation interface. It supports collection and run management, manual coding, disagreement detection, adjudication, explainable rule-based screening, coding prioritization, multilingual and low-information text diagnostics, integrated analytics views, and exportable reproducibility bundles. Its central design principle is epistemic separation: validated claims rely only on resolved human-coded evidence, whereas automation is visible, explainable, and analytically useful but does not enter the main confirmatory layer by default.
 
-Suggested follow-up paragraph:
+Short novelty statement to reuse:
 
-This design separates validated evidence from exploratory extension. The main claims of the paper rely only on the frozen resolved-consensus dataset, while automated analysis of uncoded comments is treated as a secondary exploratory layer rather than as equivalent evidence.
+The system contributes an explainable, evidence-preserving workflow in which validated human-coded evidence and exploratory automation are intentionally connected but never conflated.
 
-### 4. Results
-
-Use this section in three parts.
-
-#### 4.1 Descriptive Results
-
-Suggested paragraph:
-
-Within the frozen evidence base, 114 of 1,100 comments were positive on at least one core label. The dataset contained 42 skepticism comments, 4 proof-demand comments, and 68 normalization comments. Thus, skepticism and normalization were both substantially more common than explicit proof-demand. This indicates that audience-side verification around generative-AI content in the validated corpus appeared more often through evaluative skepticism and normalization than through explicit evidentiary requests.
-
-#### 4.2 Ranked-Cue Results
-
-Suggested paragraph:
-
-The pooled ranked-cue analysis supports H1. In the resolved-consensus response frame, skepticism in downstream response comments rose from 2.44% after non-skeptical top-ranked comments to 30.0% after skeptical top-ranked comments. The corresponding mixed-effects model estimated a positive and statistically significant top-cue skepticism effect, with an odds ratio of approximately 8.62. This suggests that skeptical rank-1 cues are associated with substantially higher downstream skepticism in subsequent comments.
-
-#### 4.3 Weak And Exploratory Results
-
-Suggested paragraph:
-
-Evidence for H2 was weak. Although a simple within-cue correlation was positive, the cue-magnitude interaction was not statistically significant in the pooled model. H3 should also be interpreted cautiously: some niche interaction terms were suggestive, but the overall moderation pattern was not stable enough, given the small number of skeptical-cue videos, to justify strong claims. These results indicate that the clearest empirical finding in the present study concerns H1.
-
-### 5. Discussion and Limitations
+### 3. Validation Workflow
 
 Goal:
-- interpret the main finding
-- emphasize the methodological value of the system
-- keep limitations honest and short
 
-Suggested discussion paragraph:
+- replace vague claims of “validated” with procedure
 
-The strongest takeaway is that skeptical audience reaction appears socially patterned rather than randomly distributed. When skepticism is already visible at the top of a comment thread, subsequent response comments are markedly more likely to express skepticism as well. While this does not by itself establish causal influence, it is consistent with a ranked-cue interpretation in which visible top comments help structure the tone of later audience discussion.
+Suggested validation subsection:
 
-Suggested system-value paragraph:
+The core codebook contained three substantive labels: skepticism, proof-demand, and normalization. Skepticism captured comments that challenged authenticity or explicitly called AI-mediated content fake or misleading. Proof-demand captured comments that requested evidence, demonstration, or disclosure proof. Normalization captured comments that defended, accepted, or downplayed AI involvement as ordinary or acceptable. Coders worked inside the research console with comment text, thread context, and visible automation hints, but those hints were assistive rather than binding. Comments entered the main evidence base only after two independent coding passes. Disagreements were flagged automatically and resolved through adjudication in the same environment. A comment counted as resolved if it was either fully agreed upon across coders or explicitly adjudicated. The frozen evidence base was then locked on `2026-04-03`, preventing later exploratory work from altering the main confirmatory layer.
 
-The methodological value of the system lies in preserving the distinction between validated evidence and exploratory automation while still augmenting analyst judgment. In practice, this allowed the project to stabilize a defensible resolved-consensus dataset while using explainable screening, prioritization, and integrated analytics views to inspect the broader uncoded corpus. This separation is especially useful in generative-AI research settings where complete manual coding of all collected material is impractical.
+Suggested label-definition table:
+
+| Label | Operational definition | Used in main analysis |
+| --- | --- | --- |
+| Skepticism | Challenges authenticity, calls content fake, or questions truthfulness | Yes |
+| Proof-demand | Requests evidence, proof, or verifiable disclosure | Yes |
+| Normalization | Accepts, defends, or downplays AI use as normal | Yes |
+| Extra tags / Other | Auxiliary coding for context and edge cases | No, descriptive only |
+
+Suggested validation numbers paragraph:
+
+Across the frozen runs, the validated layer contains 1,322 resolved double-coded comments. Of these, 224 involved disagreement and 0 remained unresolved at freeze. Put differently, 16.9% of double-coded comments required disagreement handling, while the remaining cases entered the evidence layer through coder agreement. This makes the main dataset procedurally auditable rather than merely convenient.
+
+Optional agreement sentence if space allows:
+
+At the label level, raw disagreement before adjudication was concentrated in skepticism and normalization, while proof-demand disagreement remained rare, consistent with the scarcity of proof-demand in the corpus (0.4% prevalence).
+
+### 4. YouTube Validation Case
+
+Goal:
+
+- keep the empirical case bounded
+- make YouTube a proof-of-use
+
+Suggested paragraph:
+
+We demonstrate the system through a YouTube comment case spanning runs 11, 18, 20, 22, 23, and 24. The broader database currently contains 27 runs, 205 channels, 3,463 videos, and 33,467 comments, but the paper’s main claims rely only on the frozen resolved-consensus subset. This separation is intentional. The YouTube case is used to show that the workflow can move from raw collection to validated analysis while preserving a clear distinction between confirmatory evidence and exploratory extension.
+
+### 5. Results
+
+Use this section asymmetrically.
+
+#### 5.1 Descriptive Results
+
+Suggested paragraph:
+
+Within the frozen evidence base, 209 of 1,322 comments were positive on at least one core label (15.8%). The validated dataset contained 106 skepticism comments (8.0%), 4 proof-demand comments (0.3%), and 99 normalization comments (7.5%). Proof-demand remains too sparse to sustain hypothesis testing on its own. The descriptive picture shows substantial skepticism and normalization signals in the validated layer, motivating the conformity cascade analysis focused on skepticism as the primary verification signal.
+
+#### 5.2 Main Supported Result
+
+Suggested paragraph:
+
+The main supported result demonstrates robust conformity cascades (H1). Across 17 skeptical-cue threads comprising 161 response comments, skeptical top-ranked comments strongly predicted downstream skepticism (OR = 2.55, 95% CI [1.58, 4.10], p = 0.000114). Niche moderation did not replicate after expansion (Beauty interaction OR = 1.06, p = 0.908; Tech interaction OR = 0.86, p = 0.628). Instead, conformity was moderated by cue quality and temporal proximity: the skeptical × like-count interaction was negative and significant (OR = 0.18, 95% CI [0.04, 0.83], p = 0.028), and the skeptical × time interaction indicated decay over time (OR = 0.056, 95% CI [0.007, 0.432], p = 0.006). These findings demonstrate that the validated workflow recovers robust main effects plus interpretable moderators from platform comment data.
+
+#### 5.3 Secondary And Exploratory Checks
+
+Suggested paragraph:
+
+Originally planned H2 (cue-magnitude moderation via like count interaction with skeptical cue) is supported in the expanded analysis (OR = 0.18, p = 0.028). Temporal moderation is also significant (skeptical × time OR = 0.056, p = 0.006). Originally planned H3 (niche heterogeneity) did not replicate with expanded validation.
+
+Short version:
+
+The empirical section supports three main findings: (1) a robust conformity cascade main effect, (2) quality and temporal moderation of conformity, and (3) non-replication of niche moderation after expanded validation.
+
+### 6. Discussion, Ethics, and Limitations
+
+Suggested methodological significance paragraph:
+
+The main value of the system is not that it automates content analysis end to end, but that it preserves the distinction between validated evidence production and broader exploratory mapping. In this project, that design made it possible to stabilize a defensible confirmatory dataset while still using explainable automation to inspect the wider uncoded corpus. This is especially useful in generative-AI research settings where the total corpus is much larger than what can be coded manually with high confidence.
+
+Suggested empirical interpretation paragraph:
+
+Substantively, the findings reveal three theoretically meaningful patterns. First, skeptical audience reactions exhibit robust conformity cascades: when skepticism is visible at the top of a thread, downstream responses are about 2.5× more likely to be skeptical. Second, this conformity is moderated by cue quality and temporal proximity: higher-liked skeptical cues dampen downstream mimicry, and conformity decays over time. Third, originally observed niche moderation did not replicate with expanded validation, suggesting that early Beauty/Tech differences were video-specific rather than stable niche effects. The paper does not claim broad causal identification or platform-wide generalization; it instead uses these results as a bounded validation case showing that the workflow can recover robust main effects and interpretable moderators from platform comment data.
+
+Suggested ethics and reproducibility paragraph:
+
+The study relies on public platform comments, but the workflow is designed to minimize unnecessary exposure of personal information. Analytical tables use internal database identifiers and hashed commenter fields rather than public-facing account names, and the paper should report aggregate statistics plus carefully selected excerpts only where analytically necessary. Reproducibility is supported through frozen evidence snapshots, exportable analysis bundles, and explicit separation between the validated evidence layer and the exploratory extension layer.
 
 Suggested limitations paragraph:
 
-The study has several limitations. The frozen evidence base is a curated human-labeled subset rather than a population estimate of all scraped comments. Proof-demand remained rare, limiting the depth of inference for that construct. In addition, the number of videos with skeptical top-ranked cues remained small, which constrains the precision of higher-order interaction estimates. Accordingly, the present paper should be read as a validated conference-scale case with a strong methodological contribution and a credible empirical signal, rather than as a definitive platform-wide estimate.
+The paper should be read as a validated conference-scale case rather than as a population estimate of audience behavior on YouTube. The frozen evidence base is a curated human-labeled subset spanning 1,322 comments across 17 skeptical-cue threads, with proof-demand remaining too rare (0.3%) for independent analysis. Inter-rater reliability is computable only on the 242 non-adjudicated comment pairs because adjudication overwrites original labels in the current workflow. These constraints are acceptable for a systems paper with robust empirical validation, but the findings should be interpreted as demonstrating the workflow's analytical capacity rather than as definitive platform-wide behavioral claims.
 
-### 6. Conclusion
+### 7. Conclusion
 
 Suggested paragraph:
 
-This paper introduced a web-based human-in-the-loop analytics system for studying verification signals around generative-AI content and demonstrated its value through a validated YouTube comment case study. The resolved-consensus evidence base showed that skepticism and normalization are both meaningful audience responses, while proof-demand remains comparatively rare. Most importantly, skeptical top-ranked comments were associated with substantially higher downstream skepticism in pooled analysis. Together, these results show how explainable augmented-intelligence workflows can support rigorous research on generative-AI content ecosystems.
+This paper introduces a human-in-the-loop analytics system for studying verification signals around generative-AI content and validates it through a YouTube comment case spanning 1,322 double-coded comments. The main contribution is an explainable, reproducible workflow that preserves a strict boundary between frozen validated evidence and exploratory extension. Within that framework, we demonstrate robust conformity cascades where skeptical top-ranked comments strongly predict downstream skepticism (OR = 2.55, p = 0.000114), with quality and temporal moderation but no stable niche amplification. This makes the paper strongest as a system-and-methods contribution with conservative, defensible empirical validation.
 
-## Hypotheses
+## H1 / H2 / H3 Status
 
-Use these exact formulations if you want consistency with the app:
+Use this wording consistently:
 
-1. H1: skeptical top-ranked cue
-2. H2: stronger cue when top cue is liked more
-3. H3: stronger in higher-stakes niches
+- H1: **robustly supported** and headline-worthy (OR = 2.55, p = 0.000114)
+- H2 (like count × skeptical cue interaction): **supported** (OR = 0.18, p = 0.028)
+- H3 (niche moderation): **not supported** (Beauty p = 0.908, Tech p = 0.628)
+- Temporal moderation (skeptical × time): **supported** (OR = 0.056, p = 0.006)
 
-Paper-ready versions:
+Paper-ready wording:
 
-- H1 predicts that response comments are more likely to express skepticism when the top-ranked comment in the thread is itself skeptical.
-- H2 predicts that this association becomes stronger when the top-ranked skeptical cue has higher visible endorsement.
-- H3 predicts that the association is stronger in niches where authenticity carries higher interpretive stakes.
+- H1 predicts that downstream response comments are more likely to express skepticism when the top-ranked comment is itself skeptical. **Strongly supported** (OR = 2.55, 95% CI [1.58, 4.10], p = 0.000114).
+- H2 cue-magnitude moderation is supported: higher-like skeptical cues dampen conformity (skeptical × like count OR = 0.18, p = 0.028).
+- H3 niche moderation did not replicate in the expanded validation (Beauty interaction OR = 1.06, p = 0.908; Tech interaction OR = 0.86, p = 0.628).
+- Temporal moderation is supported: conformity weakens with time (skeptical × time OR = 0.056, p = 0.006).
 
 ## Key Numbers To Reuse
 
-- resolved comments: `1,100`
-- double-coded comments: `1,100`
-- disagreement comments: `148`
+- runs in frozen evidence layer: `11, 18, 20, 22, 23, 24`
+- freeze date: `2026-04-03T19:03:58`
+- resolved comments: `1,322`
+- double-coded comments: `1,322`
+- disagreement comments: `224`
 - unresolved disagreements: `0`
-- positive on at least one core label: `114`
-- skepticism: `42`
-- proof-demand: `4`
-- normalization: `68`
-- response comments in pooled ranked-cue frame: `583`
-- videos in pooled response frame: `211`
-- skeptical top-cue videos: `6`
-- response skepticism after skeptical top cue: `30.0%`
-- response skepticism after non-skeptical top cue: `2.44%`
-- H1 delta: `+27.56` percentage points
-- top-cue skepticism odds ratio: `~8.62`
-- top-cue skepticism p-value: `~0.016`
+- disagreement rate: `16.9%`
+- any core positive: `209` (15.8%)
+- skepticism: `106` (8.0%)
+- proof-demand: `4` (0.3%)
+- normalization: `99` (7.5%)
+- skeptical top-cue videos: `17`
+- response comments in skeptical-cue threads: `161`
+- channels: `57`
+- videos (total): `374`
+
+**H1 Main Effect:**
+- H1 odds ratio: `2.55`
+- H1 95% CI: `[1.58, 4.10]`
+- H1 p-value: `0.000114`
+- H1 coefficient: `0.935` (SE = 0.242)
+
+**Niche Moderation (H3 - not supported):**
+- Beauty interaction OR: `1.063`, 95% CI `[0.381, 2.965]`, p = 0.908
+- Tech interaction OR: `0.861`, 95% CI `[0.471, 1.576]`, p = 0.628
+
+**Cue Quality Moderation (H2):**
+- Skeptical × like count OR: `0.184`, 95% CI `[0.041, 0.834]`, p = 0.028
+
+**Temporal Moderation:**
+- Skeptical × time OR: `0.056`, 95% CI `[0.007, 0.432]`, p = 0.006
+
+- current broader database: `27` runs, `205` channels, `3,463` videos, `33,467` comments
 
 ## Recommended Figure/Table Set
 
-For a conference paper, do not overload.
+Use a small, defensible set.
 
-Use:
+1. Boundary figure
+   Show: raw corpus -> screened corpus -> coded corpus -> adjudicated/resolved corpus -> frozen validated evidence -> exploratory extension.
 
-1. One system figure
-   Show workflow from scraping -> coding -> adjudication -> analytics workspace -> resolved evidence -> exploratory extension.
+2. Validation table
+   Include: double-coded comments, disagreement cases, unresolved disagreements, freeze date, and resolved evidence size.
 
-2. One descriptive table
-   Label prevalence overall and by run/niche.
+3. Systems table
+   Include rows like:
+   - broader collected corpus: `33,467` comments, assistive collection layer
+   - labeled comments in frozen runs: ~2,500, mixed human/assistive workflow
+   - frozen resolved evidence: `1,322`, human-validated main analysis layer
+   - disagreement cases: `224`, human adjudication layer
+   - unresolved disagreements: `0`, frozen state
+   - exploratory remainder: corpus outside frozen validated layer, assistive screening only
 
-3. One hypothesis table
-   Main pooled model effects, with H1 highlighted.
-
-4. Optional appendix/example table
-   A few representative positive comments.
+4. Main results table
+   Highlight supported findings:
+   - H1 main effect: OR = 2.55, p = 0.000114
+   - H2 cue quality moderation: skeptical × like count OR = 0.18, p = 0.028
+   - Temporal moderation: skeptical × time OR = 0.056, p = 0.006
+   - Niche moderation: not significant in expanded validation
 
 ## What To Leave Out
 
-To stay conference-sized, avoid:
-
-- a long app walkthrough
-- too many screenshots
-- a huge appendix inside the main text
-- too much emphasis on weak-label heuristics
-- treating exploratory extension as main evidence
-
-## How To Talk About Extension Analysis
-
-Recommended wording:
-
-Beyond the frozen validated evidence base, the system also supports exploratory automated screening of the remaining uncoded corpus. In this paper, that extension layer is used only to contextualize the broader corpus and to identify candidate examples for future follow-up, not to expand the main confirmatory evidence base.
+- broad claims about "how audiences interpret GenAI content" in general
+- long feature catalogs
+ - strong claims about stable niche differences
+- attempts to make proof-demand a major result (still only 4 comments, 0.3%)
+- language implying that automated screening expands the confirmatory evidence base
+- claims that niche moderation is stable across small-n validation
 
 ## Good Final Claim
 
-If you want one compact final claim to orient the paper, use this:
+The paper shows that a human-in-the-loop analytics system can produce a defensible validated evidence layer while retaining a broader exploratory extension layer, and that this workflow recovers robust conformity cascades with interpretable moderation by cue quality and temporal proximity in a bounded YouTube validation case.
 
-The paper shows that a human-in-the-loop analytics system can support both rigorous evidence production and broader exploratory mapping in studies of generative-AI content, and that skeptical ranked cues in YouTube comment threads are associated with materially higher downstream skepticism in a validated case-study setting.
+## Update Summary (April 3 Validation)
 
-## Submission Strategy
+**Sample update:**
+- Resolved comments: 1,292 → 1,322 (+2.3%)
+- Skeptical-cue videos: 16 → 17 (+6.3%)
+- Skepticism prevalence: 7.0% → 8.0% (+1.0pp)
 
-For conference submission, prioritize:
+**Main effect stabilization:**
+- OR: 17.73 → 2.55 (more conservative, still significant)
+- 95% CI: [10.35, 30.38] → [1.58, 4.10] (tighter, more plausible range)
+- p-value: < 0.001 → 0.000114 (still robust)
 
-1. clarity over completeness
-2. system contribution plus one clear empirical result
-3. disciplined separation of validated evidence and exploratory extension
-4. a short, sharp results section centered on H1
-
-## Best Next Move
-
-Turn this into a true draft by writing:
-
-1. final conference abstract
-2. 5-6 page main text using the section plan above
-3. one system figure
-4. one results table from the exported CSVs
+**Moderator revision:**
+- Niche moderation did not replicate (Beauty/Tech interactions not significant)
+- Cue quality moderation supported (skeptical × like count OR = 0.18)
+- Temporal moderation supported (skeptical × time OR = 0.056)
