@@ -25,16 +25,21 @@ def main():
     # Load freeze metadata
     print(f"\n📊 Loading evidence freeze: {FREEZE_PATH}")
     freeze = json.loads(FREEZE_PATH.read_text())
+    freeze_run_ids = tuple(int(x) for x in freeze.get("run_ids", []))
+    if not freeze_run_ids:
+        print("\n❌ ERROR: Evidence freeze has no run IDs.")
+        return 1
     print(f"   Generated: {freeze['generated_at']}")
     print(f"   Resolved comments: {freeze['snapshot_summary']['resolved_comments']}")
     print(f"   Skepticism positive: {freeze['snapshot_summary']['skepticism_positive']}")
-    print(f"   Run IDs: {freeze['run_ids']}")
+    print(f"   Run IDs: {list(freeze_run_ids)}")
 
     # Load resolved consensus data from database
     print(f"\n📦 Loading resolved consensus data from database...")
     conn = sqlite3.connect(DB_PATH)
 
-    query = """
+    placeholders = ",".join(["?"] * len(freeze_run_ids))
+    query = f"""
     WITH resolved_comments AS (
         SELECT
             a.comment_db_id,
@@ -71,14 +76,15 @@ def main():
     JOIN comments c ON c.id = rc.comment_db_id
     JOIN videos v ON v.id = c.video_db_id
     JOIN channels ch ON ch.id = c.channel_db_id
-    WHERE c.is_spam = 0
+    WHERE c.run_id IN ({placeholders})
+      AND c.is_spam = 0
       AND c.is_template = 0
       AND c.is_duplicate = 0
       AND c.comment_rank BETWEEN 1 AND 20
     ORDER BY v.video_id, c.comment_rank
     """
 
-    df = pd.read_sql_query(query, conn)
+    df = pd.read_sql_query(query, conn, params=freeze_run_ids)
     conn.close()
 
     print(f"   Loaded {len(df)} comments")
@@ -115,8 +121,14 @@ def main():
     print(f"\n📊 Response Frame:")
     print(f"   Total response comments (rank 2-20): {len(result.response_df)}")
     print(f"   Videos with responses: {result.response_df['video_id'].nunique()}")
-    print(f"   Skeptical top cue videos: {result.response_df['top_comment_skeptical'].sum()}")
-    print(f"   Non-skeptical top cue videos: {(1 - result.response_df['top_comment_skeptical']).sum()}")
+    skeptical_top_cue_videos = int(
+        result.response_df.loc[result.response_df["top_comment_skeptical"] == 1, "video_id"].nunique()
+    )
+    non_skeptical_top_cue_videos = int(
+        result.response_df.loc[result.response_df["top_comment_skeptical"] == 0, "video_id"].nunique()
+    )
+    print(f"   Skeptical top cue videos: {skeptical_top_cue_videos}")
+    print(f"   Non-skeptical top cue videos: {non_skeptical_top_cue_videos}")
 
     # Cross-tab
     print(f"\n📋 Crosstab (Top Skeptical → Response Skeptical):")
@@ -180,10 +192,12 @@ def main():
     summary = {
         "generated_at": timestamp,
         "freeze_date": freeze['generated_at'],
+        "freeze_run_ids": list(freeze_run_ids),
         "total_resolved_comments": freeze['snapshot_summary']['resolved_comments'],
         "skepticism_positive": freeze['snapshot_summary']['skepticism_positive'],
         "response_frame_n": len(result.response_df),
-        "skeptical_top_cue_videos": int(result.response_df['top_comment_skeptical'].sum()),
+        "skeptical_top_cue_videos": skeptical_top_cue_videos,
+        "non_skeptical_top_cue_videos": non_skeptical_top_cue_videos,
         "h1_odds_ratio": float(or_val) if not h1_row.empty else None,
         "h1_ci_95_low": float(ci_low) if not h1_row.empty else None,
         "h1_ci_95_high": float(ci_high) if not h1_row.empty else None,

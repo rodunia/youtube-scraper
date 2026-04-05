@@ -18,6 +18,18 @@ from datetime import datetime
 DB_PATH = "data/youtube_comments.db"
 
 
+def _format_metric(value):
+    if value is None or pd.isna(value):
+        return "n/a"
+    return f"{float(value):.3f}"
+
+
+def _to_json_float(value):
+    if value is None or pd.isna(value):
+        return None
+    return float(value)
+
+
 def krippendorff_alpha(data, level_of_measurement='nominal'):
     """
     Calculate Krippendorff's Alpha for inter-rater reliability.
@@ -114,6 +126,51 @@ def get_double_coded_data(conn):
     return df
 
 
+def get_disagreement_status(conn):
+    """Fetch disagreement and adjudication status across double-coded comments."""
+    query = """
+    WITH per_comment AS (
+        SELECT
+            a.comment_db_id,
+            COUNT(DISTINCT a.annotator_id) AS coder_count,
+            MAX(a.is_adjudicated) AS has_adjudicated,
+            MIN(COALESCE(a.skepticism_fake_callout, 0)) AS min_s,
+            MAX(COALESCE(a.skepticism_fake_callout, 0)) AS max_s,
+            MIN(COALESCE(a.proof_demand, 0)) AS min_p,
+            MAX(COALESCE(a.proof_demand, 0)) AS max_p,
+            MIN(COALESCE(a.normalization_defense, 0)) AS min_n,
+            MAX(COALESCE(a.normalization_defense, 0)) AS max_n
+        FROM annotations a
+        GROUP BY a.comment_db_id
+    )
+    SELECT
+        SUM(CASE WHEN coder_count >= 2 THEN 1 ELSE 0 END) AS total_double_coded,
+        SUM(CASE WHEN coder_count >= 2 AND has_adjudicated = 1 THEN 1 ELSE 0 END) AS adjudicated_comments,
+        SUM(
+            CASE
+                WHEN coder_count >= 2 AND (min_s <> max_s OR min_p <> max_p OR min_n <> max_n) THEN 1
+                ELSE 0
+            END
+        ) AS disagreement_comments,
+        SUM(
+            CASE
+                WHEN coder_count >= 2
+                     AND has_adjudicated = 0
+                     AND (min_s <> max_s OR min_p <> max_p OR min_n <> max_n) THEN 1
+                ELSE 0
+            END
+        ) AS unresolved_disagreements
+    FROM per_comment
+    """
+    row = conn.execute(query).fetchone()
+    return {
+        "total_double_coded": int(row[0] or 0),
+        "adjudicated_comments": int(row[1] or 0),
+        "disagreement_comments": int(row[2] or 0),
+        "unresolved_disagreements": int(row[3] or 0),
+    }
+
+
 def calculate_agreement_stats(labels_1, labels_2, label_name):
     """Calculate agreement statistics for a single label"""
 
@@ -156,6 +213,10 @@ def main():
     print("Fetching double-coded annotations...")
     df = get_double_coded_data(conn)
     print(f"✓ Found {len(df):,} double-coded comment pairs\n")
+    if df.empty:
+        print("❌ No non-adjudicated double-coded pairs available for IRR.")
+        conn.close()
+        return
 
     # Calculate IRR for each label
     results = []
@@ -182,7 +243,7 @@ def main():
     for r in results:
         print(f"{r['label'].capitalize():<20} {r['n_pairs']:<10} "
               f"{r['agreement']:.3f} ({r['agreement']*100:.1f}%)  "
-              f"{r['cohen_kappa']:.3f}      {r['krippendorff_alpha']:.3f}")
+              f"{_format_metric(r['cohen_kappa']):<10} {_format_metric(r['krippendorff_alpha'])}")
 
     print()
     print("=" * 60)
@@ -230,29 +291,18 @@ def main():
     print("=" * 60)
     print()
 
-    # Check adjudication status
-    cursor = conn.cursor()
-    cursor.execute("""
-        SELECT
-            COUNT(DISTINCT comment_db_id) as total_double_coded,
-            SUM(CASE WHEN has_adjudicated = 1 THEN 1 ELSE 0 END) as adjudicated
-        FROM (
-            SELECT
-                a.comment_db_id,
-                MAX(a.is_adjudicated) as has_adjudicated
-            FROM annotations a
-            GROUP BY a.comment_db_id
-            HAVING COUNT(DISTINCT annotator_id) >= 2
-        )
-    """)
-
-    row = cursor.fetchone()
-    total_double = row[0]
-    adjudicated = row[1]
+    status = get_disagreement_status(conn)
+    total_double = status["total_double_coded"]
+    adjudicated = status["adjudicated_comments"]
+    disagreement_comments = status["disagreement_comments"]
+    unresolved_disagreements = status["unresolved_disagreements"]
+    non_adjudicated = max(0, total_double - adjudicated)
 
     print(f"Total double-coded comments: {total_double:,}")
     print(f"Comments with adjudication: {adjudicated:,}")
-    print(f"Unresolved disagreements: {total_double - adjudicated:,}")
+    print(f"Non-adjudicated comments: {non_adjudicated:,}")
+    print(f"Disagreement comments (core labels): {disagreement_comments:,}")
+    print(f"Unresolved disagreements (core labels): {unresolved_disagreements:,}")
     print()
 
     # Calculate overall disagreement rate
@@ -277,8 +327,8 @@ def main():
                 'label': r['label'],
                 'n_pairs': int(r['n_pairs']),
                 'percent_agreement': float(r['agreement']),
-                'cohen_kappa': float(r['cohen_kappa']),
-                'krippendorff_alpha': float(r['krippendorff_alpha']),
+                'cohen_kappa': _to_json_float(r['cohen_kappa']),
+                'krippendorff_alpha': _to_json_float(r['krippendorff_alpha']),
                 'confusion_matrix': r['confusion_matrix'].tolist()
             }
             for r in results
@@ -287,8 +337,10 @@ def main():
         'overall_disagreement': float(1 - overall_agreement),
         'adjudication_status': {
             'total_double_coded': int(total_double),
-            'adjudicated': int(adjudicated),
-            'unresolved': int(total_double - adjudicated)
+            'adjudicated_comments': int(adjudicated),
+            'non_adjudicated_comments': int(non_adjudicated),
+            'disagreement_comments_core_labels': int(disagreement_comments),
+            'unresolved_disagreements_core_labels': int(unresolved_disagreements),
         }
     }
 
