@@ -133,6 +133,14 @@ Optional agreement sentence if space allows:
 
 At the label level, raw disagreement before adjudication was concentrated in skepticism and normalization, while proof-demand disagreement remained rare, consistent with the scarcity of proof-demand in the corpus (0.4% prevalence).
 
+Suggested reliability paragraph:
+
+Inter-rater reliability was assessed on the subset of 242 double-coded comment pairs for which both original coder records were still available prior to adjudication. On this subset, agreement was perfect for the skepticism label (Cohen's kappa = 1.00; Krippendorff's alpha = 1.00). Proof-demand and normalization also showed 100% agreement, with Krippendorff's alpha = 1.00 in both cases, while Cohen's kappa was undefined because no positive cases appeared in that subset. Reliability cannot be computed on the full validated dataset because the current adjudication workflow does not preserve pre-adjudication label histories for all adjudicated rows. Accordingly, the paper should report the subset IRR transparently and treat full-dataset consensus as an adjudication outcome rather than as a full-dataset reliability estimate.
+
+Short metric line to reuse:
+
+- IRR subset: `n = 242` double-coded pairs; skepticism `kappa = 1.00`, `alpha = 1.00`; proof-demand `alpha = 1.00` (kappa undefined); normalization `alpha = 1.00` (kappa undefined)
+
 ### 4. YouTube Validation Case
 
 Goal:
@@ -143,6 +151,28 @@ Goal:
 Suggested paragraph:
 
 We demonstrate the system through a YouTube comment case spanning runs 11, 18, 20, 22, 23, and 24. The broader database currently contains 27 runs, 205 channels, 3,463 videos, and 33,467 comments, but the paper’s main claims rely only on the frozen resolved-consensus subset. This separation is intentional. The YouTube case is used to show that the workflow can move from raw collection to validated analysis while preserving a clear distinction between confirmatory evidence and exploratory extension.
+
+### 4.1 Model Specification
+
+Suggested one-page subsection:
+
+The main conformity analysis was estimated on response comments ranked 2-20 within each video thread. For every video, comments were first ordered by descending like count, with earlier timestamps used as the tie-breaker. The highest-ranked comment was treated as the visible cue, and the remaining ranked comments in positions 2-20 were treated as downstream responses. The dependent variable was a binary skepticism label on each response comment. The primary predictor was whether the top-ranked cue comment in that thread was itself skeptical. To test contextual moderation, the model included channel niche, the z-standardized like count of the top-ranked cue, the z-standardized number of hours elapsed between the top-ranked cue and each response comment, and interactions between skeptical cue status and each of those moderators.
+
+Formally, the fixed-effects portion of the model can be written as:
+
+`logit(P(response_skepticism_ij = 1)) = beta_0 + beta_1 skeptical_top_cue_j + beta_2 niche_j + beta_3 skeptical_top_cue_j x niche_j + beta_4 top_like_z_j + beta_5 skeptical_top_cue_j x top_like_z_j + beta_6 hours_since_top_z_ij + beta_7 skeptical_top_cue_j x hours_since_top_z_ij`
+
+where `i` indexes response comments and `j` indexes videos. Lifestyle served as the reference niche when available. Because responses were nested within both channels and videos, the model was estimated as a mixed-effects logistic regression with random intercepts for channel and video. In implementation, the paper’s analysis used a binomial Bayesian mixed-effects model with variance components for `channel_id` and `video_id`, and fixed-effect uncertainty was summarized through approximate z-statistics, two-sided p-values, and 95% confidence intervals transformed into odds ratios. The headline H1 estimate therefore represents the multiplicative change in the odds that a downstream response comment is skeptical when the top-ranked cue is skeptical, holding the included moderators constant. H2 was evaluated through the skeptical-cue by top-like-count interaction, H3 through skeptical-cue by niche interactions, and temporal decay through the skeptical-cue by elapsed-time interaction.
+
+Short methods version:
+
+- unit of analysis: response comments ranked `2-20`
+- cue definition: rank-1 comment within each video, sorted by like count and timestamp
+- outcome: binary skepticism label on the response comment
+- model family: mixed-effects logistic regression
+- random intercepts: `channel_id`, `video_id`
+- moderators: `channel_niche`, `top_comment_like_count_z`, `hours_since_top_comment_z`
+- key interactions: skeptical cue x niche, skeptical cue x like count, skeptical cue x elapsed time
 
 ### 5. Results
 
@@ -186,7 +216,7 @@ The study relies on public platform comments, but the workflow is designed to mi
 
 Suggested limitations paragraph:
 
-The paper should be read as a validated conference-scale case rather than as a population estimate of audience behavior on YouTube. The frozen evidence base is a curated human-labeled subset spanning 1,322 comments across 17 skeptical-cue threads, with proof-demand remaining too rare (0.3%) for independent analysis. Inter-rater reliability is computable only on the 242 non-adjudicated comment pairs because adjudication overwrites original labels in the current workflow. These constraints are acceptable for a systems paper with robust empirical validation, but the findings should be interpreted as demonstrating the workflow's analytical capacity rather than as definitive platform-wide behavioral claims.
+The paper should be read as a validated conference-scale case rather than as a population estimate of audience behavior on YouTube. The frozen evidence base is a curated human-labeled subset spanning 1,322 comments across 17 skeptical-cue threads, with proof-demand remaining too rare (0.3%) for independent analysis. Inter-rater reliability is computable only on the 242 double-coded comment pairs for which pre-adjudication coder records were preserved; the current workflow does not retain full label history for all adjudicated rows. These constraints are acceptable for a systems paper with robust empirical validation, but the findings should be interpreted as demonstrating the workflow's analytical capacity rather than as definitive platform-wide behavioral claims.
 
 ### 7. Conclusion
 

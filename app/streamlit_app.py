@@ -3760,6 +3760,9 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
         "Run lab",
         "Inspect prior runs, preserve reusable study profiles, and launch new scrape jobs from a cleaner planning surface.",
     )
+    st.session_state.setdefault("runlab_show_uncoded_extension", False)
+    st.session_state.setdefault("runlab_show_final_analysis_pack", False)
+    st.session_state.setdefault("runlab_extension_include_flagged", False)
     feedback = st.session_state.pop("runlab_feedback", None)
     if isinstance(feedback, dict):
         level = _safe_text(feedback.get("level")) or "success"
@@ -4229,18 +4232,21 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             "Assistive / exploratory layer",
             "This step is for contextual mapping and candidate discovery only. It does not expand the frozen validated evidence base.",
         )
-        show_uncoded_extension = st.checkbox(
-            "Build uncoded extension analysis",
-            value=False,
-            key="runlab_show_uncoded_extension",
-            help="Runs auto-analysis only on comments with no saved annotations in the selected runs.",
-        )
-        extension_include_flagged = st.checkbox(
-            "Include flagged rows in uncoded extension",
-            value=False,
-            key="runlab_extension_include_flagged",
-        )
-        if show_uncoded_extension and evidence_run_ids:
+        with st.form("runlab_uncoded_extension_form"):
+            extension_include_flagged = st.checkbox(
+                "Include filtered-out rows",
+                value=bool(st.session_state.get("runlab_extension_include_flagged", False)),
+                key="runlab_extension_include_flagged",
+                help="Include spam/template/duplicate rows in this exploratory pool.",
+            )
+            prepare_uncoded_extension = st.form_submit_button("Prepare uncoded extension", use_container_width=True)
+        if prepare_uncoded_extension:
+            st.session_state["runlab_show_uncoded_extension"] = True
+        st.caption("Exploratory results refresh when you press `Prepare uncoded extension`.")
+        if st.session_state.get("runlab_show_uncoded_extension") and evidence_run_ids:
+            if st.button("Hide uncoded extension", key="runlab_hide_uncoded_extension", use_container_width=True):
+                st.session_state["runlab_show_uncoded_extension"] = False
+                st.rerun()
             extension_frames = uncoded_extension_frames(conn, evidence_run_ids, extension_include_flagged)
             extension_summary = extension_frames["summary"]
             if extension_summary.empty:
@@ -4314,13 +4320,19 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             "Validated evidence exports",
             "The main tables and model outputs here are intended to be generated from the selected frozen evidence runs.",
         )
-        show_final_pack = st.checkbox(
-            "Build final analysis pack",
-            value=False,
-            key="runlab_show_final_analysis_pack",
-            help="Generates the resolved-consensus tables, model outputs, and appendix exports for the selected evidence runs.",
-        )
-        if show_final_pack and evidence_run_ids:
+        with st.form("runlab_final_pack_form"):
+            prepare_final_pack = st.form_submit_button(
+                "Prepare paper export files",
+                use_container_width=True,
+                help="Generates the resolved-consensus tables, model outputs, and appendix exports for the selected evidence runs.",
+            )
+        if prepare_final_pack:
+            st.session_state["runlab_show_final_analysis_pack"] = True
+        st.caption("Paper exports refresh when you press `Prepare paper export files`.")
+        if st.session_state.get("runlab_show_final_analysis_pack") and evidence_run_ids:
+            if st.button("Hide paper exports", key="runlab_hide_final_pack", use_container_width=True):
+                st.session_state["runlab_show_final_analysis_pack"] = False
+                st.rerun()
             final_pack = build_final_analysis_pack(conn, evidence_run_ids, annotator_id)
             pack_bundle = final_pack["bundle"]
             frames = final_pack["conformity_frames"]
@@ -4673,12 +4685,13 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             st.error(f"Run failed: {exc}")
 
 
-def scraped_data_tab(conn: sqlite3.Connection) -> None:
-    render_section_intro(
-        "Dataset view",
-        "Scraped data",
-        "Inspect one run at a time, check collection quality, and move from top-line counts into raw comment previews.",
-    )
+def scraped_data_tab(conn: sqlite3.Connection, show_intro: bool = True) -> None:
+    if show_intro:
+        render_section_intro(
+            "Dataset view",
+            "Scraped data",
+            "Inspect one run at a time, check collection quality, and move from top-line counts into raw comment previews.",
+        )
     runs = run_df(conn)
     if runs.empty:
         st.info("No runs found.")
@@ -4737,12 +4750,13 @@ def scraped_data_tab(conn: sqlite3.Connection) -> None:
         st.dataframe(preview, use_container_width=True, height=420)
 
 
-def exploration_tab(conn: sqlite3.Connection) -> None:
-    render_section_intro(
-        "Exploration desk",
-        "Data exploration",
-        "Slice the raw comment pool before formal coding or modeling. This tab is for pattern hunting, not locked-in evidence.",
-    )
+def exploration_tab(conn: sqlite3.Connection, show_intro: bool = True) -> None:
+    if show_intro:
+        render_section_intro(
+            "Exploration desk",
+            "Data exploration",
+            "Slice the raw comment pool before formal coding or modeling. This tab is for pattern hunting, not locked-in evidence.",
+        )
     runs = run_df(conn)
     run_choices = [None] + runs["id"].tolist() if not runs.empty else [None]
     default_index = 1 if len(run_choices) > 1 else 0
@@ -4790,9 +4804,10 @@ def exploration_tab(conn: sqlite3.Connection) -> None:
     )
 
 
-def disclosure_search_tab(conn: sqlite3.Connection) -> None:
-    st.subheader("AI Disclosure Search")
-    st.caption("Exploratory supporting view for AI/disclosure language in titles, descriptions, and comments.")
+def disclosure_search_tab(conn: sqlite3.Connection, show_intro: bool = True) -> None:
+    if show_intro:
+        st.subheader("AI Disclosure Search")
+        st.caption("Exploratory supporting view for AI/disclosure language in titles, descriptions, and comments.")
     runs = run_df(conn)
     run_choices = [None] + runs["id"].tolist() if not runs.empty else [None]
     default_index = 1 if len(run_choices) > 1 else 0
@@ -4927,191 +4942,25 @@ def disclosure_search_tab(conn: sqlite3.Connection) -> None:
             )
 
 
-def conformity_cascade_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
-    render_section_intro(
-        "Hypothesis workspace",
-        "Conformity cascade",
-        "This is the ranked-cue analysis desk. Use it to read whether skeptical top comments appear to shape downstream response skepticism.",
-    )
+def _render_hypothesis_review_content(
+    conn: sqlite3.Connection,
+    annotator_id: str,
+    selected_run: int,
+    label_source: str,
+    *,
+    show_export: bool = True,
+) -> None:
     runs = run_df(conn)
     if runs.empty:
         st.info("No runs available.")
         return
 
-    c1, c2, c3 = st.columns([2, 1, 2])
-    selected_run = c1.selectbox(
-        "Run ID",
-        options=runs["id"].tolist(),
-        index=0,
-        format_func=lambda x: f"Run {x}",
-        key="cascade_run_id",
-    )
-    include_flagged = c2.checkbox(
-        "Include spam/template/duplicate rows",
-        value=False,
-        help="Leave off for the clean proxy analysis by default.",
-        key="cascade_include_flagged",
-    )
-    label_source = c3.selectbox(
-        "Skepticism label source",
-        options=[key for key, _label in LABEL_SOURCE_OPTIONS],
-        index=0,
-        format_func=_label_source_label,
-        key="cascade_label_source",
-    )
-    scope_label, scope_body = _label_source_scope(label_source)
-    render_evidence_boundary_banner(scope_label, scope_body)
-
-    frames = conformity_frames(conn, selected_run, include_flagged, label_source, annotator_id)
-    if frames["error"]:
-        st.warning(str(frames["error"]))
-        return
-
-    summary = frames["summary_df"]
-    response_df = frames["response_df"]
-    effects_df = frames["effects_df"]
-    effects_display = _display_effects_df(effects_df)
-    icc_df = frames["icc_df"]
-    ranked_df = frames["ranked_df"]
-    niche_df = frames["niche_df"]
-    label_meta = frames.get("label_meta", {})
-
-    row = summary.iloc[0]
-    render_note_banner(
-        "Label source",
-        f"Using {_safe_text(row.get('label_source')) or _safe_text(label_meta.get('label_source_label'))} with skepticism labels on {int(label_meta.get('skepticism_labeled_comments', 0) or 0)} comments in this run.",
-    )
-    render_metric_tiles(
-        [
-            {"label": "Videos ranked", "value": int(row["videos_ranked"]), "note": "ranked top-cue videos", "tone": "accent"},
-            {"label": "Response comments", "value": int(row["response_comments"]), "note": "ranks 2-20", "tone": "sage"},
-            {"label": "Skeptical top cues", "value": int(row["skeptical_top_comment_videos"]), "note": "videos with skeptical top rank", "tone": "gold"},
-            {"label": "H1 delta", "value": _format_proxy_value(row["h1_delta_proxy"]), "note": "skeptical minus non-skeptical cue", "tone": "accent"},
-            {"label": "Labeled comments", "value": int(row.get("labeled_comments", 0) or 0), "note": "available for this source", "tone": "sage"},
-        ]
-    )
-    render_hypothesis_cards(
-        [
-            {
-                "title": "H1 skeptical cue effect",
-                "metric": _format_proxy_value(row["h1_delta_proxy"]),
-                "status": "supported" if pd.notna(row["h1_delta_proxy"]) and float(row["h1_delta_proxy"]) > 0 else "not_supported_or_inconclusive",
-                "note": "Positive values mean more response skepticism after skeptical top-ranked cues.",
-            },
-            {
-                "title": "H2 cue magnitude moderation",
-                "metric": _format_proxy_value(row["h2_proxy_corr_within_skeptical_cue_videos"]),
-                "status": "supported" if pd.notna(row["h2_proxy_corr_within_skeptical_cue_videos"]) and float(row["h2_proxy_corr_within_skeptical_cue_videos"]) > 0 else "inconclusive",
-                "note": "This checks whether stronger top-cue popularity aligns with more skeptical follow-up.",
-            },
-        ]
-    )
-
-    left, right = st.columns(2)
-    with left:
-        st.markdown("**Cue Summary**")
-        cue_summary = pd.DataFrame(
-            [
-                {
-                    "metric": "Response skepticism after skeptical top cue",
-                    "value": _format_proxy_value(row["response_skepticism_after_skeptical_cue"]),
-                },
-                {
-                    "metric": "Response skepticism after non-skeptical top cue",
-                    "value": _format_proxy_value(row["response_skepticism_after_non_skeptical_cue"]),
-                },
-                {
-                    "metric": "H2 proxy correlation within skeptical-cue videos",
-                    "value": _format_proxy_value(row["h2_proxy_corr_within_skeptical_cue_videos"]),
-                },
-            ]
-        )
-        st.dataframe(cue_summary, use_container_width=True, height=180)
-    with right:
-        st.markdown("**Niche Snapshot**")
-        st.dataframe(niche_df, use_container_width=True, height=180)
-
-    mid_left, mid_right = st.columns(2)
-    with mid_left:
-        st.markdown("**Model Effects (proxy labels)**")
-        st.dataframe(effects_display, use_container_width=True, height=320)
-        st.download_button(
-            "Download model effects CSV",
-            data=effects_df.to_csv(index=False).encode("utf-8"),
-            file_name=f"conformity_effects_run_{selected_run}.csv",
-            mime="text/csv",
-            use_container_width=True,
-        )
-    with mid_right:
-        st.markdown("**ICC / Variance Breakdown**")
-        st.dataframe(icc_df, use_container_width=True, height=220)
-        with st.expander("Model summary"):
-            st.text(str(frames["model_summary"]))
-
-    st.markdown("**Response Comments (ranks 2-20)**")
-    resp_cols = [
-        "channel_niche",
-        "channel_id",
-        "video_id",
-        "rank",
-        "is_skeptical",
-        "top_comment_skeptical",
-        "top_comment_like_count",
-        "top_comment_like_count_z",
-        "hours_since_top_comment",
-        "comment_text",
-    ]
-    st.dataframe(response_df[resp_cols], use_container_width=True, height=360)
-    d1, d2 = st.columns(2)
-    d1.download_button(
-        "Download ranked comments CSV",
-        data=ranked_df.to_csv(index=False).encode("utf-8"),
-        file_name=f"conformity_ranked_run_{selected_run}.csv",
-        mime="text/csv",
-        use_container_width=True,
-    )
-    d2.download_button(
-        "Download response frame CSV",
-        data=response_df.to_csv(index=False).encode("utf-8"),
-        file_name=f"conformity_response_run_{selected_run}.csv",
-        mime="text/csv",
-        use_container_width=True,
-    )
-
-
-def pilot_analysis_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
-    render_section_intro(
-        "Interpretation layer",
-        "Hypothesis readout",
-        "Translate the underlying cascade outputs into a thesis-ready read: what appears supported, what stays weak, and where the evidence base is still thin.",
-    )
-    runs = run_df(conn)
-    if runs.empty:
-        st.info("No runs available.")
-        return
-
-    selected_run = st.selectbox(
-        "Run ID",
-        options=runs["id"].tolist(),
-        index=0,
-        format_func=lambda x: f"Run {x}",
-        key="pilot_analysis_run_id",
-    )
-    label_source = st.selectbox(
-        "Comment label source",
-        options=[key for key, _label in LABEL_SOURCE_OPTIONS],
-        index=0,
-        format_func=_label_source_label,
-        key="pilot_label_source",
-    )
-    scope_label, scope_body = _label_source_scope(label_source)
-    render_evidence_boundary_banner(scope_label, scope_body)
     counts = run_counts(conn, selected_run)
     run_row = runs[runs["id"] == selected_run].iloc[0]
 
     comments = comments_df(conn, selected_run)
     if comments.empty:
-        st.info("Not enough data for pilot analysis.")
+        st.info("Not enough data for hypothesis review.")
         return
 
     comments = comments[
@@ -5296,20 +5145,227 @@ def pilot_analysis_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
     with st.expander("Hypothesis audit table"):
         st.dataframe(pd.DataFrame(hyp_rows), use_container_width=True, height=220)
 
-    export_df = response_df.copy()
-    st.download_button(
-        "Download hypothesis response CSV",
-        data=export_df.to_csv(index=False).encode("utf-8"),
-        file_name=f"hypothesis_response_run_{selected_run}.csv",
+    if show_export:
+        export_df = response_df.copy()
+        st.download_button(
+            "Download hypothesis response CSV",
+            data=export_df.to_csv(index=False).encode("utf-8"),
+            file_name=f"hypothesis_response_run_{selected_run}.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+
+
+def conformity_cascade_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
+    render_section_intro(
+        "Hypothesis workspace",
+        "Main analysis",
+        "This is the ranked-cue analysis desk. Use it to read whether skeptical top comments appear to shape downstream response skepticism.",
+    )
+    runs = run_df(conn)
+    if runs.empty:
+        st.info("No runs available.")
+        return
+
+    with st.form("cascade_controls_form"):
+        c1, c2, c3 = st.columns([2, 1, 2])
+        selected_run = c1.selectbox(
+            "Run ID",
+            options=runs["id"].tolist(),
+            index=0,
+            format_func=lambda x: f"Run {x}",
+            key="cascade_run_id",
+        )
+        include_flagged = c2.checkbox(
+            "Include filtered-out rows",
+            value=False,
+            help="Leave off for the clean proxy analysis by default.",
+            key="cascade_include_flagged",
+        )
+        label_source = c3.selectbox(
+            "Evidence source",
+            options=[key for key, _label in LABEL_SOURCE_OPTIONS],
+            index=0,
+            format_func=_label_source_label,
+            key="cascade_label_source",
+        )
+        st.form_submit_button("Run analysis", use_container_width=True)
+    st.caption("Results refresh when you press `Run analysis`.")
+    scope_label, scope_body = _label_source_scope(label_source)
+    render_evidence_boundary_banner(scope_label, scope_body)
+
+    frames = conformity_frames(conn, selected_run, include_flagged, label_source, annotator_id)
+    if frames["error"]:
+        st.warning(str(frames["error"]))
+        return
+
+    summary = frames["summary_df"]
+    response_df = frames["response_df"]
+    effects_df = frames["effects_df"]
+    effects_display = _display_effects_df(effects_df)
+    icc_df = frames["icc_df"]
+    ranked_df = frames["ranked_df"]
+    niche_df = frames["niche_df"]
+    label_meta = frames.get("label_meta", {})
+
+    row = summary.iloc[0]
+    render_note_banner(
+        "Label source",
+        f"Using {_safe_text(row.get('label_source')) or _safe_text(label_meta.get('label_source_label'))} with skepticism labels on {int(label_meta.get('skepticism_labeled_comments', 0) or 0)} comments in this run.",
+    )
+    render_metric_tiles(
+        [
+            {"label": "Videos ranked", "value": int(row["videos_ranked"]), "note": "ranked top-cue videos", "tone": "accent"},
+            {"label": "Response comments", "value": int(row["response_comments"]), "note": "ranks 2-20", "tone": "sage"},
+            {"label": "Skeptical top cues", "value": int(row["skeptical_top_comment_videos"]), "note": "videos with skeptical top rank", "tone": "gold"},
+            {"label": "H1 delta", "value": _format_proxy_value(row["h1_delta_proxy"]), "note": "skeptical minus non-skeptical cue", "tone": "accent"},
+            {"label": "Labeled comments", "value": int(row.get("labeled_comments", 0) or 0), "note": "available for this source", "tone": "sage"},
+        ]
+    )
+    render_hypothesis_cards(
+        [
+            {
+                "title": "H1 skeptical cue effect",
+                "metric": _format_proxy_value(row["h1_delta_proxy"]),
+                "status": "supported" if pd.notna(row["h1_delta_proxy"]) and float(row["h1_delta_proxy"]) > 0 else "not_supported_or_inconclusive",
+                "note": "Positive values mean more response skepticism after skeptical top-ranked cues.",
+            },
+            {
+                "title": "H2 cue magnitude moderation",
+                "metric": _format_proxy_value(row["h2_proxy_corr_within_skeptical_cue_videos"]),
+                "status": "supported" if pd.notna(row["h2_proxy_corr_within_skeptical_cue_videos"]) and float(row["h2_proxy_corr_within_skeptical_cue_videos"]) > 0 else "inconclusive",
+                "note": "This checks whether stronger top-cue popularity aligns with more skeptical follow-up.",
+            },
+        ]
+    )
+
+    left, right = st.columns(2)
+    with left:
+        st.markdown("**Cue Summary**")
+        cue_summary = pd.DataFrame(
+            [
+                {
+                    "metric": "Response skepticism after skeptical top cue",
+                    "value": _format_proxy_value(row["response_skepticism_after_skeptical_cue"]),
+                },
+                {
+                    "metric": "Response skepticism after non-skeptical top cue",
+                    "value": _format_proxy_value(row["response_skepticism_after_non_skeptical_cue"]),
+                },
+                {
+                    "metric": "H2 proxy correlation within skeptical-cue videos",
+                    "value": _format_proxy_value(row["h2_proxy_corr_within_skeptical_cue_videos"]),
+                },
+            ]
+        )
+        st.dataframe(cue_summary, use_container_width=True, height=180)
+    with right:
+        st.markdown("**Niche Snapshot**")
+        st.dataframe(niche_df, use_container_width=True, height=180)
+
+    mid_left, mid_right = st.columns(2)
+    with mid_left:
+        st.markdown("**Model Results**")
+        st.dataframe(effects_display, use_container_width=True, height=320)
+        st.download_button(
+            "Download model effects CSV",
+            data=effects_df.to_csv(index=False).encode("utf-8"),
+            file_name=f"conformity_effects_run_{selected_run}.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+    with mid_right:
+        st.markdown("**ICC / Variance Breakdown**")
+        st.dataframe(icc_df, use_container_width=True, height=220)
+        with st.expander("Model details"):
+            st.text(str(frames["model_summary"]))
+
+    with st.expander("Detailed response frame", expanded=False):
+        st.markdown("**Response Comments (ranks 2-20)**")
+        resp_cols = [
+            "channel_niche",
+            "channel_id",
+            "video_id",
+            "rank",
+            "is_skeptical",
+            "top_comment_skeptical",
+            "top_comment_like_count",
+            "top_comment_like_count_z",
+            "hours_since_top_comment",
+            "comment_text",
+        ]
+        st.dataframe(response_df[resp_cols], use_container_width=True, height=360)
+    d1, d2 = st.columns(2)
+    d1.download_button(
+        "Download ranked comments CSV",
+        data=ranked_df.to_csv(index=False).encode("utf-8"),
+        file_name=f"conformity_ranked_run_{selected_run}.csv",
         mime="text/csv",
         use_container_width=True,
+    )
+    d2.download_button(
+        "Download response frame CSV",
+        data=response_df.to_csv(index=False).encode("utf-8"),
+        file_name=f"conformity_response_run_{selected_run}.csv",
+        mime="text/csv",
+        use_container_width=True,
+    )
+    with st.expander("Hypothesis review", expanded=False):
+        st.caption("This review uses the same run and evidence source as the main analysis above.")
+        _render_hypothesis_review_content(
+            conn,
+            annotator_id,
+            selected_run,
+            label_source,
+            show_export=True,
+        )
+
+
+def pilot_analysis_tab(conn: sqlite3.Connection, annotator_id: str, show_intro: bool = True) -> None:
+    if show_intro:
+        render_section_intro(
+            "Interpretation layer",
+            "Hypothesis review",
+            "Translate the underlying cascade outputs into a thesis-ready read: what appears supported, what stays weak, and where the evidence base is still thin.",
+        )
+    runs = run_df(conn)
+    if runs.empty:
+        st.info("No runs available.")
+        return
+
+    with st.form("pilot_analysis_controls_form"):
+        p1, p2 = st.columns(2)
+        selected_run = p1.selectbox(
+            "Run ID",
+            options=runs["id"].tolist(),
+            index=0,
+            format_func=lambda x: f"Run {x}",
+            key="pilot_analysis_run_id",
+        )
+        label_source = p2.selectbox(
+            "Evidence source",
+            options=[key for key, _label in LABEL_SOURCE_OPTIONS],
+            index=0,
+            format_func=_label_source_label,
+            key="pilot_label_source",
+        )
+        st.form_submit_button("Refresh review", use_container_width=True)
+    st.caption("Results refresh when you press `Refresh review`.")
+    scope_label, scope_body = _label_source_scope(label_source)
+    render_evidence_boundary_banner(scope_label, scope_body)
+    _render_hypothesis_review_content(
+        conn,
+        annotator_id,
+        selected_run,
+        label_source,
+        show_export=True,
     )
 
 
 def combined_hypotheses_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
     render_section_intro(
         "Pooled evidence",
-        "Combined hypotheses",
+        "Cross-run analysis",
         "Pool multiple runs into one evidence view so the broader pattern is visible without hopping batch by batch.",
     )
     runs = run_df(conn)
@@ -5320,26 +5376,29 @@ def combined_hypotheses_tab(conn: sqlite3.Connection, annotator_id: str) -> None
     run_options = runs["id"].tolist()
     resolved_defaults = list(resolved_consensus_run_ids(conn))
     default_runs = resolved_defaults if resolved_defaults else (run_options[:2] if len(run_options) >= 2 else run_options)
-    c1, c2, c3 = st.columns([3, 1, 2])
-    selected_runs = c1.multiselect(
-        "Runs to combine",
-        options=run_options,
-        default=default_runs,
-        format_func=lambda x: f"Run {x}",
-        key="combined_hypothesis_runs",
-    )
-    include_flagged = c2.checkbox(
-        "Include flagged",
-        value=False,
-        key="combined_hypothesis_include_flagged",
-    )
-    label_source = c3.selectbox(
-        "Comment label source",
-        options=[key for key, _label in LABEL_SOURCE_OPTIONS],
-        index=0,
-        format_func=_label_source_label,
-        key="combined_hypothesis_label_source",
-    )
+    with st.form("combined_hypothesis_controls_form"):
+        c1, c2, c3 = st.columns([3, 1, 2])
+        selected_runs = c1.multiselect(
+            "Runs to combine",
+            options=run_options,
+            default=default_runs,
+            format_func=lambda x: f"Run {x}",
+            key="combined_hypothesis_runs",
+        )
+        include_flagged = c2.checkbox(
+            "Include filtered-out rows",
+            value=False,
+            key="combined_hypothesis_include_flagged",
+        )
+        label_source = c3.selectbox(
+            "Evidence source",
+            options=[key for key, _label in LABEL_SOURCE_OPTIONS],
+            index=0,
+            format_func=_label_source_label,
+            key="combined_hypothesis_label_source",
+        )
+        st.form_submit_button("Run pooled analysis", use_container_width=True)
+    st.caption("Results refresh when you press `Run pooled analysis`.")
     scope_label, scope_body = _label_source_scope(label_source)
     render_evidence_boundary_banner(scope_label, scope_body)
 
@@ -5424,29 +5483,30 @@ def combined_hypotheses_tab(conn: sqlite3.Connection, annotator_id: str) -> None
 
     mid_left, mid_right = st.columns(2)
     with mid_left:
-        st.markdown("**Combined Model Effects**")
+        st.markdown("**Cross-Run Model Results**")
         st.dataframe(_display_effects_df(frames["effects_df"]), use_container_width=True, height=320)
     with mid_right:
         st.markdown("**ICC / Variance Breakdown**")
         st.dataframe(frames["icc_df"], use_container_width=True, height=220)
-        with st.expander("Model summary"):
+        with st.expander("Model details"):
             st.text(str(frames["model_summary"]))
 
-    st.markdown("**Combined Response Frame (ranks 2-20)**")
-    response_cols = [
-        "run_id",
-        "channel_niche",
-        "channel_id",
-        "video_id",
-        "rank",
-        "is_skeptical",
-        "top_comment_skeptical",
-        "top_comment_like_count",
-        "top_comment_like_count_z",
-        "hours_since_top_comment",
-        "comment_text",
-    ]
-    st.dataframe(frames["response_df"][response_cols], use_container_width=True, height=360)
+    with st.expander("Detailed pooled response frame", expanded=False):
+        st.markdown("**Combined Response Frame (ranks 2-20)**")
+        response_cols = [
+            "run_id",
+            "channel_niche",
+            "channel_id",
+            "video_id",
+            "rank",
+            "is_skeptical",
+            "top_comment_skeptical",
+            "top_comment_like_count",
+            "top_comment_like_count_z",
+            "hours_since_top_comment",
+            "comment_text",
+        ]
+        st.dataframe(frames["response_df"][response_cols], use_container_width=True, height=360)
     d1, d2 = st.columns(2)
     d1.download_button(
         "Download combined response CSV",
@@ -5469,12 +5529,13 @@ def auto_analysis_frames(_conn: sqlite3.Connection, run_id: int, include_flagged
     return build_auto_analysis_frames(_conn, run_id, include_flagged=include_flagged)
 
 
-def auto_analysis_tab(conn: sqlite3.Connection) -> None:
-    render_section_intro(
-        "Screening layer",
-        "Comment signals explorer",
-        "Use this space for rapid weak-label screening, multilingual cleanup, and lexical triage before manual coding or formal analysis.",
-    )
+def auto_analysis_tab(conn: sqlite3.Connection, show_intro: bool = True) -> None:
+    if show_intro:
+        render_section_intro(
+            "Screening layer",
+            "Comment explorer",
+            "Use this space for rapid weak-label screening, multilingual cleanup, and lexical triage before manual coding or formal analysis.",
+        )
     runs = run_df(conn)
     if runs.empty:
         st.info("No runs available.")
@@ -5484,18 +5545,23 @@ def auto_analysis_tab(conn: sqlite3.Connection) -> None:
         "Auto-labeled signals are for screening, lexical cleanup, and follow-up prioritization. They are not the paper's validated evidence layer.",
     )
 
-    selected_run = st.selectbox(
-        "Run ID",
-        options=runs["id"].tolist(),
-        index=0,
-        format_func=lambda x: f"Run {x}",
-        key="auto_analysis_run_id",
-    )
-    include_flagged = st.checkbox(
-        "Include spam/template/duplicate rows",
-        value=False,
-        help="Default off. Keep this off for clean pilot analysis.",
-    )
+    with st.form("auto_analysis_controls_form"):
+        a1, a2 = st.columns([2, 1])
+        selected_run = a1.selectbox(
+            "Run ID",
+            options=runs["id"].tolist(),
+            index=0,
+            format_func=lambda x: f"Run {x}",
+            key="auto_analysis_run_id",
+        )
+        include_flagged = a2.checkbox(
+            "Include filtered-out rows",
+            value=False,
+            help="Default off. Keep this off for clean pilot analysis.",
+            key="auto_analysis_include_flagged",
+        )
+        st.form_submit_button("Load explorer", use_container_width=True)
+    st.caption("Explorer results refresh when you press `Load explorer`.")
     frames = auto_analysis_frames(conn, selected_run, include_flagged)
 
     summary = frames["summary"]
@@ -5539,35 +5605,39 @@ def auto_analysis_tab(conn: sqlite3.Connection) -> None:
     if comments.empty:
         st.info("No comments for selected run.")
     else:
-        search = st.text_input("Search comment text", key="auto_analysis_search")
-        only_skeptic = st.checkbox("Only skepticism=1", value=False)
-        only_proof = st.checkbox("Only proof_demand=1", value=False)
-        only_norm = st.checkbox("Only normalization=1", value=False)
-        language_filter = st.selectbox(
-            "Language filter",
-            options=[
-                "All",
-                "Likely English/neutral",
-                "Likely non-English",
-                "Spanish-like",
-                "Hinglish-like",
-                "Other script",
-            ],
-            index=0,
-            key="auto_analysis_language_filter",
-        )
-        noise_filter = st.selectbox(
-            "Noise filter",
-            options=["All", "Exclude low-info/noise", "Only low-info/noise"],
-            index=0,
-            key="auto_analysis_noise_filter",
-        )
-        show_trace_cols = st.checkbox(
-            "Show explainability columns",
-            value=True,
-            help="Adds rule-hit and context summaries for each auto-labeled comment.",
-            key="auto_analysis_show_trace_cols",
-        )
+        with st.form("auto_analysis_filter_form"):
+            f1, f2, f3 = st.columns(3)
+            search = f1.text_input("Search comment text", key="auto_analysis_search")
+            only_skeptic = f1.checkbox("Only skepticism=1", value=False, key="auto_analysis_only_skeptic")
+            only_proof = f2.checkbox("Only proof_demand=1", value=False, key="auto_analysis_only_proof")
+            only_norm = f2.checkbox("Only normalization=1", value=False, key="auto_analysis_only_norm")
+            language_filter = f3.selectbox(
+                "Language filter",
+                options=[
+                    "All",
+                    "Likely English/neutral",
+                    "Likely non-English",
+                    "Spanish-like",
+                    "Hinglish-like",
+                    "Other script",
+                ],
+                index=0,
+                key="auto_analysis_language_filter",
+            )
+            noise_filter = f3.selectbox(
+                "Noise filter",
+                options=["All", "Exclude low-info/noise", "Only low-info/noise"],
+                index=0,
+                key="auto_analysis_noise_filter",
+            )
+            show_trace_cols = st.checkbox(
+                "Show explainability columns",
+                value=True,
+                help="Adds rule-hit and context summaries for each auto-labeled comment.",
+                key="auto_analysis_show_trace_cols",
+            )
+            st.form_submit_button("Apply filters", use_container_width=True)
+        st.caption("Table filters update when you press `Apply filters`.")
 
         filtered = comments.copy()
         if search.strip():
@@ -5656,36 +5726,74 @@ def auto_analysis_tab(conn: sqlite3.Connection) -> None:
             use_container_width=True,
         )
 
-    st.markdown("**Auto Video Metrics**")
-    if video_metrics.empty:
-        st.info("No video metrics.")
-    else:
-        st.dataframe(video_metrics, use_container_width=True, height=320)
-        st.download_button(
-            "Download auto video-metrics CSV",
-            data=video_metrics.to_csv(index=False).encode("utf-8"),
-            file_name=f"auto_video_metrics_run_{selected_run}.csv",
-            mime="text/csv",
-            use_container_width=True,
-        )
+    with st.expander("Additional explorer tables", expanded=False):
+        st.markdown("**Auto Video Metrics**")
+        if video_metrics.empty:
+            st.info("No video metrics.")
+        else:
+            st.dataframe(video_metrics, use_container_width=True, height=320)
+            st.download_button(
+                "Download auto video-metrics CSV",
+                data=video_metrics.to_csv(index=False).encode("utf-8"),
+                file_name=f"auto_video_metrics_run_{selected_run}.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
 
-    if not channel_metrics.empty:
-        st.markdown("**Auto Channel Metrics**")
-        st.dataframe(channel_metrics, use_container_width=True, height=280)
+        if not channel_metrics.empty:
+            st.markdown("**Auto Channel Metrics**")
+            st.dataframe(channel_metrics, use_container_width=True, height=280)
 
-    if not videos.empty:
-        st.markdown("**Auto Video Signals**")
-        show_video_cols = [
-            "channel_niche",
-            "channel_id",
-            "video_id",
-            "published_at",
-            "auto_disclosure_label",
-            "auto_has_ai_mention",
-            "video_url",
-            "title",
-        ]
-        st.dataframe(videos[show_video_cols], use_container_width=True, height=320)
+        if not videos.empty:
+            st.markdown("**Auto Video Signals**")
+            show_video_cols = [
+                "channel_niche",
+                "channel_id",
+                "video_id",
+                "published_at",
+                "auto_disclosure_label",
+                "auto_has_ai_mention",
+                "video_url",
+                "title",
+            ]
+            st.dataframe(videos[show_video_cols], use_container_width=True, height=320)
+
+
+def exploratory_hub_tab(conn: sqlite3.Connection) -> None:
+    render_section_intro(
+        "Secondary tools",
+        "Exploratory",
+        "Keep the paper workflow lean here: open the raw data and search tools only when you actually need them.",
+    )
+    tool_options = [
+        "Scraped Data",
+        "Data Exploration",
+        "AI Disclosure Search",
+        "Comment Explorer",
+    ]
+    tool_migrations = {
+        "Scraped Data": "Scraped Data",
+        "Data Exploration": "Data Exploration",
+        "AI Disclosure Search": "AI Disclosure Search",
+        "Comment Signals": "Comment Explorer",
+    }
+    current_tool = _safe_text(st.session_state.get("exploratory_tool"))
+    if current_tool in tool_migrations:
+        st.session_state["exploratory_tool"] = tool_migrations[current_tool]
+    selected_tool = st.radio(
+        "Exploratory tool",
+        options=tool_options,
+        horizontal=True,
+        key="exploratory_tool",
+    )
+    if selected_tool == "Scraped Data":
+        scraped_data_tab(conn, show_intro=False)
+    elif selected_tool == "Data Exploration":
+        exploration_tab(conn, show_intro=False)
+    elif selected_tool == "AI Disclosure Search":
+        disclosure_search_tab(conn, show_intro=False)
+    elif selected_tool == "Comment Explorer":
+        auto_analysis_tab(conn, show_intro=False)
 
 
 def annotation_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
@@ -6399,17 +6507,27 @@ def main() -> None:
     )
 
     section_options = [
-        "Overview",
         "Run Lab",
-        "Scraped Data",
-        "Data Exploration",
-        "Conformity Cascade",
-        "Hypothesis Readout",
-        "Combined Hypotheses",
-        "AI Disclosure Search",
-        "Comment Signals",
+        "Main Analysis",
+        "Cross-Run Analysis",
+        "Exploratory",
         "Manual Annotation",
     ]
+    section_migrations = {
+        "Overview": "Run Lab",
+        "Scraped Data": "Exploratory",
+        "Data Exploration": "Exploratory",
+        "Conformity Cascade": "Main Analysis",
+        "Hypothesis Readout": "Main Analysis",
+        "Hypothesis Review": "Main Analysis",
+        "Combined Hypotheses": "Cross-Run Analysis",
+        "AI Disclosure Search": "Exploratory",
+        "Comment Signals": "Exploratory",
+        "Comment Explorer": "Exploratory",
+    }
+    current_section = _safe_text(st.session_state.get("active_workspace_section"))
+    if current_section in section_migrations:
+        st.session_state["active_workspace_section"] = section_migrations[current_section]
     active_section = st.radio(
         "Workspace section",
         options=section_options,
@@ -6418,24 +6536,14 @@ def main() -> None:
         label_visibility="collapsed",
     )
 
-    if active_section == "Overview":
-        overview_tab(conn)
-    elif active_section == "Run Lab":
+    if active_section == "Run Lab":
         run_lab_tab(conn, config, annotator_id)
-    elif active_section == "Scraped Data":
-        scraped_data_tab(conn)
-    elif active_section == "Data Exploration":
-        exploration_tab(conn)
-    elif active_section == "Conformity Cascade":
+    elif active_section == "Main Analysis":
         conformity_cascade_tab(conn, annotator_id)
-    elif active_section == "Hypothesis Readout":
-        pilot_analysis_tab(conn, annotator_id)
-    elif active_section == "Combined Hypotheses":
+    elif active_section == "Cross-Run Analysis":
         combined_hypotheses_tab(conn, annotator_id)
-    elif active_section == "AI Disclosure Search":
-        disclosure_search_tab(conn)
-    elif active_section == "Comment Signals":
-        auto_analysis_tab(conn)
+    elif active_section == "Exploratory":
+        exploratory_hub_tab(conn)
     elif active_section == "Manual Annotation":
         annotation_tab(conn, annotator_id)
 
