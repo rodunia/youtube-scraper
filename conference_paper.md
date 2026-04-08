@@ -2,7 +2,7 @@
 
 This file is the conference-oriented manuscript kit for the current project. It is intentionally shorter and more submission-focused than `paper.md`.
 
-All reusable claims below are aligned to the frozen evidence bundle saved on `2026-04-03` in `data/evidence_base_freeze.json` (generated at 2026-04-03T19:03:58).
+All reusable claims below are aligned to the named freeze `KES-final` (`freeze_id=8`, `freeze_uuid=freeze-20260408T142800Z`, timestamp `2026-04-08T14:28:00Z`) covering runs `11, 18, 20, 22, 23, 24`.
 
 ## Main Contribution
 
@@ -114,7 +114,11 @@ Goal:
 
 Suggested validation subsection:
 
-The core codebook contained three substantive labels: skepticism, proof-demand, and normalization. Skepticism captured comments that challenged authenticity or explicitly called AI-mediated content fake or misleading. Proof-demand captured comments that requested evidence, demonstration, or disclosure proof. Normalization captured comments that defended, accepted, or downplayed AI involvement as ordinary or acceptable. Coders worked inside the research console with comment text, thread context, and visible automation hints, but those hints were assistive rather than binding. Comments entered the main evidence base only after two independent coding passes. Disagreements were flagged automatically and resolved through adjudication in the same environment. A comment counted as resolved if it was either fully agreed upon across coders or explicitly adjudicated. The frozen evidence base was then locked on `2026-04-03`, preventing later exploratory work from altering the main confirmatory layer.
+The core codebook contained three substantive labels: skepticism, proof-demand, and normalization. Skepticism captured comments that challenged authenticity or explicitly called AI-mediated content fake or misleading. Proof-demand captured comments that requested evidence, demonstration, or disclosure proof. Normalization captured comments that defended, accepted, or downplayed AI involvement as ordinary or acceptable. Coders worked inside the research console with comment text, thread context, and visible automation hints, but those hints were assistive rather than binding. Comments entered the main evidence base only after two independent coding passes. Disagreements were flagged automatically and resolved through adjudication in the same environment. A comment counted as resolved if it was either fully agreed upon across coders or explicitly adjudicated. The evidence layer was then locked as a named freeze, preventing later exploratory work from altering the main confirmatory layer.
+
+Suggested reproducibility paragraph:
+
+Paper-facing analyses are anchored to freeze `KES-final` (`freeze_id=8`, `freeze_uuid=freeze-20260408T142800Z`, timestamp `2026-04-08T14:28:00Z`). This freeze includes runs `11, 18, 20, 22, 23, 24` with `1,322` resolved comments (`1,322` double-coded; `224` disagreement cases; `0` unresolved disagreements). The freeze record stores deterministic logic metadata used by the workflow (`rules_version=deterministic-rules-v1.1.0`, `scoring_version=assistive-scoring-v1.1.0`, `preprocessing_profile=clean_top20_v1`, plus preprocessing/signal-detection/triage/priority sub-version registry). Re-running exports from the same freeze reproduced identical freeze identity and summary tables; model effects were numerically stable with only negligible floating-point variation (maximum absolute difference `< 6e-05`), leaving substantive interpretation unchanged.
 
 Suggested label-definition table:
 
@@ -212,7 +216,7 @@ Substantively, the findings reveal three theoretically meaningful patterns. Firs
 
 Suggested ethics and reproducibility paragraph:
 
-The study relies on public platform comments, but the workflow is designed to minimize unnecessary exposure of personal information. Analytical tables use internal database identifiers and hashed commenter fields rather than public-facing account names, and the paper should report aggregate statistics plus carefully selected excerpts only where analytically necessary. Reproducibility is supported through frozen evidence snapshots, exportable analysis bundles, and explicit separation between the validated evidence layer and the exploratory extension layer.
+The study relies on public platform comments, but the workflow is designed to minimize unnecessary exposure of personal information. Analytical tables use internal database identifiers and hashed commenter fields rather than public-facing account names, and the paper should report aggregate statistics plus carefully selected excerpts only where analytically necessary. Reproducibility is supported through named evidence freezes with explicit IDs/UUIDs, versioned assistive logic metadata, exportable analysis bundles, and strict separation between the validated evidence layer and the exploratory extension layer.
 
 Suggested limitations paragraph:
 
@@ -243,7 +247,17 @@ Paper-ready wording:
 ## Key Numbers To Reuse
 
 - runs in frozen evidence layer: `11, 18, 20, 22, 23, 24`
-- freeze date: `2026-04-03T19:03:58`
+- freeze name: `KES-final`
+- freeze id: `8`
+- freeze uuid: `freeze-20260408T142800Z`
+- freeze timestamp: `2026-04-08T14:28:00Z`
+- rules_version: `deterministic-rules-v1.1.0`
+- scoring_version: `assistive-scoring-v1.1.0`
+- preprocessing_profile: `clean_top20_v1`
+- preprocessing_rules_version: `preprocessing-v1.0.0`
+- signal_detection_rules_version: `signal-detection-v1.0.0`
+- triage_scoring_version: `triage-v1.0.0`
+- priority_scoring_version: `priority-v1.0.0`
 - resolved comments: `1,322`
 - double-coded comments: `1,322`
 - disagreement comments: `224`
