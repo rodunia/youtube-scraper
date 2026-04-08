@@ -58,6 +58,12 @@ def _ensure_schema_migrations(conn: sqlite3.Connection) -> None:
         conn.execute("ALTER TABLE runs ADD COLUMN study_profile_name TEXT")
     if "run_payload_json" not in run_columns:
         conn.execute("ALTER TABLE runs ADD COLUMN run_payload_json TEXT")
+    if "rules_version" not in run_columns:
+        conn.execute("ALTER TABLE runs ADD COLUMN rules_version TEXT")
+    if "scoring_version" not in run_columns:
+        conn.execute("ALTER TABLE runs ADD COLUMN scoring_version TEXT")
+    if "preprocessing_profile" not in run_columns:
+        conn.execute("ALTER TABLE runs ADD COLUMN preprocessing_profile TEXT")
 
     channel_columns = {
         str(row["name"])
@@ -137,6 +143,20 @@ def _ensure_schema_migrations(conn: sqlite3.Connection) -> None:
         conn.execute("ALTER TABLE annotations ADD COLUMN comment_ai_signal INTEGER")
     if "video_ai_signal" not in annotation_columns:
         conn.execute("ALTER TABLE annotations ADD COLUMN video_ai_signal INTEGER")
+    if "was_disagreement_detected" not in annotation_columns:
+        conn.execute("ALTER TABLE annotations ADD COLUMN was_disagreement_detected INTEGER")
+    if "resolution_source" not in annotation_columns:
+        conn.execute("ALTER TABLE annotations ADD COLUMN resolution_source TEXT")
+    if "adjudication_note" not in annotation_columns:
+        conn.execute("ALTER TABLE annotations ADD COLUMN adjudication_note TEXT")
+    if "adjudicated_at" not in annotation_columns:
+        conn.execute("ALTER TABLE annotations ADD COLUMN adjudicated_at TEXT")
+    if "pre_adjudication_skepticism" not in annotation_columns:
+        conn.execute("ALTER TABLE annotations ADD COLUMN pre_adjudication_skepticism INTEGER")
+    if "pre_adjudication_proof_demand" not in annotation_columns:
+        conn.execute("ALTER TABLE annotations ADD COLUMN pre_adjudication_proof_demand INTEGER")
+    if "pre_adjudication_normalization" not in annotation_columns:
+        conn.execute("ALTER TABLE annotations ADD COLUMN pre_adjudication_normalization INTEGER")
 
     conn.execute(
         """
@@ -157,10 +177,14 @@ def _ensure_schema_migrations(conn: sqlite3.Connection) -> None:
         """
         CREATE TABLE IF NOT EXISTS evidence_freezes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            freeze_uuid TEXT,
             name TEXT NOT NULL,
             created_by TEXT NOT NULL,
             created_at TEXT NOT NULL,
             notes TEXT,
+            rules_version TEXT,
+            scoring_version TEXT,
+            preprocessing_profile TEXT,
             run_ids_json TEXT NOT NULL,
             summary_json TEXT NOT NULL,
             prevalence_overall_json TEXT NOT NULL,
@@ -170,6 +194,49 @@ def _ensure_schema_migrations(conn: sqlite3.Connection) -> None:
         """
     )
     conn.execute("CREATE INDEX IF NOT EXISTS idx_evidence_freezes_owner ON evidence_freezes(created_by)")
+    freeze_columns = {
+        str(row["name"])
+        for row in conn.execute("PRAGMA table_info(evidence_freezes)").fetchall()
+    }
+    if "freeze_uuid" not in freeze_columns:
+        conn.execute("ALTER TABLE evidence_freezes ADD COLUMN freeze_uuid TEXT")
+    if "rules_version" not in freeze_columns:
+        conn.execute("ALTER TABLE evidence_freezes ADD COLUMN rules_version TEXT")
+    if "scoring_version" not in freeze_columns:
+        conn.execute("ALTER TABLE evidence_freezes ADD COLUMN scoring_version TEXT")
+    if "preprocessing_profile" not in freeze_columns:
+        conn.execute("ALTER TABLE evidence_freezes ADD COLUMN preprocessing_profile TEXT")
+
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS exports (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            run_id INTEGER,
+            freeze_id INTEGER,
+            exported_at TEXT NOT NULL,
+            export_type TEXT NOT NULL,
+            file_path TEXT NOT NULL,
+            row_count INTEGER NOT NULL,
+            rules_version TEXT,
+            scoring_version TEXT,
+            preprocessing_profile TEXT,
+            FOREIGN KEY(run_id) REFERENCES runs(id),
+            FOREIGN KEY(freeze_id) REFERENCES evidence_freezes(id)
+        )
+        """
+    )
+    export_columns = {
+        str(row["name"])
+        for row in conn.execute("PRAGMA table_info(exports)").fetchall()
+    }
+    if "freeze_id" not in export_columns:
+        conn.execute("ALTER TABLE exports ADD COLUMN freeze_id INTEGER")
+    if "rules_version" not in export_columns:
+        conn.execute("ALTER TABLE exports ADD COLUMN rules_version TEXT")
+    if "scoring_version" not in export_columns:
+        conn.execute("ALTER TABLE exports ADD COLUMN scoring_version TEXT")
+    if "preprocessing_profile" not in export_columns:
+        conn.execute("ALTER TABLE exports ADD COLUMN preprocessing_profile TEXT")
 
 
 def create_run(
@@ -188,16 +255,19 @@ def create_run(
         """
         INSERT INTO runs (
             run_uuid, started_at, status, execution_mode, run_truncated,
-            spam_ruleset_version, compliance_reference, api_quota_limit,
+            spam_ruleset_version, rules_version, scoring_version, preprocessing_profile, compliance_reference, api_quota_limit,
             api_failover_threshold, app_version, content_type, target_file,
             target_count_requested, study_profile_name, run_payload_json, notes
-        ) VALUES (?, ?, 'running', ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, 'running', ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
             run_uuid,
             utc_now_iso(),
             config.execution_mode,
             config.spam_ruleset_version,
+            run_payload.get("logic_registry", {}).get("rules_version") if run_payload else None,
+            run_payload.get("logic_registry", {}).get("scoring_version") if run_payload else None,
+            run_payload.get("logic_registry", {}).get("preprocessing_profile") if run_payload else None,
             config.compliance_reference,
             config.api_daily_quota,
             config.api_failover_threshold,
@@ -210,6 +280,48 @@ def create_run(
             notes,
         ),
     )
+    return int(cur.lastrowid)
+
+
+def log_export(
+    conn: sqlite3.Connection,
+    *,
+    export_type: str,
+    file_path: str,
+    row_count: int,
+    run_id: int | None = None,
+    freeze_id: int | None = None,
+    rules_version: str | None = None,
+    scoring_version: str | None = None,
+    preprocessing_profile: str | None = None,
+) -> int:
+    cur = conn.execute(
+        """
+        INSERT INTO exports (
+            run_id,
+            freeze_id,
+            exported_at,
+            export_type,
+            file_path,
+            row_count,
+            rules_version,
+            scoring_version,
+            preprocessing_profile
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            run_id,
+            freeze_id,
+            utc_now_iso(),
+            export_type,
+            file_path,
+            int(row_count),
+            rules_version,
+            scoring_version,
+            preprocessing_profile,
+        ),
+    )
+    conn.commit()
     return int(cur.lastrowid)
 
 

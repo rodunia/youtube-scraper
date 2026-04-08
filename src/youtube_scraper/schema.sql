@@ -9,6 +9,9 @@ CREATE TABLE IF NOT EXISTS runs (
     execution_mode TEXT NOT NULL CHECK(execution_mode IN ('auto','api_only','playwright_only')),
     run_truncated INTEGER NOT NULL DEFAULT 0 CHECK(run_truncated IN (0,1)),
     spam_ruleset_version TEXT NOT NULL,
+    rules_version TEXT,
+    scoring_version TEXT,
+    preprocessing_profile TEXT,
     compliance_reference TEXT NOT NULL,
     api_quota_limit INTEGER NOT NULL,
     api_failover_threshold REAL NOT NULL,
@@ -106,6 +109,13 @@ CREATE TABLE IF NOT EXISTS annotations (
     low_info_noise INTEGER,
     comment_ai_signal INTEGER,
     video_ai_signal INTEGER,
+    was_disagreement_detected INTEGER,
+    resolution_source TEXT,
+    adjudication_note TEXT,
+    adjudicated_at TEXT,
+    pre_adjudication_skepticism INTEGER,
+    pre_adjudication_proof_demand INTEGER,
+    pre_adjudication_normalization INTEGER,
     UNIQUE(comment_db_id, annotator_id),
     FOREIGN KEY(comment_db_id) REFERENCES comments(id)
 );
@@ -121,11 +131,16 @@ CREATE TABLE IF NOT EXISTS qa_reports (
 CREATE TABLE IF NOT EXISTS exports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     run_id INTEGER,
+    freeze_id INTEGER,
     exported_at TEXT NOT NULL,
     export_type TEXT NOT NULL,
     file_path TEXT NOT NULL,
     row_count INTEGER NOT NULL,
-    FOREIGN KEY(run_id) REFERENCES runs(id)
+    rules_version TEXT,
+    scoring_version TEXT,
+    preprocessing_profile TEXT,
+    FOREIGN KEY(run_id) REFERENCES runs(id),
+    FOREIGN KEY(freeze_id) REFERENCES evidence_freezes(id)
 );
 
 CREATE TABLE IF NOT EXISTS study_profiles (
@@ -141,10 +156,14 @@ CREATE TABLE IF NOT EXISTS study_profiles (
 
 CREATE TABLE IF NOT EXISTS evidence_freezes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    freeze_uuid TEXT,
     name TEXT NOT NULL,
     created_by TEXT NOT NULL,
     created_at TEXT NOT NULL,
     notes TEXT,
+    rules_version TEXT,
+    scoring_version TEXT,
+    preprocessing_profile TEXT,
     run_ids_json TEXT NOT NULL,
     summary_json TEXT NOT NULL,
     prevalence_overall_json TEXT NOT NULL,

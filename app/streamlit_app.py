@@ -19,7 +19,7 @@ from youtube_scraper.auto_analysis import (
 )
 from youtube_scraper.conformity_cascade import run_conformity_cascade
 from youtube_scraper.config import load_config
-from youtube_scraper.db import init_database
+from youtube_scraper.db import init_database, log_export
 from youtube_scraper.pipeline import load_targets_csv, run_batch
 
 st.set_page_config(page_title="YouTube Research Console", layout="wide")
@@ -87,6 +87,15 @@ LABEL_SOURCE_OPTIONS = [
     ("resolved_consensus", "Resolved consensus"),
     ("adjudicated", "Adjudicated only"),
 ]
+DETERMINISTIC_LOGIC_REGISTRY = {
+    "rules_version": "deterministic-rules-v1.1.0",
+    "scoring_version": "assistive-scoring-v1.1.0",
+    "preprocessing_profile": "clean_top20_v1",
+    "preprocessing_rules_version": "preprocessing-v1.0.0",
+    "signal_detection_rules_version": "signal-detection-v1.0.0",
+    "triage_scoring_version": "triage-v1.0.0",
+    "priority_scoring_version": "priority-v1.0.0",
+}
 
 
 @st.cache_resource
@@ -116,11 +125,31 @@ def run_df(_conn: sqlite3.Connection) -> pd.DataFrame:
         study_profile_name,
         run_payload_json,
         spam_ruleset_version,
+        rules_version,
+        scoring_version,
+        preprocessing_profile,
         compliance_reference
     FROM runs
     ORDER BY id DESC
     """
     return pd.read_sql_query(q, _conn)
+
+
+def logic_registry() -> dict[str, str]:
+    return dict(DETERMINISTIC_LOGIC_REGISTRY)
+
+
+def _logic_summary_rows() -> list[dict[str, str]]:
+    registry = logic_registry()
+    return [
+        {"component": "preprocessing_rules", "version": registry["preprocessing_rules_version"]},
+        {"component": "signal_detection_rules", "version": registry["signal_detection_rules_version"]},
+        {"component": "triage_scoring", "version": registry["triage_scoring_version"]},
+        {"component": "priority_scoring", "version": registry["priority_scoring_version"]},
+        {"component": "rules_version", "version": registry["rules_version"]},
+        {"component": "scoring_version", "version": registry["scoring_version"]},
+        {"component": "preprocessing_profile", "version": registry["preprocessing_profile"]},
+    ]
 
 
 def _parse_run_note_value(notes: object, key: str) -> str:
@@ -203,6 +232,9 @@ def run_catalog_df(_conn: sqlite3.Connection) -> pd.DataFrame:
         r.target_count_requested,
         r.study_profile_name,
         r.run_payload_json,
+        r.rules_version,
+        r.scoring_version,
+        r.preprocessing_profile,
         COALESCE(vs.channels, 0) AS channels,
         COALESCE(vs.videos, 0) AS videos,
         COALESCE(cs.comments, 0) AS comments,
@@ -328,6 +360,13 @@ def annotation_queue_df(
         a.other_flag AS my_other_flag,
         a.other_text AS my_other_text,
         a.coded_at AS my_coded_at,
+        a.was_disagreement_detected AS my_was_disagreement_detected,
+        a.resolution_source AS my_resolution_source,
+        a.adjudication_note AS my_adjudication_note,
+        a.adjudicated_at AS my_adjudicated_at,
+        a.pre_adjudication_skepticism AS my_pre_adjudication_skepticism,
+        a.pre_adjudication_proof_demand AS my_pre_adjudication_proof_demand,
+        a.pre_adjudication_normalization AS my_pre_adjudication_normalization,
         COALESCE(ac.n_coders, 0) AS coder_count,
         COALESCE(ac.has_adjudicated, 0) AS has_adjudicated,
         COALESCE(ac.skepticism_disagreement, 0) AS skepticism_disagreement,
@@ -1178,7 +1217,18 @@ def build_reproducibility_bundle(conn: sqlite3.Connection, annotator_id: str) ->
         "evidence_freeze": latest_saved_freeze or legacy_evidence_freeze,
         "legacy_evidence_freeze": legacy_evidence_freeze,
         "saved_evidence_freezes": (
-            freeze_library[["id", "name", "created_at", "notes"]].to_dict(orient="records")
+            freeze_library[
+                [
+                    "id",
+                    "freeze_uuid",
+                    "name",
+                    "created_at",
+                    "notes",
+                    "rules_version",
+                    "scoring_version",
+                    "preprocessing_profile",
+                ]
+            ].to_dict(orient="records")
             if not freeze_library.empty
             else []
         ),
@@ -1210,10 +1260,14 @@ def evidence_freezes_df(_conn: sqlite3.Connection, created_by: str) -> pd.DataFr
     q = """
     SELECT
         id,
+        freeze_uuid,
         name,
         created_by,
         created_at,
         notes,
+        rules_version,
+        scoring_version,
+        preprocessing_profile,
         run_ids_json,
         summary_json,
         prevalence_overall_json,
@@ -1234,26 +1288,35 @@ def upsert_evidence_freeze(
     payload: dict[str, object],
 ) -> int:
     now = datetime.now(tz=timezone.utc).isoformat()
+    freeze_uuid = _safe_text(payload.get("freeze_uuid")) or f"freeze-{datetime.now(tz=timezone.utc).strftime('%Y%m%dT%H%M%SZ')}"
     conn.execute(
         """
         INSERT INTO evidence_freezes (
-            name, created_by, created_at, notes, run_ids_json, summary_json,
-            prevalence_overall_json, prevalence_by_run_niche_json
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            freeze_uuid, name, created_by, created_at, notes, rules_version, scoring_version, preprocessing_profile,
+            run_ids_json, summary_json, prevalence_overall_json, prevalence_by_run_niche_json
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(created_by, name)
         DO UPDATE SET
+            freeze_uuid = excluded.freeze_uuid,
             created_at = excluded.created_at,
             notes = excluded.notes,
+            rules_version = excluded.rules_version,
+            scoring_version = excluded.scoring_version,
+            preprocessing_profile = excluded.preprocessing_profile,
             run_ids_json = excluded.run_ids_json,
             summary_json = excluded.summary_json,
             prevalence_overall_json = excluded.prevalence_overall_json,
             prevalence_by_run_niche_json = excluded.prevalence_by_run_niche_json
         """,
         (
+            freeze_uuid,
             name.strip(),
             created_by,
             now,
             notes.strip(),
+            _safe_text(payload.get("rules_version")),
+            _safe_text(payload.get("scoring_version")),
+            _safe_text(payload.get("preprocessing_profile")),
             json.dumps(payload.get("run_ids", []), ensure_ascii=True),
             json.dumps(payload.get("snapshot_summary", {}), ensure_ascii=True),
             json.dumps(payload.get("prevalence_overall", []), ensure_ascii=True),
@@ -1266,6 +1329,30 @@ def upsert_evidence_freeze(
     ).fetchone()
     conn.commit()
     return int(row["id"]) if row else 0
+
+
+@st.cache_data(ttl=20)
+def export_records_df(_conn: sqlite3.Connection, *, freeze_id: int | None = None) -> pd.DataFrame:
+    q = """
+    SELECT
+        e.id,
+        e.exported_at,
+        e.export_type,
+        e.file_path,
+        e.row_count,
+        e.run_id,
+        e.freeze_id,
+        e.rules_version,
+        e.scoring_version,
+        e.preprocessing_profile
+    FROM exports e
+    """
+    params: tuple[object, ...] = ()
+    if freeze_id is not None:
+        q += " WHERE e.freeze_id = ?"
+        params = (int(freeze_id),)
+    q += " ORDER BY e.exported_at DESC, e.id DESC"
+    return pd.read_sql_query(q, _conn, params=params)
 
 
 def delete_evidence_freeze(conn: sqlite3.Connection, *, created_by: str, freeze_id: int) -> None:
@@ -1293,10 +1380,14 @@ def _evidence_freeze_payload_from_row(row: pd.Series | sqlite3.Row | dict[str, o
 
     return {
         "id": int(_row_get("id", 0) or 0),
+        "freeze_uuid": _safe_text(_row_get("freeze_uuid")),
         "name": _safe_text(_row_get("name")),
         "created_by": _safe_text(_row_get("created_by")),
         "created_at": _safe_text(_row_get("created_at")),
         "notes": _safe_text(_row_get("notes")),
+        "rules_version": _safe_text(_row_get("rules_version")),
+        "scoring_version": _safe_text(_row_get("scoring_version")),
+        "preprocessing_profile": _safe_text(_row_get("preprocessing_profile")),
         "run_ids": _decode_json(_row_get("run_ids_json"), []),
         "snapshot_summary": _decode_json(_row_get("summary_json"), {}),
         "prevalence_overall": _decode_json(_row_get("prevalence_overall_json"), []),
@@ -1628,13 +1719,23 @@ def validation_summary_table(
     freeze_date: str,
     freeze_name: str,
     run_ids: tuple[int, ...],
+    freeze_id: int | None = None,
+    freeze_uuid: str = "",
+    rules_version: str = "",
+    scoring_version: str = "",
+    preprocessing_profile: str = "",
 ) -> pd.DataFrame:
     summary = freeze_snapshot.get("summary", {}) if isinstance(freeze_snapshot, dict) else {}
     return pd.DataFrame(
         [
+            {"metric": "freeze_id", "value": int(freeze_id or 0) if freeze_id else "unsaved"},
+            {"metric": "freeze_uuid", "value": freeze_uuid or "unsaved_current_selection"},
             {"metric": "freeze_name", "value": freeze_name or "unsaved_current_selection"},
-            {"metric": "freeze_date", "value": freeze_date or "current_session"},
-            {"metric": "freeze_runs", "value": ", ".join(str(x) for x in run_ids)},
+            {"metric": "freeze_timestamp", "value": freeze_date or "current_session"},
+            {"metric": "run_ids_included", "value": ", ".join(str(x) for x in run_ids)},
+            {"metric": "rules_version", "value": rules_version or logic_registry()["rules_version"]},
+            {"metric": "scoring_version", "value": scoring_version or logic_registry()["scoring_version"]},
+            {"metric": "preprocessing_profile", "value": preprocessing_profile or logic_registry()["preprocessing_profile"]},
             {"metric": "resolved_comments", "value": int(summary.get("resolved_comments", 0) or 0)},
             {"metric": "double_coded_comments", "value": int(summary.get("double_coded_comments", 0) or 0)},
             {"metric": "disagreement_comments", "value": int(summary.get("disagreement_comments", 0) or 0)},
@@ -1646,6 +1747,89 @@ def validation_summary_table(
             {"metric": "resolved_definition", "value": "double-coded and either agreed or adjudicated"},
         ]
     )
+
+
+def workflow_overview_table(
+    corpus_summary: dict[str, int],
+    labeled_summary: dict[str, int],
+    freeze_snapshot: dict[str, object],
+    *,
+    freeze_count: int,
+    latest_freeze_name: str,
+    latest_freeze_date: str,
+) -> pd.DataFrame:
+    freeze_summary = freeze_snapshot.get("summary", {}) if isinstance(freeze_snapshot, dict) else {}
+    resolved = int(freeze_summary.get("resolved_comments", 0) or 0)
+    unresolved = int(freeze_summary.get("unresolved_disagreements", 0) or 0)
+    disagreement = int(labeled_summary.get("disagreement_comments", 0) or 0)
+    return pd.DataFrame(
+        [
+            {
+                "stage": "1. Collection",
+                "status": f"{int(corpus_summary.get('runs', 0) or 0)} runs / {int(corpus_summary.get('comments', 0) or 0)} comments",
+                "current_artifact": "raw runs, videos, comments",
+            },
+            {
+                "stage": "2. Preprocessing",
+                "status": logic_registry()["preprocessing_profile"],
+                "current_artifact": f"rules {logic_registry()['preprocessing_rules_version']}",
+            },
+            {
+                "stage": "3. Screening",
+                "status": logic_registry()["signal_detection_rules_version"],
+                "current_artifact": f"assistive scoring {logic_registry()['scoring_version']}",
+            },
+            {
+                "stage": "4. Coding",
+                "status": f"{int(labeled_summary.get('labeled_comments', 0) or 0)} labeled comments",
+                "current_artifact": "human-coded annotations",
+            },
+            {
+                "stage": "5. Disagreement detection",
+                "status": f"{disagreement} disagreement cases",
+                "current_artifact": f"{int(labeled_summary.get('double_coded_comments', 0) or 0)} double-coded comments",
+            },
+            {
+                "stage": "6. Adjudication",
+                "status": f"{int(labeled_summary.get('adjudicated_comments', 0) or 0)} adjudicated comments",
+                "current_artifact": "adjudication trace on annotation rows",
+            },
+            {
+                "stage": "7. Freeze",
+                "status": f"{resolved} resolved comments / {freeze_count} saved freezes",
+                "current_artifact": latest_freeze_name or "current unsaved selection",
+            },
+            {
+                "stage": "8. Analysis",
+                "status": "paper-safe when freeze-scoped" if resolved > 0 and unresolved == 0 else "not paper-safe yet",
+                "current_artifact": latest_freeze_date or "awaiting freeze",
+            },
+        ]
+    )
+
+
+def _record_export_event(
+    conn: sqlite3.Connection,
+    *,
+    export_type: str,
+    file_path: str,
+    row_count: int,
+    freeze_id: int | None = None,
+    run_id: int | None = None,
+) -> None:
+    registry = logic_registry()
+    log_export(
+        conn,
+        export_type=export_type,
+        file_path=file_path,
+        row_count=row_count,
+        freeze_id=freeze_id,
+        run_id=run_id,
+        rules_version=registry["rules_version"],
+        scoring_version=registry["scoring_version"],
+        preprocessing_profile=registry["preprocessing_profile"],
+    )
+    export_records_df.clear()
 
 
 def systems_summary_table(
@@ -2140,6 +2324,7 @@ def _seed_runlab_state(config, target_files: list[str]) -> None:
 
 def _current_runlab_payload() -> dict[str, object]:
     return {
+        "logic_registry": logic_registry(),
         "scrape": {
             "targets_csv": _safe_text(st.session_state.get("runlab_target_file")),
             "execution_mode": _safe_text(st.session_state.get("runlab_execution_mode")),
@@ -2652,6 +2837,45 @@ def inject_app_theme() -> None:
             color: var(--ink);
         }
 
+        .layer-badge-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 0.35rem 0 0.75rem 0;
+        }
+
+        .layer-badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 0.22rem 0.58rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .layer-badge-validated {
+            background: #eef7f0;
+            color: #355a3e;
+        }
+
+        .layer-badge-assistive {
+            background: #f6f1e7;
+            color: #6d5836;
+        }
+
+        .layer-badge-warning {
+            background: #f8ecec;
+            color: #7a4d4d;
+        }
+
+        .layer-badge-note {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
         .hypothesis-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -2746,8 +2970,32 @@ def render_note_banner(label: str, body: str) -> None:
     )
 
 
+def render_layer_badge(kind: str, note: str = "") -> None:
+    class_map = {
+        "validated": ("layer-badge-validated", "Validated / paper-safe"),
+        "assistive": ("layer-badge-assistive", "Assistive / exploratory only"),
+        "warning": ("layer-badge-warning", "Not paper-safe by default"),
+    }
+    css_class, label = class_map.get(kind, ("layer-badge-assistive", _safe_text(kind) or "Layer"))
+    note_html = f"<span class='layer-badge-note'>{html.escape(note)}</span>" if note else ""
+    st.markdown(
+        f"<div class='layer-badge-row'><span class='layer-badge {css_class}'>{html.escape(label)}</span>{note_html}</div>",
+        unsafe_allow_html=True,
+    )
+
+
 def render_evidence_boundary_banner(scope_label: str, body: str) -> None:
     render_note_banner(scope_label, body)
+
+
+def render_scope_badge(scope_label: str, body: str = "") -> None:
+    normalized = _safe_text(scope_label).strip().lower()
+    if "validated" in normalized:
+        render_layer_badge("validated", body)
+    elif "assistive" in normalized or "exploratory" in normalized:
+        render_layer_badge("warning", body)
+    else:
+        render_layer_badge("assistive", body)
 
 
 def _label_source_scope(label_source: str) -> tuple[str, str]:
@@ -3567,6 +3815,9 @@ def save_annotation(
     low_info_noise: int = 0,
     comment_ai_signal: int = 0,
     video_ai_signal: int = 0,
+    was_disagreement_detected: int | None = None,
+    resolution_source: str = "",
+    adjudication_note: str = "",
 ) -> None:
     now = datetime.now(tz=timezone.utc).isoformat()
     extra_codes_json = json.dumps(sorted(set(extra_codes or [])), ensure_ascii=True)
@@ -3591,8 +3842,15 @@ def save_annotation(
             heuristic_language,
             low_info_noise,
             comment_ai_signal,
-            video_ai_signal
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            video_ai_signal,
+            was_disagreement_detected,
+            resolution_source,
+            adjudication_note,
+            adjudicated_at,
+            pre_adjudication_skepticism,
+            pre_adjudication_proof_demand,
+            pre_adjudication_normalization
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(comment_db_id, annotator_id)
         DO UPDATE SET
             coded_at = excluded.coded_at,
@@ -3611,6 +3869,31 @@ def save_annotation(
             low_info_noise = excluded.low_info_noise,
             comment_ai_signal = excluded.comment_ai_signal,
             video_ai_signal = excluded.video_ai_signal,
+            was_disagreement_detected = COALESCE(excluded.was_disagreement_detected, annotations.was_disagreement_detected),
+            resolution_source = CASE
+                WHEN excluded.is_adjudicated = 1 THEN COALESCE(NULLIF(excluded.resolution_source, ''), annotations.resolution_source, 'manual_adjudication')
+                ELSE annotations.resolution_source
+            END,
+            adjudication_note = CASE
+                WHEN excluded.is_adjudicated = 1 AND NULLIF(excluded.adjudication_note, '') IS NOT NULL THEN excluded.adjudication_note
+                ELSE annotations.adjudication_note
+            END,
+            adjudicated_at = CASE
+                WHEN excluded.is_adjudicated = 1 THEN COALESCE(annotations.adjudicated_at, excluded.adjudicated_at, excluded.coded_at)
+                ELSE annotations.adjudicated_at
+            END,
+            pre_adjudication_skepticism = CASE
+                WHEN excluded.is_adjudicated = 1 AND annotations.is_adjudicated = 0 THEN COALESCE(annotations.pre_adjudication_skepticism, annotations.skepticism_fake_callout)
+                ELSE annotations.pre_adjudication_skepticism
+            END,
+            pre_adjudication_proof_demand = CASE
+                WHEN excluded.is_adjudicated = 1 AND annotations.is_adjudicated = 0 THEN COALESCE(annotations.pre_adjudication_proof_demand, annotations.proof_demand)
+                ELSE annotations.pre_adjudication_proof_demand
+            END,
+            pre_adjudication_normalization = CASE
+                WHEN excluded.is_adjudicated = 1 AND annotations.is_adjudicated = 0 THEN COALESCE(annotations.pre_adjudication_normalization, annotations.normalization_defense)
+                ELSE annotations.pre_adjudication_normalization
+            END,
             is_adjudicated = CASE
                 WHEN annotations.is_adjudicated = 1 THEN 1
                 ELSE excluded.is_adjudicated
@@ -3636,6 +3919,13 @@ def save_annotation(
             _bool01(low_info_noise),
             _bool01(comment_ai_signal),
             _bool01(video_ai_signal),
+            _bool01(was_disagreement_detected) if was_disagreement_detected is not None else None,
+            _safe_text(resolution_source),
+            _safe_text(adjudication_note).strip(),
+            now if int(is_adjudicated) else None,
+            None,
+            None,
+            None,
         ),
     )
     conn.commit()
@@ -3670,6 +3960,13 @@ def save_annotations_batch(conn: sqlite3.Connection, rows: list[dict[str, object
                 _bool01(row.get("low_info_noise")),
                 _bool01(row.get("comment_ai_signal")),
                 _bool01(row.get("video_ai_signal")),
+                _bool01(row.get("was_disagreement_detected")) if row.get("was_disagreement_detected") is not None else None,
+                _safe_text(row.get("resolution_source")),
+                _safe_text(row.get("adjudication_note")).strip(),
+                now if _bool01(row.get("is_adjudicated")) else None,
+                None,
+                None,
+                None,
             )
         )
 
@@ -3694,8 +3991,15 @@ def save_annotations_batch(conn: sqlite3.Connection, rows: list[dict[str, object
             heuristic_language,
             low_info_noise,
             comment_ai_signal,
-            video_ai_signal
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            video_ai_signal,
+            was_disagreement_detected,
+            resolution_source,
+            adjudication_note,
+            adjudicated_at,
+            pre_adjudication_skepticism,
+            pre_adjudication_proof_demand,
+            pre_adjudication_normalization
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(comment_db_id, annotator_id)
         DO UPDATE SET
             coded_at = excluded.coded_at,
@@ -3714,6 +4018,31 @@ def save_annotations_batch(conn: sqlite3.Connection, rows: list[dict[str, object
             low_info_noise = excluded.low_info_noise,
             comment_ai_signal = excluded.comment_ai_signal,
             video_ai_signal = excluded.video_ai_signal,
+            was_disagreement_detected = COALESCE(excluded.was_disagreement_detected, annotations.was_disagreement_detected),
+            resolution_source = CASE
+                WHEN excluded.is_adjudicated = 1 THEN COALESCE(NULLIF(excluded.resolution_source, ''), annotations.resolution_source, 'manual_adjudication')
+                ELSE annotations.resolution_source
+            END,
+            adjudication_note = CASE
+                WHEN excluded.is_adjudicated = 1 AND NULLIF(excluded.adjudication_note, '') IS NOT NULL THEN excluded.adjudication_note
+                ELSE annotations.adjudication_note
+            END,
+            adjudicated_at = CASE
+                WHEN excluded.is_adjudicated = 1 THEN COALESCE(annotations.adjudicated_at, excluded.adjudicated_at, excluded.coded_at)
+                ELSE annotations.adjudicated_at
+            END,
+            pre_adjudication_skepticism = CASE
+                WHEN excluded.is_adjudicated = 1 AND annotations.is_adjudicated = 0 THEN COALESCE(annotations.pre_adjudication_skepticism, annotations.skepticism_fake_callout)
+                ELSE annotations.pre_adjudication_skepticism
+            END,
+            pre_adjudication_proof_demand = CASE
+                WHEN excluded.is_adjudicated = 1 AND annotations.is_adjudicated = 0 THEN COALESCE(annotations.pre_adjudication_proof_demand, annotations.proof_demand)
+                ELSE annotations.pre_adjudication_proof_demand
+            END,
+            pre_adjudication_normalization = CASE
+                WHEN excluded.is_adjudicated = 1 AND annotations.is_adjudicated = 0 THEN COALESCE(annotations.pre_adjudication_normalization, annotations.normalization_defense)
+                ELSE annotations.pre_adjudication_normalization
+            END,
             is_adjudicated = CASE
                 WHEN annotations.is_adjudicated = 1 THEN 1
                 ELSE excluded.is_adjudicated
@@ -3819,6 +4148,29 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
         except Exception as exc:
             st.error(f"Safe smoke test failed: {exc}")
     qb2.caption("This bypasses the form and always runs a tiny simulated batch with a known-safe setup.")
+    corpus_summary = corpus_overview_snapshot(conn)
+    all_resolved_runs = resolved_consensus_run_ids(conn)
+    freeze_library = evidence_freezes_df(conn, annotator_id)
+    latest_freeze_payload = _evidence_freeze_payload_from_row(freeze_library.iloc[0]) if not freeze_library.empty else {}
+    all_resolved_snapshot = evidence_base_snapshot(conn, all_resolved_runs)
+    all_labeled_summary = labeled_comment_summary(conn, all_resolved_runs)
+    st.markdown("**Workflow overview**")
+    render_note_banner(
+        "Research pipeline",
+        "Collection, preprocessing, screening, coding, adjudication, freeze creation, and analysis remain in one auditable workflow.",
+    )
+    st.dataframe(
+        workflow_overview_table(
+            corpus_summary,
+            all_labeled_summary,
+            all_resolved_snapshot,
+            freeze_count=len(freeze_library),
+            latest_freeze_name=_safe_text(latest_freeze_payload.get("name")),
+            latest_freeze_date=_safe_text(latest_freeze_payload.get("created_at")),
+        ),
+        use_container_width=True,
+        height=320,
+    )
     st.divider()
 
     st.markdown("**Study Profiles**")
@@ -3937,6 +4289,8 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             mime="application/json",
             use_container_width=True,
         )
+        st.markdown("**Deterministic logic registry**")
+        st.dataframe(pd.DataFrame(_logic_summary_rows()), use_container_width=True, height=280)
         with st.expander("Ethics and reproducibility note", expanded=False):
             st.markdown(
                 "\n".join(
@@ -3955,6 +4309,7 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             "Validated evidence layer",
             "Use this step to define the frozen resolved-consensus evidence base for the paper's main confirmatory claims.",
         )
+        render_layer_badge("validated", "Freeze records and exports in this step are paper-safe when tied to resolved evidence.")
         legacy_freeze_payload = load_evidence_freeze(str(EVIDENCE_FREEZE_PATH))
         freeze_library = evidence_freezes_df(conn, annotator_id)
         selected_library_payload: dict[str, object] = {}
@@ -3998,6 +4353,7 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
         freeze_snapshot = evidence_base_snapshot(conn, evidence_run_ids)
         freeze_summary = freeze_snapshot.get("summary", {})
         if freeze_summary:
+            registry = logic_registry()
             freeze_name_for_exports = _safe_text(
                 selected_library_payload.get("name")
                 or freeze_payload.get("name")
@@ -4042,10 +4398,27 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
                     "Saved freeze",
                     f"Current saved freeze covers runs {', '.join(str(x) for x in freeze_payload.get('run_ids', [])) or 'n/a'} and was saved at {_safe_text(freeze_payload.get('created_at') or freeze_payload.get('generated_at')) or 'n/a'}.",
                 )
+            freeze_uuid = _safe_text(selected_library_payload.get("freeze_uuid") or freeze_payload.get("freeze_uuid"))
+            if not freeze_uuid:
+                freeze_uuid = f"freeze-{datetime.now(tz=timezone.utc).strftime('%Y%m%dT%H%M%SZ')}"
             freeze_export = {
+                "freeze_uuid": freeze_uuid,
+                "freeze_id": int(selected_library_payload.get("id", 0) or 0) if selected_library_payload else None,
+                "freeze_name": freeze_name_for_exports,
                 "generated_at": datetime.now(tz=timezone.utc).isoformat(),
+                "freeze_timestamp": datetime.now(tz=timezone.utc).isoformat(),
                 "annotator_id": annotator_id,
                 "run_ids": list(evidence_run_ids),
+                "run_ids_included": list(evidence_run_ids),
+                "resolved_comment_count": int(freeze_summary.get("resolved_comments", 0) or 0),
+                "double_coded_comment_count": int(freeze_summary.get("double_coded_comments", 0) or 0),
+                "disagreement_count": int(freeze_summary.get("disagreement_comments", 0) or 0),
+                "unresolved_disagreement_count": int(freeze_summary.get("unresolved_disagreements", 0) or 0),
+                "rules_version": registry["rules_version"],
+                "scoring_version": registry["scoring_version"],
+                "preprocessing_profile": registry["preprocessing_profile"],
+                "spam_ruleset_version": registry["preprocessing_rules_version"],
+                "logic_registry": registry,
                 "snapshot_summary": freeze_summary,
                 "prevalence_overall": freeze_snapshot["prevalence_overall"].to_dict(orient="records"),
                 "prevalence_by_run_niche": freeze_snapshot["prevalence_by_run_niche"].to_dict(orient="records"),
@@ -4067,26 +4440,65 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
                 if not freeze_name.strip():
                     st.error("Freeze name is required.")
                 else:
-                    upsert_evidence_freeze(
+                    named_freeze_export = dict(freeze_export)
+                    named_freeze_export["freeze_name"] = freeze_name.strip()
+                    named_freeze_export["notes"] = freeze_notes.strip()
+                    saved_freeze_id = upsert_evidence_freeze(
                         conn,
                         created_by=annotator_id,
                         name=freeze_name.strip(),
                         notes=freeze_notes.strip(),
-                        payload=freeze_export,
+                        payload=named_freeze_export,
                     )
-                    save_evidence_freeze(str(EVIDENCE_FREEZE_PATH), freeze_export)
+                    named_freeze_export["freeze_id"] = saved_freeze_id
+                    save_evidence_freeze(str(EVIDENCE_FREEZE_PATH), named_freeze_export)
+                    _record_export_event(
+                        conn,
+                        export_type="freeze_record_json",
+                        file_path=f"app://runlab/freeze/{freeze_name.strip()}",
+                        row_count=int(freeze_summary.get("resolved_comments", 0) or 0),
+                        freeze_id=saved_freeze_id,
+                    )
                     evidence_freezes_df.clear()
                     st.success(f"Saved named freeze: {freeze_name.strip()}")
                     st.rerun()
             fz1, fz2 = st.columns(2)
             if fz1.button("Save Legacy Freeze File", use_container_width=True, key="runlab_save_evidence_freeze_file"):
                 save_evidence_freeze(str(EVIDENCE_FREEZE_PATH), freeze_export)
+                _record_export_event(
+                    conn,
+                    export_type="freeze_legacy_json",
+                    file_path=str(EVIDENCE_FREEZE_PATH),
+                    row_count=int(freeze_summary.get("resolved_comments", 0) or 0),
+                    freeze_id=int(selected_library_payload.get("id", 0) or 0) if selected_library_payload else None,
+                )
                 st.success(f"Saved legacy freeze snapshot to `{EVIDENCE_FREEZE_PATH}`.")
             fz2.download_button(
                 "Download Freeze JSON",
                 data=json.dumps(freeze_export, ensure_ascii=True, indent=2).encode("utf-8"),
                 file_name=f"evidence_freeze_{datetime.now(tz=timezone.utc).strftime('%Y%m%dT%H%M%SZ')}.json",
                 mime="application/json",
+                use_container_width=True,
+            )
+            freeze_summary_table = validation_summary_table(
+                freeze_snapshot,
+                freeze_date=freeze_date_for_exports,
+                freeze_name=freeze_name_for_exports,
+                run_ids=evidence_run_ids,
+                freeze_id=int(selected_library_payload.get("id", 0) or 0) if selected_library_payload else None,
+                freeze_uuid=freeze_uuid,
+                rules_version=_safe_text(selected_library_payload.get("rules_version")) or registry["rules_version"],
+                scoring_version=_safe_text(selected_library_payload.get("scoring_version")) or registry["scoring_version"],
+                preprocessing_profile=_safe_text(selected_library_payload.get("preprocessing_profile")) or registry["preprocessing_profile"],
+            )
+            st.markdown("**Freeze record summary**")
+            render_layer_badge("validated", "Every freeze below is inspectable and exportable.")
+            st.dataframe(freeze_summary_table, use_container_width=True, height=320)
+            st.download_button(
+                "Download freeze summary CSV",
+                data=freeze_summary_table.to_csv(index=False).encode("utf-8"),
+                file_name=f"freeze_summary_{'_'.join(str(x) for x in evidence_run_ids)}.csv",
+                mime="text/csv",
                 use_container_width=True,
             )
             with st.expander("Freeze prevalence by run and niche"):
@@ -4154,6 +4566,11 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
                 freeze_date=freeze_date_for_exports,
                 freeze_name=freeze_name_for_exports,
                 run_ids=evidence_run_ids,
+                freeze_id=int(selected_library_payload.get("id", 0) or 0) if selected_library_payload else None,
+                freeze_uuid=freeze_uuid,
+                rules_version=_safe_text(selected_library_payload.get("rules_version")) or registry["rules_version"],
+                scoring_version=_safe_text(selected_library_payload.get("scoring_version")) or registry["scoring_version"],
+                preprocessing_profile=_safe_text(selected_library_payload.get("preprocessing_profile")) or registry["preprocessing_profile"],
             )
             systems_df = systems_summary_table(corpus_summary, labeled_summary, freeze_snapshot)
             render_metric_tiles(
@@ -4232,6 +4649,7 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             "Assistive / exploratory layer",
             "This step is for contextual mapping and candidate discovery only. It does not expand the frozen validated evidence base.",
         )
+        render_layer_badge("warning", "Exploratory support only. Not paper-safe by default.")
         with st.form("runlab_uncoded_extension_form"):
             extension_include_flagged = st.checkbox(
                 "Include filtered-out rows",
@@ -4242,6 +4660,7 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             prepare_uncoded_extension = st.form_submit_button("Prepare uncoded extension", use_container_width=True)
         if prepare_uncoded_extension:
             st.session_state["runlab_show_uncoded_extension"] = True
+            st.session_state["runlab_log_uncoded_extension"] = True
         st.caption("Exploratory results refresh when you press `Prepare uncoded extension`.")
         if st.session_state.get("runlab_show_uncoded_extension") and evidence_run_ids:
             if st.button("Hide uncoded extension", key="runlab_hide_uncoded_extension", use_container_width=True):
@@ -4252,6 +4671,14 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             if extension_summary.empty:
                 st.info("No uncoded comments left in the selected runs under the current filters.")
             else:
+                if st.session_state.pop("runlab_log_uncoded_extension", False):
+                    _record_export_event(
+                        conn,
+                        export_type="uncoded_extension_ready",
+                        file_path="app://runlab/uncoded_extension",
+                        row_count=len(extension_frames["uncoded_comments"]),
+                        freeze_id=int(selected_library_payload.get("id", 0) or 0) if selected_library_payload else None,
+                    )
                 ext_row = extension_summary.iloc[0]
                 render_metric_tiles(
                     [
@@ -4320,6 +4747,7 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             "Validated evidence exports",
             "The main tables and model outputs here are intended to be generated from the selected frozen evidence runs.",
         )
+        render_layer_badge("validated", "Exports below are intended for paper-facing use when generated from the selected freeze.")
         with st.form("runlab_final_pack_form"):
             prepare_final_pack = st.form_submit_button(
                 "Prepare paper export files",
@@ -4328,6 +4756,7 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             )
         if prepare_final_pack:
             st.session_state["runlab_show_final_analysis_pack"] = True
+            st.session_state["runlab_log_final_pack"] = True
         st.caption("Paper exports refresh when you press `Prepare paper export files`.")
         if st.session_state.get("runlab_show_final_analysis_pack") and evidence_run_ids:
             if st.button("Hide paper exports", key="runlab_hide_final_pack", use_container_width=True):
@@ -4336,6 +4765,14 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             final_pack = build_final_analysis_pack(conn, evidence_run_ids, annotator_id)
             pack_bundle = final_pack["bundle"]
             frames = final_pack["conformity_frames"]
+            if st.session_state.pop("runlab_log_final_pack", False):
+                _record_export_event(
+                    conn,
+                    export_type="paper_export_bundle_ready",
+                    file_path="app://runlab/final_analysis_bundle",
+                    row_count=len(final_pack["snapshot"]["resolved_comments"]),
+                    freeze_id=int(selected_library_payload.get("id", 0) or 0) if selected_library_payload else None,
+                )
             summary_df = frames["summary_df"]
             if not summary_df.empty:
                 row = summary_df.iloc[0]
@@ -4391,6 +4828,13 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
                 st.dataframe(_display_effects_df(frames["effects_df"]), use_container_width=True, height=260)
                 st.markdown("**ICC / variance**")
                 st.dataframe(frames["icc_df"], use_container_width=True, height=180)
+            export_records = export_records_df(
+                conn,
+                freeze_id=int(selected_library_payload.get("id", 0) or 0) if selected_library_payload else None,
+            ).head(12)
+            if not export_records.empty:
+                st.markdown("**Recent export records**")
+                st.dataframe(export_records, use_container_width=True, height=260)
 
     st.divider()
 
@@ -4428,6 +4872,9 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             "status",
             "execution_mode",
             "content_type",
+            "rules_version",
+            "scoring_version",
+            "preprocessing_profile",
             "run_mode",
             "channels",
             "videos",
@@ -4692,6 +5139,7 @@ def scraped_data_tab(conn: sqlite3.Connection, show_intro: bool = True) -> None:
             "Scraped data",
             "Inspect one run at a time, check collection quality, and move from top-line counts into raw comment previews.",
         )
+    render_layer_badge("warning", "Raw collection and QA view. Useful for audit, not paper-safe by default.")
     runs = run_df(conn)
     if runs.empty:
         st.info("No runs found.")
@@ -4757,6 +5205,7 @@ def exploration_tab(conn: sqlite3.Connection, show_intro: bool = True) -> None:
             "Data exploration",
             "Slice the raw comment pool before formal coding or modeling. This tab is for pattern hunting, not locked-in evidence.",
         )
+    render_layer_badge("warning", "Exploratory filtering view. Do not treat these slices as validated evidence by default.")
     runs = run_df(conn)
     run_choices = [None] + runs["id"].tolist() if not runs.empty else [None]
     default_index = 1 if len(run_choices) > 1 else 0
@@ -4808,6 +5257,7 @@ def disclosure_search_tab(conn: sqlite3.Connection, show_intro: bool = True) -> 
     if show_intro:
         st.subheader("AI Disclosure Search")
         st.caption("Exploratory supporting view for AI/disclosure language in titles, descriptions, and comments.")
+    render_layer_badge("warning", "Signal-detection and search view only. Not paper-safe by default.")
     runs = run_df(conn)
     run_choices = [None] + runs["id"].tolist() if not runs.empty else [None]
     default_index = 1 if len(run_choices) > 1 else 0
@@ -5193,6 +5643,7 @@ def conformity_cascade_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
     st.caption("Results refresh when you press `Run analysis`.")
     scope_label, scope_body = _label_source_scope(label_source)
     render_evidence_boundary_banner(scope_label, scope_body)
+    render_scope_badge(scope_label, "Analytics and exports below inherit this evidence scope.")
 
     frames = conformity_frames(conn, selected_run, include_flagged, label_source, annotator_id)
     if frames["error"]:
@@ -5353,6 +5804,7 @@ def pilot_analysis_tab(conn: sqlite3.Connection, annotator_id: str, show_intro: 
     st.caption("Results refresh when you press `Refresh review`.")
     scope_label, scope_body = _label_source_scope(label_source)
     render_evidence_boundary_banner(scope_label, scope_body)
+    render_scope_badge(scope_label, "Interpretive review inherits this evidence scope.")
     _render_hypothesis_review_content(
         conn,
         annotator_id,
@@ -5401,6 +5853,7 @@ def combined_hypotheses_tab(conn: sqlite3.Connection, annotator_id: str) -> None
     st.caption("Results refresh when you press `Run pooled analysis`.")
     scope_label, scope_body = _label_source_scope(label_source)
     render_evidence_boundary_banner(scope_label, scope_body)
+    render_scope_badge(scope_label, "Pooled analytics and exports below inherit this evidence scope.")
 
     if not selected_runs:
         st.info("Select at least one run.")
@@ -5544,6 +5997,7 @@ def auto_analysis_tab(conn: sqlite3.Connection, show_intro: bool = True) -> None
         "Assistive / exploratory layer",
         "Auto-labeled signals are for screening, lexical cleanup, and follow-up prioritization. They are not the paper's validated evidence layer.",
     )
+    render_layer_badge("warning", "Signal detection and triage support only. Not paper-safe by default.")
 
     with st.form("auto_analysis_controls_form"):
         a1, a2 = st.columns([2, 1])
@@ -5878,11 +6332,13 @@ def annotation_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
             "Validation / adjudication mode",
             "Use this mode to resolve coder disagreements and strengthen the validated evidence layer. Adjudication decisions are human-only.",
         )
+        render_layer_badge("validated", "Human-only resolution workflow. Adjudication strengthens the validated evidence layer.")
     else:
         render_evidence_boundary_banner(
             "Validated evidence production",
             "Use this mode to create first-pass human labels. Assistive hints may help you navigate the queue, but they do not determine the labels.",
         )
+        render_layer_badge("validated", "Coding view for validated evidence production.")
     with st.expander("Core label guide", expanded=False):
         st.markdown(
             "\n".join(
@@ -5936,6 +6392,8 @@ def annotation_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
     search = f4.text_input("Search comment text", value="", placeholder="keyword or phrase")
 
     adjudication_filter = "Disagreement only"
+    adjudication_source = "manual_adjudication"
+    adjudication_note = ""
     show_existing_labels = True
     if workflow_mode == "Adjudication":
         a1, a2 = st.columns(2)
@@ -5957,6 +6415,20 @@ def annotation_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
             key="annotation_show_label_summary",
         )
         show_trace_details = True
+        t1, t2 = st.columns([1, 2])
+        adjudication_source = t1.selectbox(
+            "Resolution source",
+            options=["manual_adjudication", "manual_recheck"],
+            index=0,
+            key="annotation_resolution_source",
+        )
+        adjudication_note = t2.text_input(
+            "Adjudication note",
+            value=_safe_text(st.session_state.get("annotation_adjudication_note")),
+            placeholder="Optional note on how the disagreement was resolved",
+            key="annotation_adjudication_note",
+        )
+        st.caption("When an existing row is adjudicated, the previous core-label state is preserved on that annotation row for audit.")
     else:
         helper1, helper2 = st.columns(2)
         show_existing_labels = helper1.checkbox(
@@ -6372,6 +6844,31 @@ def annotation_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
                         st.caption("Saved labels: " + label_summary)
                     if adjudicated_summary:
                         st.caption("Adjudicated labels: " + adjudicated_summary)
+                    saved_resolution_source = _safe_text(row.get("my_resolution_source"))
+                    saved_adjudication_note = _safe_text(row.get("my_adjudication_note"))
+                    saved_adjudicated_at = _safe_text(row.get("my_adjudicated_at"))
+                    if saved_resolution_source or saved_adjudication_note or saved_adjudicated_at:
+                        trace_parts = []
+                        if saved_resolution_source:
+                            trace_parts.append(f"source `{saved_resolution_source}`")
+                        if saved_adjudicated_at:
+                            trace_parts.append(f"at `{saved_adjudicated_at}`")
+                        if int(row.get("my_was_disagreement_detected") or 0) == 1:
+                            trace_parts.append("disagreement detected before resolution")
+                        if trace_parts:
+                            st.caption("Adjudication trace: " + " | ".join(trace_parts))
+                        if saved_adjudication_note:
+                            st.caption("Adjudication note: " + saved_adjudication_note)
+                    pre_s = row.get("my_pre_adjudication_skepticism")
+                    pre_p = row.get("my_pre_adjudication_proof_demand")
+                    pre_n = row.get("my_pre_adjudication_normalization")
+                    if pd.notna(pre_s) or pd.notna(pre_p) or pd.notna(pre_n):
+                        st.caption(
+                            "Preserved pre-adjudication core labels: "
+                            + f"s={int(pre_s) if pd.notna(pre_s) else 'n/a'}, "
+                            + f"p={int(pre_p) if pd.notna(pre_p) else 'n/a'}, "
+                            + f"n={int(pre_n) if pd.notna(pre_n) else 'n/a'}"
+                        )
                 disagreement_bits = []
                 if int(row.get("skepticism_disagreement") or 0) == 1:
                     disagreement_bits.append("skepticism")
@@ -6456,6 +6953,9 @@ def annotation_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
                     "low_info_noise": int(row.get("low_info_noise") or 0),
                     "comment_ai_signal": int(bool(row.get("comment_ai_signal"))),
                     "video_ai_signal": int(bool(row.get("video_ai_signal"))),
+                    "was_disagreement_detected": int(row.get("any_disagreement") or 0),
+                    "resolution_source": adjudication_source if save_as_adjudicated else "",
+                    "adjudication_note": adjudication_note if save_as_adjudicated else "",
                 }
             )
             st.divider()
