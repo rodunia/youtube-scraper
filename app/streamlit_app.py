@@ -1637,6 +1637,20 @@ def corpus_overview_snapshot(_conn: sqlite3.Connection) -> dict[str, int]:
 
 
 @st.cache_data(ttl=20)
+def screened_corpus_count(_conn: sqlite3.Connection) -> int:
+    row = _conn.execute(
+        """
+        SELECT COUNT(*) AS screened_comments
+        FROM comments
+        WHERE COALESCE(is_spam, 0) = 0
+          AND COALESCE(is_template, 0) = 0
+          AND COALESCE(is_duplicate, 0) = 0
+        """
+    ).fetchone()
+    return int(row["screened_comments"] or 0)
+
+
+@st.cache_data(ttl=20)
 def labeled_comment_summary(_conn: sqlite3.Connection, run_ids: tuple[int, ...]) -> dict[str, int]:
     if not run_ids:
         return {
@@ -1726,6 +1740,7 @@ def validation_summary_table(
     preprocessing_profile: str = "",
 ) -> pd.DataFrame:
     summary = freeze_snapshot.get("summary", {}) if isinstance(freeze_snapshot, dict) else {}
+    registry = logic_registry()
     return pd.DataFrame(
         [
             {"metric": "freeze_id", "value": int(freeze_id or 0) if freeze_id else "unsaved"},
@@ -1733,9 +1748,13 @@ def validation_summary_table(
             {"metric": "freeze_name", "value": freeze_name or "unsaved_current_selection"},
             {"metric": "freeze_timestamp", "value": freeze_date or "current_session"},
             {"metric": "run_ids_included", "value": ", ".join(str(x) for x in run_ids)},
-            {"metric": "rules_version", "value": rules_version or logic_registry()["rules_version"]},
-            {"metric": "scoring_version", "value": scoring_version or logic_registry()["scoring_version"]},
-            {"metric": "preprocessing_profile", "value": preprocessing_profile or logic_registry()["preprocessing_profile"]},
+            {"metric": "rules_version", "value": rules_version or registry["rules_version"]},
+            {"metric": "scoring_version", "value": scoring_version or registry["scoring_version"]},
+            {"metric": "preprocessing_profile", "value": preprocessing_profile or registry["preprocessing_profile"]},
+            {"metric": "preprocessing_rules_version", "value": registry["preprocessing_rules_version"]},
+            {"metric": "signal_detection_rules_version", "value": registry["signal_detection_rules_version"]},
+            {"metric": "triage_scoring_version", "value": registry["triage_scoring_version"]},
+            {"metric": "priority_scoring_version", "value": registry["priority_scoring_version"]},
             {"metric": "resolved_comments", "value": int(summary.get("resolved_comments", 0) or 0)},
             {"metric": "double_coded_comments", "value": int(summary.get("double_coded_comments", 0) or 0)},
             {"metric": "disagreement_comments", "value": int(summary.get("disagreement_comments", 0) or 0)},
@@ -1754,55 +1773,50 @@ def workflow_overview_table(
     labeled_summary: dict[str, int],
     freeze_snapshot: dict[str, object],
     *,
+    screened_comments: int,
     freeze_count: int,
     latest_freeze_name: str,
     latest_freeze_date: str,
 ) -> pd.DataFrame:
     freeze_summary = freeze_snapshot.get("summary", {}) if isinstance(freeze_snapshot, dict) else {}
+    raw_comments = int(corpus_summary.get("comments", 0) or 0)
+    coded_comments = int(labeled_summary.get("labeled_comments", 0) or 0)
+    adjudicated_comments = int(labeled_summary.get("adjudicated_comments", 0) or 0)
     resolved = int(freeze_summary.get("resolved_comments", 0) or 0)
-    unresolved = int(freeze_summary.get("unresolved_disagreements", 0) or 0)
     disagreement = int(labeled_summary.get("disagreement_comments", 0) or 0)
+    unresolved = int(freeze_summary.get("unresolved_disagreements", 0) or 0)
+    exploratory_extension = max(0, int(screened_comments) - resolved)
     return pd.DataFrame(
         [
             {
-                "stage": "1. Collection",
-                "status": f"{int(corpus_summary.get('runs', 0) or 0)} runs / {int(corpus_summary.get('comments', 0) or 0)} comments",
-                "current_artifact": "raw runs, videos, comments",
+                "stage": "Raw corpus",
+                "status": f"{raw_comments} comments across {int(corpus_summary.get('runs', 0) or 0)} runs",
+                "current_artifact": "collection layer",
             },
             {
-                "stage": "2. Preprocessing",
-                "status": logic_registry()["preprocessing_profile"],
-                "current_artifact": f"rules {logic_registry()['preprocessing_rules_version']}",
+                "stage": "Screened corpus",
+                "status": f"{int(screened_comments)} comments after spam/template/duplicate filters",
+                "current_artifact": f"preprocessing {logic_registry()['preprocessing_profile']}",
             },
             {
-                "stage": "3. Screening",
-                "status": logic_registry()["signal_detection_rules_version"],
-                "current_artifact": f"assistive scoring {logic_registry()['scoring_version']}",
+                "stage": "Coded corpus",
+                "status": f"{coded_comments} human-coded comments",
+                "current_artifact": f"disagreements detected: {disagreement}",
             },
             {
-                "stage": "4. Coding",
-                "status": f"{int(labeled_summary.get('labeled_comments', 0) or 0)} labeled comments",
-                "current_artifact": "human-coded annotations",
+                "stage": "Adjudicated / resolved corpus",
+                "status": f"{adjudicated_comments} adjudicated; {resolved} resolved",
+                "current_artifact": f"unresolved disagreements: {unresolved}",
             },
             {
-                "stage": "5. Disagreement detection",
-                "status": f"{disagreement} disagreement cases",
-                "current_artifact": f"{int(labeled_summary.get('double_coded_comments', 0) or 0)} double-coded comments",
-            },
-            {
-                "stage": "6. Adjudication",
-                "status": f"{int(labeled_summary.get('adjudicated_comments', 0) or 0)} adjudicated comments",
-                "current_artifact": "adjudication trace on annotation rows",
-            },
-            {
-                "stage": "7. Freeze",
+                "stage": "Frozen validated evidence",
                 "status": f"{resolved} resolved comments / {freeze_count} saved freezes",
                 "current_artifact": latest_freeze_name or "current unsaved selection",
             },
             {
-                "stage": "8. Analysis",
-                "status": "paper-safe when freeze-scoped" if resolved > 0 and unresolved == 0 else "not paper-safe yet",
-                "current_artifact": latest_freeze_date or "awaiting freeze",
+                "stage": "Exploratory extension",
+                "status": f"{exploratory_extension} screened comments outside frozen resolved layer",
+                "current_artifact": latest_freeze_date or "not tied to paper-facing claims",
             },
         ]
     )
@@ -2990,12 +3004,16 @@ def render_evidence_boundary_banner(scope_label: str, body: str) -> None:
 
 def render_scope_badge(scope_label: str, body: str = "") -> None:
     normalized = _safe_text(scope_label).strip().lower()
+    exploratory_note = (
+        "This view includes exploratory or assistive outputs and should not be used directly for paper-facing claims."
+    )
+    validated_note = "This view is based only on the frozen validated evidence layer."
     if "validated" in normalized:
-        render_layer_badge("validated", body)
+        render_layer_badge("validated", f"{validated_note} {_safe_text(body)}".strip())
     elif "assistive" in normalized or "exploratory" in normalized:
-        render_layer_badge("warning", body)
+        render_layer_badge("warning", f"{exploratory_note} {_safe_text(body)}".strip())
     else:
-        render_layer_badge("assistive", body)
+        render_layer_badge("assistive", f"{exploratory_note} {_safe_text(body)}".strip())
 
 
 def _label_source_scope(label_source: str) -> tuple[str, str]:
@@ -4149,6 +4167,7 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             st.error(f"Safe smoke test failed: {exc}")
     qb2.caption("This bypasses the form and always runs a tiny simulated batch with a known-safe setup.")
     corpus_summary = corpus_overview_snapshot(conn)
+    screened_comments = screened_corpus_count(conn)
     all_resolved_runs = resolved_consensus_run_ids(conn)
     freeze_library = evidence_freezes_df(conn, annotator_id)
     latest_freeze_payload = _evidence_freeze_payload_from_row(freeze_library.iloc[0]) if not freeze_library.empty else {}
@@ -4164,6 +4183,7 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             corpus_summary,
             all_labeled_summary,
             all_resolved_snapshot,
+            screened_comments=screened_comments,
             freeze_count=len(freeze_library),
             latest_freeze_name=_safe_text(latest_freeze_payload.get("name")),
             latest_freeze_date=_safe_text(latest_freeze_payload.get("created_at")),
@@ -4309,7 +4329,10 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             "Validated evidence layer",
             "Use this step to define the frozen resolved-consensus evidence base for the paper's main confirmatory claims.",
         )
-        render_layer_badge("validated", "Freeze records and exports in this step are paper-safe when tied to resolved evidence.")
+        render_layer_badge(
+            "validated",
+            "This view is based only on the frozen validated evidence layer. Freeze records and exports in this step are paper-safe when tied to resolved evidence.",
+        )
         legacy_freeze_payload = load_evidence_freeze(str(EVIDENCE_FREEZE_PATH))
         freeze_library = evidence_freezes_df(conn, annotator_id)
         selected_library_payload: dict[str, object] = {}
@@ -4492,15 +4515,52 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
                 preprocessing_profile=_safe_text(selected_library_payload.get("preprocessing_profile")) or registry["preprocessing_profile"],
             )
             st.markdown("**Freeze record summary**")
-            render_layer_badge("validated", "Every freeze below is inspectable and exportable.")
+            render_layer_badge(
+                "validated",
+                "This view is based only on the frozen validated evidence layer. Every freeze below is inspectable and exportable.",
+            )
+            render_note_banner(
+                "Paper-facing reference point",
+                "Use this freeze ID/UUID as the evidence anchor for all paper-facing claims and reproducibility checks.",
+            )
             st.dataframe(freeze_summary_table, use_container_width=True, height=320)
-            st.download_button(
+            fr1, fr2 = st.columns(2)
+            fr1.download_button(
                 "Download freeze summary CSV",
                 data=freeze_summary_table.to_csv(index=False).encode("utf-8"),
                 file_name=f"freeze_summary_{'_'.join(str(x) for x in evidence_run_ids)}.csv",
                 mime="text/csv",
                 use_container_width=True,
             )
+            fr2.download_button(
+                "Download freeze snapshot summary JSON",
+                data=json.dumps(freeze_summary, ensure_ascii=True, indent=2).encode("utf-8"),
+                file_name=f"freeze_snapshot_summary_{'_'.join(str(x) for x in evidence_run_ids)}.json",
+                mime="application/json",
+                use_container_width=True,
+            )
+            version_df = pd.DataFrame(
+                [
+                    {
+                        "component": "rules_version",
+                        "version": _safe_text(selected_library_payload.get("rules_version")) or registry["rules_version"],
+                    },
+                    {
+                        "component": "scoring_version",
+                        "version": _safe_text(selected_library_payload.get("scoring_version")) or registry["scoring_version"],
+                    },
+                    {
+                        "component": "preprocessing_profile",
+                        "version": _safe_text(selected_library_payload.get("preprocessing_profile")) or registry["preprocessing_profile"],
+                    },
+                    {"component": "preprocessing_rules_version", "version": registry["preprocessing_rules_version"]},
+                    {"component": "signal_detection_rules_version", "version": registry["signal_detection_rules_version"]},
+                    {"component": "triage_scoring_version", "version": registry["triage_scoring_version"]},
+                    {"component": "priority_scoring_version", "version": registry["priority_scoring_version"]},
+                ]
+            )
+            st.markdown("**Logic and scoring versions used**")
+            st.dataframe(version_df, use_container_width=True, height=260)
             with st.expander("Freeze prevalence by run and niche"):
                 st.dataframe(freeze_snapshot["prevalence_by_run_niche"], use_container_width=True, height=280)
             if selected_library_payload:
@@ -4649,7 +4709,10 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             "Assistive / exploratory layer",
             "This step is for contextual mapping and candidate discovery only. It does not expand the frozen validated evidence base.",
         )
-        render_layer_badge("warning", "Exploratory support only. Not paper-safe by default.")
+        render_layer_badge(
+            "warning",
+            "This view includes exploratory or assistive outputs and should not be used directly for paper-facing claims.",
+        )
         with st.form("runlab_uncoded_extension_form"):
             extension_include_flagged = st.checkbox(
                 "Include filtered-out rows",
@@ -4747,7 +4810,10 @@ def run_lab_tab(conn: sqlite3.Connection, config, annotator_id: str) -> None:
             "Validated evidence exports",
             "The main tables and model outputs here are intended to be generated from the selected frozen evidence runs.",
         )
-        render_layer_badge("validated", "Exports below are intended for paper-facing use when generated from the selected freeze.")
+        render_layer_badge(
+            "validated",
+            "This view is based only on the frozen validated evidence layer. Exports below are intended for paper-facing use when generated from the selected freeze.",
+        )
         with st.form("runlab_final_pack_form"):
             prepare_final_pack = st.form_submit_button(
                 "Prepare paper export files",
@@ -5139,7 +5205,10 @@ def scraped_data_tab(conn: sqlite3.Connection, show_intro: bool = True) -> None:
             "Scraped data",
             "Inspect one run at a time, check collection quality, and move from top-line counts into raw comment previews.",
         )
-    render_layer_badge("warning", "Raw collection and QA view. Useful for audit, not paper-safe by default.")
+    render_layer_badge(
+        "warning",
+        "This view includes exploratory or assistive outputs and should not be used directly for paper-facing claims. Raw collection and QA view for audit.",
+    )
     runs = run_df(conn)
     if runs.empty:
         st.info("No runs found.")
@@ -5205,7 +5274,10 @@ def exploration_tab(conn: sqlite3.Connection, show_intro: bool = True) -> None:
             "Data exploration",
             "Slice the raw comment pool before formal coding or modeling. This tab is for pattern hunting, not locked-in evidence.",
         )
-    render_layer_badge("warning", "Exploratory filtering view. Do not treat these slices as validated evidence by default.")
+    render_layer_badge(
+        "warning",
+        "This view includes exploratory or assistive outputs and should not be used directly for paper-facing claims. Exploratory filtering only.",
+    )
     runs = run_df(conn)
     run_choices = [None] + runs["id"].tolist() if not runs.empty else [None]
     default_index = 1 if len(run_choices) > 1 else 0
@@ -5257,7 +5329,10 @@ def disclosure_search_tab(conn: sqlite3.Connection, show_intro: bool = True) -> 
     if show_intro:
         st.subheader("AI Disclosure Search")
         st.caption("Exploratory supporting view for AI/disclosure language in titles, descriptions, and comments.")
-    render_layer_badge("warning", "Signal-detection and search view only. Not paper-safe by default.")
+    render_layer_badge(
+        "warning",
+        "This view includes exploratory or assistive outputs and should not be used directly for paper-facing claims. Signal detection and search only.",
+    )
     runs = run_df(conn)
     run_choices = [None] + runs["id"].tolist() if not runs.empty else [None]
     default_index = 1 if len(run_choices) > 1 else 0
@@ -5997,7 +6072,10 @@ def auto_analysis_tab(conn: sqlite3.Connection, show_intro: bool = True) -> None
         "Assistive / exploratory layer",
         "Auto-labeled signals are for screening, lexical cleanup, and follow-up prioritization. They are not the paper's validated evidence layer.",
     )
-    render_layer_badge("warning", "Signal detection and triage support only. Not paper-safe by default.")
+    render_layer_badge(
+        "warning",
+        "This view includes exploratory or assistive outputs and should not be used directly for paper-facing claims. Signal detection and triage support only.",
+    )
 
     with st.form("auto_analysis_controls_form"):
         a1, a2 = st.columns([2, 1])
