@@ -2577,6 +2577,203 @@ def _display_effects_df(effects_df: pd.DataFrame) -> pd.DataFrame:
     return display
 
 
+def _cue_rate_chart_df(summary_row: pd.Series | dict[str, object]) -> pd.DataFrame:
+    skeptical = pd.to_numeric(summary_row.get("response_skepticism_after_skeptical_cue"), errors="coerce")
+    non_skeptical = pd.to_numeric(summary_row.get("response_skepticism_after_non_skeptical_cue"), errors="coerce")
+    data = pd.DataFrame(
+        [
+            {"cue_label": "Skeptical top cue", "skepticism_rate": skeptical},
+            {"cue_label": "Non-skeptical top cue", "skepticism_rate": non_skeptical},
+        ]
+    )
+    data = data.dropna(subset=["skepticism_rate"]).copy()
+    return data
+
+
+def _niche_cue_rate_chart_df(response_df: pd.DataFrame) -> pd.DataFrame:
+    if response_df is None or response_df.empty:
+        return pd.DataFrame()
+    grouped = (
+        response_df.groupby(["channel_niche", "top_comment_skeptical"], as_index=False)
+        .agg(
+            response_comments=("video_id", "count"),
+            skepticism_rate=("is_skeptical", "mean"),
+        )
+        .sort_values(["channel_niche", "top_comment_skeptical"])
+    )
+    grouped["cue_label"] = grouped["top_comment_skeptical"].map(
+        {1: "Skeptical top cue", 0: "Non-skeptical top cue"}
+    )
+    return grouped
+
+
+def _effects_plot_df(effects_df: pd.DataFrame) -> pd.DataFrame:
+    if effects_df is None or effects_df.empty:
+        return pd.DataFrame()
+    keep = effects_df.copy()
+    keep = keep[keep["term"] != "Intercept"].copy()
+    keep["term_display"] = keep["term"].apply(_format_effect_term)
+    keep["odds_ratio"] = pd.to_numeric(keep["odds_ratio"], errors="coerce")
+    keep["or_ci_95_low"] = pd.to_numeric(keep["or_ci_95_low"], errors="coerce")
+    keep["or_ci_95_high"] = pd.to_numeric(keep["or_ci_95_high"], errors="coerce")
+    keep["p_value_approx"] = pd.to_numeric(keep["p_value_approx"], errors="coerce")
+    keep = keep[
+        keep["odds_ratio"].notna()
+        & keep["or_ci_95_low"].notna()
+        & keep["or_ci_95_high"].notna()
+        & (keep["or_ci_95_low"] > 0)
+    ].copy()
+    keep["significant"] = keep["p_value_approx"] < 0.05
+    keep = keep.sort_values("odds_ratio", ascending=True).reset_index(drop=True)
+    return keep
+
+
+def render_hypothesis_visuals(
+    *,
+    summary_row: pd.Series | dict[str, object],
+    effects_df: pd.DataFrame,
+    response_df: pd.DataFrame,
+) -> None:
+    st.markdown("**Hypothesis visuals**")
+
+    cue_chart_df = _cue_rate_chart_df(summary_row)
+    niche_chart_df = _niche_cue_rate_chart_df(response_df)
+    effects_chart_df = _effects_plot_df(effects_df)
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.caption("Downstream skepticism after top-cue type")
+        if cue_chart_df.empty:
+            st.info("Not enough rows for cue comparison chart.")
+        else:
+            st.vega_lite_chart(
+                cue_chart_df,
+                {
+                    "mark": {"type": "bar", "cornerRadiusTopLeft": 4, "cornerRadiusTopRight": 4},
+                    "encoding": {
+                        "x": {"field": "cue_label", "type": "nominal", "title": None},
+                        "y": {
+                            "field": "skepticism_rate",
+                            "type": "quantitative",
+                            "title": "Response skepticism rate",
+                            "axis": {"format": "%"},
+                            "scale": {"domain": [0, 1]},
+                        },
+                        "color": {
+                            "field": "cue_label",
+                            "type": "nominal",
+                            "legend": None,
+                            "scale": {
+                                "domain": ["Non-skeptical top cue", "Skeptical top cue"],
+                                "range": ["#9FB3C8", "#1F5A8A"],
+                            },
+                        },
+                        "tooltip": [
+                            {"field": "cue_label", "type": "nominal"},
+                            {"field": "skepticism_rate", "type": "quantitative", "format": ".3f"},
+                        ],
+                    },
+                    "height": 240,
+                },
+                use_container_width=True,
+            )
+
+    with c2:
+        st.caption("Observed skepticism by niche and cue type")
+        if niche_chart_df.empty:
+            st.info("Not enough rows for niche chart.")
+        else:
+            st.vega_lite_chart(
+                niche_chart_df,
+                {
+                    "mark": {"type": "line", "point": True, "strokeWidth": 3},
+                    "encoding": {
+                        "x": {"field": "channel_niche", "type": "nominal", "title": "Channel niche"},
+                        "y": {
+                            "field": "skepticism_rate",
+                            "type": "quantitative",
+                            "title": "Observed response skepticism rate",
+                            "axis": {"format": "%"},
+                            "scale": {"domain": [0, 1]},
+                        },
+                        "color": {
+                            "field": "cue_label",
+                            "type": "nominal",
+                            "scale": {
+                                "domain": ["Non-skeptical top cue", "Skeptical top cue"],
+                                "range": ["#9FB3C8", "#1F5A8A"],
+                            },
+                            "legend": {"title": "Top cue"},
+                        },
+                        "tooltip": [
+                            {"field": "channel_niche", "type": "nominal"},
+                            {"field": "cue_label", "type": "nominal"},
+                            {"field": "response_comments", "type": "quantitative"},
+                            {"field": "skepticism_rate", "type": "quantitative", "format": ".3f"},
+                        ],
+                    },
+                    "height": 240,
+                },
+                use_container_width=True,
+            )
+
+    st.caption("Model effects (odds ratio with 95% CI)")
+    if effects_chart_df.empty:
+        st.info("Not enough rows for effects plot.")
+        return
+
+    term_order = effects_chart_df["term_display"].tolist()
+    st.vega_lite_chart(
+        effects_chart_df,
+        {
+            "width": "container",
+            "height": 320,
+            "layer": [
+                {
+                    "mark": {"type": "rule", "strokeWidth": 2},
+                    "encoding": {
+                        "y": {"field": "term_display", "type": "nominal", "sort": term_order, "title": None},
+                        "x": {"field": "or_ci_95_low", "type": "quantitative", "title": "Odds ratio (log scale)", "scale": {"type": "log"}},
+                        "x2": {"field": "or_ci_95_high"},
+                        "color": {
+                            "field": "significant",
+                            "type": "nominal",
+                            "legend": None,
+                            "scale": {"domain": [True, False], "range": ["#0F4C75", "#A9B8C4"]},
+                        },
+                        "tooltip": [
+                            {"field": "term_display", "type": "nominal"},
+                            {"field": "odds_ratio", "type": "quantitative", "format": ".3f"},
+                            {"field": "or_ci_95_low", "type": "quantitative", "format": ".3f"},
+                            {"field": "or_ci_95_high", "type": "quantitative", "format": ".3f"},
+                            {"field": "p_value_approx", "type": "quantitative", "format": ".3g"},
+                        ],
+                    },
+                },
+                {
+                    "mark": {"type": "point", "filled": True, "size": 75},
+                    "encoding": {
+                        "y": {"field": "term_display", "type": "nominal", "sort": term_order, "title": None},
+                        "x": {"field": "odds_ratio", "type": "quantitative", "scale": {"type": "log"}},
+                        "color": {
+                            "field": "significant",
+                            "type": "nominal",
+                            "legend": None,
+                            "scale": {"domain": [True, False], "range": ["#0F4C75", "#A9B8C4"]},
+                        },
+                    },
+                },
+                {
+                    "data": {"values": [{"ref_or": 1}]},
+                    "mark": {"type": "rule", "strokeDash": [4, 4], "color": "#555"},
+                    "encoding": {"x": {"field": "ref_or", "type": "quantitative", "scale": {"type": "log"}}},
+                },
+            ],
+        },
+        use_container_width=True,
+    )
+
+
 def _label_source_label(label_source: str) -> str:
     for key, label in LABEL_SOURCE_OPTIONS:
         if key == label_source:
@@ -5764,6 +5961,7 @@ def conformity_cascade_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
             },
         ]
     )
+    render_hypothesis_visuals(summary_row=row, effects_df=effects_df, response_df=response_df)
 
     left, right = st.columns(2)
     with left:
@@ -5988,6 +6186,7 @@ def combined_hypotheses_tab(conn: sqlite3.Connection, annotator_id: str) -> None
             },
         ]
     )
+    render_hypothesis_visuals(summary_row=row, effects_df=frames["effects_df"], response_df=frames["response_df"])
 
     left, right = st.columns(2)
     with left:
