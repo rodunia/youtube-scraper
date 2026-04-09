@@ -1,5 +1,8 @@
 # Instructions for Re-running Conformity Analysis (17 Videos)
 
+> Status (2026-04-09): historical troubleshooting instructions from the 17-video duplicate-removal pass.
+> Keep as process history only. For current paper claims and freeze-scoped outputs, use `conference_paper.md` and the `KES-final` freeze.
+
 **Date**: 2026-04-03
 **Task**: Remove duplicate video and re-run conformity cascade analysis
 

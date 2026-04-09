@@ -1,5 +1,8 @@
 # Paper Kit
 
+> Status (2026-04-09): this file is legacy drafting material and contains superseded numbers from an older freeze.
+> For current conference writing, use `conference_paper.md` as the canonical source (anchored to `KES-final`, `freeze_id=8`, `freeze_uuid=freeze-20260408T142800Z`).
+
 This file is the long-form manuscript kit for turning the project into a submission-ready paper. It is not a final draft; it is a structured set of claims, cautions, reusable paragraphs, and section-ready materials aligned to the frozen resolved-consensus evidence base.
 
 All reusable numbers below are aligned to the frozen bundle saved on `2026-03-31` in `data/evidence_base_freeze.json` and `data/exports/final_analysis_bundle_20260331T205147Z.json`.
@@ -338,4 +341,3 @@ If you need one measurable workflow benefit, the safest defensible claim is not 
 ## Good Final Claim
 
 The paper shows that a human-in-the-loop analytics system can produce a defensible validated evidence layer while retaining a separate exploratory extension layer, and that this workflow recovers one clear ranked-cue effect in a bounded YouTube validation case.
-

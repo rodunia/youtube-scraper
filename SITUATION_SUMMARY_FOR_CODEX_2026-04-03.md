@@ -1,5 +1,8 @@
 # Research Situation Summary — For Codex AI Coding Assistant
 
+> Status (2026-04-09): historical analysis context from 2026-04-03.
+> Keep for audit trail only. For current writing and paper-facing metrics, use `conference_paper.md` tied to `KES-final` (`freeze_id=8`, `freeze_uuid=freeze-20260408T142800Z`).
+
 **Date**: 2026-04-03
 **Purpose**: Bring Codex up to speed on current research status and next steps
 

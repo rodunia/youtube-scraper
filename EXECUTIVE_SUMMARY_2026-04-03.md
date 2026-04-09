@@ -1,5 +1,8 @@
 # Executive Summary: Research Status & Next Steps
 
+> Status (2026-04-09): historical handoff snapshot from 2026-04-03.
+> Do not use this file for current paper numbers. Use `conference_paper.md` (current freeze: `KES-final`, `freeze_id=8`, `freeze_uuid=freeze-20260408T142800Z`).
+
 **Date**: 2026-04-03 21:40
 **For**: User + Codex collaboration
 

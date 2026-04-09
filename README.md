@@ -2,51 +2,48 @@
 
 This repository contains a working local implementation of the hybrid YouTube comments research pipeline for the KES 2026 project.
 
-## Current Status Snapshot (2026-03-21)
+## Current Status Snapshot (2026-04-09)
 
-This snapshot reflects the local SQLite database at `data/youtube_comments.db`, populated through `2026-03-07`.
+This snapshot reflects the local SQLite database at `data/youtube_comments.db` and the current paper-facing freeze workflow.
 
-- Application status: working local package + Streamlit research console.
-- Git status: most implementation work is still local and uncommitted; git history does not yet reflect the full app state.
+- Application status: working local package + Streamlit research console with validated-vs-exploratory separation.
 - Database status:
-  - `24` total runs (`17` live, `7` simulated)
-  - `204` channels
-  - `3,453` videos
-  - `33,417` comments
-  - `174` saved annotations across `174` unique comments
-  - `1` annotator currently active in the DB (`annotator_a`)
+  - `27` total runs
+  - `205` channels
+  - `3,463` videos
+  - `33,467` comments
+  - `3,767` saved annotations across `2,445` unique comments
+  - `2` annotators active in the DB
 - Run modes observed:
-  - `19` runs in `auto`
+  - `22` runs in `auto`
   - `3` runs in `api_only`
   - `2` runs in `playwright_only`
-- Niche coverage in the current DB snapshot:
+- Niche coverage in current DB snapshot:
   - Beauty: `58` channels, `1,792` videos, `16,660` comments
   - Lifestyle: `43` channels, `602` videos, `6,175` comments
-  - Tech: `103` channels, `1,059` videos, `10,582` comments
+  - Tech: `104` channels, `1,069` videos, `10,632` comments
 - Video comment-status distribution:
-  - `1,275` videos `ok`
-  - `2,100` videos `not_enough_comments`
+  - `1,277` videos `ok`
+  - `2,108` videos `not_enough_comments`
   - `75` videos `comments_disabled`
   - `3` videos `extraction_failed`
 
-## Hypothesis Readiness Snapshot
+## Paper-Facing Readiness Snapshot
 
-The analytic plan is defined in `analysis_plan_v1.md`. The current project state is best described as data-collection and pilot-analysis ready, but not yet confirmatory-analysis ready.
+The project now has a named freeze-based confirmatory workflow.
 
-- RQ1 / H1: a skeptical top-liked comment is associated with higher skepticism in subsequent comments.
-  - Status: partially ready.
-  - Why: the ranking structure, comment text, engagement counts, timestamps, and niche labels are already collected; confirmatory testing still depends on validated skepticism labels.
-- RQ2 / H2: the cascade association is stronger when the top-ranked comment has higher like count.
-  - Status: partially ready.
-  - Why: top-comment like counts are already stored, but the same label-validation requirement applies to the skepticism outcome.
-- RQ3 / H3: the cascade association varies across creator ecosystems and is stronger in higher authenticity-stakes niches.
-  - Status: partially ready.
-  - Why: `channel_niche` is already collected, but the confirmatory version still requires a final lock on the niche mapping, especially if `Faceless Lifestyle` is intended as a distinct analytic baseline rather than the broader `Lifestyle` bucket.
+- Canonical writing source: `conference_paper.md`
+- Canonical freeze: `KES-final` (`freeze_id=8`, `freeze_uuid=freeze-20260408T142800Z`)
+- Freeze scope: runs `11, 18, 20, 22, 23, 24`
+- Freeze counts:
+  - `1,322` resolved double-coded comments
+  - `224` disagreement cases
+  - `0` unresolved disagreements at freeze
 
-In practical terms:
-- The pipeline is ready for continued collection, QA, export, exploratory summaries, and manual annotation.
-- The Streamlit app already supports hypothesis-proxy exploration, disclosure search, and the conformity-cascade workflow.
-- Final confirmatory testing still depends on annotation completion, label validation, and freezing the final niche framing for the moderation analysis.
+Methodologically, this means:
+- validated paper-facing claims are anchored to a specific freeze artifact
+- exploratory/assistive outputs stay visible but are not paper-safe by default
+- re-export from the same freeze can be used for reproducibility checks
 
 ## What Is Implemented Now
 
