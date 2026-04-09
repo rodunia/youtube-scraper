@@ -11,6 +11,7 @@ from .config import load_config
 from .db import get_connection, init_database
 from .exploratory_report import export_exploratory_report
 from .exporter import export_run_datasets
+from .paper_figures import export_paper_figure_pack
 from .pipeline import load_targets_csv, run_batch
 from .target_resolver import resolve_targets_to_ids
 
@@ -189,6 +190,41 @@ def cmd_conformity_robustness(args: argparse.Namespace) -> None:
         print(f"- {name}: {path}")
 
 
+def cmd_paper_figure_pack(args: argparse.Namespace) -> None:
+    config = load_config()
+    init_database(config)
+
+    with get_connection(config.database_path) as conn:
+        payload = export_paper_figure_pack(
+            conn,
+            out_dir=Path(args.out_dir),
+            freeze_id=args.freeze_id,
+            freeze_name=args.freeze_name,
+            include_flagged=args.include_flagged,
+        )
+
+    manifest = payload.get("manifest", {})
+    print("Paper figure pack generated:")
+    print(
+        f"- freeze: {manifest.get('freeze_name')} "
+        f"(id={manifest.get('freeze_id')}, uuid={manifest.get('freeze_uuid')})"
+    )
+    print(f"- run_ids: {manifest.get('run_ids_included')}")
+    print(f"- resolved_comment_count: {manifest.get('resolved_comment_count')}")
+    print(
+        "- H1 headline: "
+        f"OR={manifest.get('headline_h1_odds_ratio')} "
+        f"p={manifest.get('headline_h1_p_value_approx')}"
+    )
+    print(
+        "- reproducibility pass: "
+        f"{manifest.get('reproducibility_summary', {}).get('pass_within_tolerance')}"
+    )
+    print("Files:")
+    for name, path in payload.get("files", {}).items():
+        print(f"- {name}: {path}")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="YouTube scraper research CLI")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -350,6 +386,33 @@ def build_parser() -> argparse.ArgumentParser:
         help="Minimum response comments for the min-comments robustness model (default: 10).",
     )
     p_conform_robust.set_defaults(func=cmd_conformity_robustness)
+
+    p_paper_fig = sub.add_parser(
+        "paper-figure-pack",
+        help="Generate paper-ready figure tables/charts from a named evidence freeze.",
+    )
+    p_paper_fig.add_argument(
+        "--out-dir",
+        default="exports/paper_figures",
+        help="Output directory for figure tables/charts.",
+    )
+    p_paper_fig.add_argument(
+        "--freeze-id",
+        type=int,
+        default=None,
+        help="Use a specific freeze ID (default: latest freeze).",
+    )
+    p_paper_fig.add_argument(
+        "--freeze-name",
+        default=None,
+        help="Use a specific freeze name (default: latest freeze).",
+    )
+    p_paper_fig.add_argument(
+        "--include-flagged",
+        action="store_true",
+        help="Include spam/template/duplicate rows in model input (default: excluded).",
+    )
+    p_paper_fig.set_defaults(func=cmd_paper_figure_pack)
 
     return parser
 

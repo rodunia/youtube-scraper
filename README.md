@@ -210,6 +210,20 @@ Optional:
 - add `--include-flagged` to include spam/template/duplicate rows.
 - tune min-comments check with `--min-response-comments 10`.
 
+## Generate Paper Figure Pack From A Named Freeze
+
+```bash
+PYTHONPATH=src python -m youtube_scraper.cli paper-figure-pack \
+  --freeze-name KES-final \
+  --out-dir exports/paper_figures/kes_final
+```
+
+Optional:
+- use `--freeze-id 8` to anchor by freeze ID.
+- add `--include-flagged` only for sensitivity checks.
+
+See `PAPER_FIGURE_PACK_RUNBOOK_2026-04-09.md` for the full output map.
+
 ## Launch Web App
 
 ```bash
