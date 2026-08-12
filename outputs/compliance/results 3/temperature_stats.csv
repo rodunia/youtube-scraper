@@ -1,0 +1,4 @@
+temperature,total_runs,non_compliant_runs,total_violations,avg_violations,std_violations,non_compliant_pct
+0.2,536,262,595,1.11,1.28,48.9
+0.6,540,263,609,1.13,1.31,48.7
+1.0,542,308,717,1.32,1.34,56.8

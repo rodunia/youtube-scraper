@@ -1,0 +1,48 @@
+Upon reviewing the marketing text against the product specifications, I have identified several errors and unsupported claims:
+
+1. **Incorrect Claim:** "average block time of ~4 seconds."
+   - **Correction:** The average block time is ~5 seconds.
+   - **Reason:** The specifications state the average block time is ~5 seconds, not ~4 seconds.
+   - **Confidence Level:** High
+
+2. **Incorrect Claim:** "including optional light-validator nodes that do not stake."
+   - **Correction:** The specifications do not support the existence of non-staking light-validator nodes.
+   - **Reason:** The specifications explicitly state that CoreCoin does not support non-staking light validators.
+   - **Confidence Level:** High
+
+3. **Incorrect Claim:** "trading is subject to 24/7 global activity without circuit breakers, with regional trading pauses during maintenance windows."
+   - **Correction:** There are no regional trading pauses or maintenance windows affecting trading.
+   - **Reason:** The specifications prohibit claims of regional trading restrictions or pauses.
+   - **Confidence Level:** High
+
+4. **Incorrect Claim:** "Some wallets also offer automatic key-shrading for backup without user setup."
+   - **Correction:** There is no mention of automatic key-sharding in the specifications.
+   - **Reason:** The specifications do not support claims of automatic key-sharding or backup mechanisms.
+   - **Confidence Level:** High
+
+5. **Incorrect Claim:** "allows limited execution of EVM smart contracts without gas fees."
+   - **Correction:** Smart contract execution requires gas fees.
+   - **Reason:** The specifications state that smart contract execution requires gas fees and is not gas-free.
+   - **Confidence Level:** High
+
+6. **Incorrect Claim:** "governance proposals automatically pass if quorum is not reached."
+   - **Correction:** Governance proposals require quorum thresholds and do not auto-pass without approval.
+   - **Reason:** The specifications state that governance proposals require quorum thresholds and do not automatically pass.
+   - **Confidence Level:** High
+
+7. **Incorrect Claim:** "RPC layer can stimulate cross-chain calls for testing."
+   - **Correction:** CoreCoin is not natively cross-chain compatible, and the RPC does not simulate cross-chain calls.
+   - **Reason:** The specifications state that CoreCoin is not natively cross-chain compatible and the RPC does not simulate cross-chain calls.
+   - **Confidence Level:** High
+
+8. **Incorrect Claim:** "Unstaking early may reduce a user's historical reward rate."
+   - **Correction:** Unstaking does not affect historical reward calculations.
+   - **Reason:** The specifications clarify that unstaking does not reduce or affect historical reward calculations.
+   - **Confidence Level:** High
+
+9. **Incorrect Claim:** "Some staking tiers may offer fixed-rate returns depending on region."
+   - **Correction:** Staking rewards are variable and not fixed-rate or region-based.
+   - **Reason:** The specifications state that staking rewards are variable and not fixed-rate or region-based.
+   - **Confidence Level:** High
+
+Overall, the marketing text contains several factual inaccuracies and unsupported claims that contradict the product specifications.

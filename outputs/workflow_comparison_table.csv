@@ -1,0 +1,11 @@
+feature,fully_manual_coding_pipeline,generic_annotation_interface,ai_assisted_no_strict_freeze_separation,this_evidence_governed_workflow,support_note
+Double coding support,Partial,Partial,Partial,Yes,Implemented in annotation workflow and freeze readiness checks.
+Explicit disagreement detection,Partial,Partial,Partial,Yes,Computed per comment from coder divergence across core labels.
+Adjudication trace fields,Partial,Partial,Partial,Yes,Annotations schema includes adjudication and resolution metadata.
+Frozen validated evidence layer,No,No,No,Yes,Named evidence freezes persisted with run scope and summary JSON.
+Explicit exploratory layer kept separate from confirmatory claims,No,No,No,Yes,UI/workflow language and export paths distinguish validated vs exploratory outputs.
+Assistive logic visible but non-binding,No,No,Partial,Yes,Triage/priority hints are displayed but manual labels and adjudication remain human-decided.
+Versioned deterministic rules/scoring metadata,No,No,Partial,Yes,Rules/scoring/preprocessing versions recorded in freeze and export metadata.
+Freeze-linked export provenance,No,No,Partial,Yes,"Exports table stores export type, timestamp, and linked freeze_id."
+Run-level collection/provenance metadata,No,No,Partial,Yes,"Runs/videos/comments tables capture extraction engine, statuses, and QA payloads."
+Auditable resolution path from coding to freeze,Partial,Partial,Partial,Yes,Resolved consensus logic plus freeze snapshots and export records provide auditable linkage.

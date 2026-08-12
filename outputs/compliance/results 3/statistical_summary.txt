@@ -1,0 +1,91 @@
+================================================================================
+GPT-4O COMPLIANCE AUDIT - STATISTICAL ANALYSIS
+================================================================================
+
+OVERALL STATISTICS
+--------------------------------------------------------------------------------
+Total runs analyzed:        1618
+  Compliant:                785 (48.5%)
+  Non-compliant:            833 (51.5%)
+Total violations:           1921
+Average violations/run:     1.19
+
+SEVERITY BREAKDOWN
+--------------------------------------------------------------------------------
+  CRITICAL        1
+  HIGH          289
+  MEDIUM        979
+  LOW           645
+
+VIOLATION RATE BY ENGINE
+--------------------------------------------------------------------------------
+  google            56.5% (305/540 runs, avg 1.19 violations)
+  mistral           53.6% (289/539 runs, avg 1.35 violations)
+  openai            44.3% (239/539 runs, avg 1.03 violations)
+
+VIOLATION RATE BY TEMPERATURE
+--------------------------------------------------------------------------------
+  Temp 0.2        48.9% (262.0/536.0 runs, avg 1.11 violations)
+  Temp 0.6        48.7% (263.0/540.0 runs, avg 1.13 violations)
+  Temp 1.0        56.8% (308.0/542.0 runs, avg 1.32 violations)
+
+VIOLATION RATE BY PRODUCT
+--------------------------------------------------------------------------------
+  cryptocurrency_corecoin           6.4% (35/545 runs, avg 0.10 violations)
+  smartphone_mid                   71.0% (387/545 runs, avg 1.78 violations)
+  supplement_melatonin             77.8% (411/528 runs, avg 1.70 violations)
+
+VIOLATION RATE BY TIME OF DAY
+--------------------------------------------------------------------------------
+  afternoon         52.9% (285/539 runs, avg 1.25 violations)
+  evening           49.5% (267/539 runs, avg 1.16 violations)
+  morning           52.0% (281/540 runs, avg 1.15 violations)
+
+STATISTICAL HYPOTHESIS TESTS
+--------------------------------------------------------------------------------
+
+RQ1: People-pleasing bias (violations > 0)
+  Method:     One-sample t-test
+  Statistic:  t = 36.369
+  P-value:    1.9569e-212
+  Result:     SIGNIFICANT (p < 0.001)
+
+RQ2: Engine effect on compliance
+  Method:     Chi-square test
+  Statistic:  χ² = 17.391 (df=2)
+  P-value:    1.6735e-04
+  Result:     SIGNIFICANT (p < 0.001)
+
+RQ2: Engine effect on violation count
+  Method:     One-way ANOVA
+  Statistic:  F = 7.934
+  P-value:    3.7254e-04
+  Result:     SIGNIFICANT (p < 0.001)
+
+Temperature effect on compliance
+  Method:     Chi-square test
+  Statistic:  χ² = 9.319 (df=2)
+  P-value:    9.4704e-03
+  Result:     p = 0.0095
+
+Temperature effect on violation count
+  Method:     One-way ANOVA
+  Statistic:  F = 4.389
+  P-value:    1.2564e-02
+  Result:     p = 0.0126
+
+RQ3: Time-of-day effect on compliance
+  Method:     Chi-square test
+  Statistic:  χ² = 1.303 (df=2)
+  P-value:    5.2132e-01
+  Result:     p = 0.5213
+
+Product effect on compliance
+  Method:     Chi-square test
+  Statistic:  χ² = 673.086 (df=2)
+  P-value:    6.9387e-147
+  Result:     SIGNIFICANT (p < 0.001)
+
+================================================================================
+END OF REPORT
+================================================================================

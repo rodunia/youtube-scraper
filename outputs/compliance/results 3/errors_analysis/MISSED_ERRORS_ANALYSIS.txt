@@ -1,0 +1,14 @@
+MISSED ERRORS ANALYSIS
+================================================================================
+
+GLASS BOX MISSED:
+  melatonin_8: FDA approved (not approved) (Regulatory fabrication)
+  melatonin_9: Avoid if over 18 (under 18) (Age reversal)
+  melatonin_10: Permanent vs temporary drowsiness (Side effect exaggeration)
+
+GPT-4O MISSED:
+  melatonin_6: Storage 0°C vs 15-30°C (Storage violation)
+  melatonin_7: Every 2 hours vs before bed (Dosing violation)
+  melatonin_8: FDA approved (not approved) (Regulatory fabrication)
+  melatonin_9: Avoid if over 18 (under 18) (Age reversal)
+  melatonin_10: Permanent vs temporary drowsiness (Side effect exaggeration)

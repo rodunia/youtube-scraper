@@ -1,0 +1,25 @@
+{
+  "materials": {
+    "material_uid": "run_id",
+    "run_id": "run_id",
+    "output_path": "output_path",
+    "product_id": "product_id",
+    "material_type": "material_type",
+    "engine": "engine",
+    "model": "model",
+    "temperature": "temperature",
+    "time_of_day_label": "time_of_day_label",
+    "repetition_id": "repetition_id",
+    "scheduled_day_of_week": "scheduled_day_of_week",
+    "prompt": "prompt",
+    "material_text": "material_text",
+    "product_ground_truth": "product_ground_truth"
+  },
+  "metadata_columns": [
+    "status",
+    "created_at",
+    "updated_at"
+  ],
+  "judge_assessments": []
+}
+

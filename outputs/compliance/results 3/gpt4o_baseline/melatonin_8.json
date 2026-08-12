@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "This product is approved by the FDA for sleep regulation.",
+      "error_type": "factual",
+      "explanation": "The product specifications state that the product is not FDA-approved as a drug and is regulated under DSHEA as a dietary supplement.",
+      "correct_value": "This product is not approved by the FDA for sleep regulation."
+    },
+    {
+      "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+      "error_type": "numerical",
+      "explanation": "The claim contains a grammatical error; '1 tablets' should be singular.",
+      "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 3156,
+  "completion_tokens": 187,
+  "total_tokens": 3343,
+  "product_id": "supplement_melatonin",
+  "status": "success"
+}

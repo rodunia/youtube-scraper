@@ -1,0 +1,8 @@
+scheduled_day_of_week,total_runs,non_compliant_runs,total_violations,avg_violations,std_violations,non_compliant_pct
+Monday,232,130,299,1.29,1.32,56.0
+Tuesday,231,114,259,1.12,1.26,49.4
+Wednesday,231,112,247,1.07,1.22,48.5
+Thursday,231,122,294,1.27,1.39,52.8
+Friday,231,119,282,1.22,1.33,51.5
+Saturday,231,115,268,1.16,1.36,49.8
+Sunday,231,121,272,1.18,1.31,52.4

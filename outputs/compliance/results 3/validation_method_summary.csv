@@ -1,0 +1,9 @@
+category,subcategory,total,glass_box_detected,llm_direct_detected,glass_box_rate,llm_direct_rate
+overall,all,30,26,13,86.7,43.3
+product,smartphone,10,10,2,100.0,20.0
+product,melatonin,10,10,5,100.0,50.0
+product,corecoin,10,6,6,60.0,60.0
+error_type,numerical,6,5,1,83.3,16.7
+error_type,feature_hallucination,10,9,4,90.0,40.0
+error_type,logical,8,7,4,87.5,50.0
+error_type,factual,6,5,4,83.3,66.7

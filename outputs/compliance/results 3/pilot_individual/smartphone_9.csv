@@ -1,0 +1,38 @@
+Filename,Status,Violated_Rule,Extracted_Claim,Confidence_Score
+user_smartphone_9.txt,FAIL,Gorilla Glass Victus back panel,Nova X5 features a Tensor G4 chipset,0.9947
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 has a Neural Processing Unit,0.9975
+user_smartphone_9.txt,FAIL,Gorilla Glass Victus back panel,Nova X5 has a 6.3 inch Actua OLED display,0.9899
+user_smartphone_9.txt,FAIL,Gorilla Glass Victus back panel,Nova X5 has a 120 Hz refresh rate,0.9473
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 has a camera system with a 50 MP main camera,0.9880
+user_smartphone_9.txt,FAIL,No expandable storage via microSD,Nova X5 offers storage options of 128 GB,0.9750
+user_smartphone_9.txt,FAIL,No expandable storage via microSD,Nova X5 offers storage options of 256 GB,0.9771
+user_smartphone_9.txt,FAIL,No expandable storage via microSD,Nova X5 offers storage options of 512 GB,0.9762
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 has RAM configurations of 8 GB,0.9924
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 has RAM configurations of 12 GB,0.9909
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 supports 5G Sub-6 GHz,0.9535
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 supports Wi-Fi 6/6E,0.9855
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 includes enhanced hardware-backed security via the Titan M2 chip,0.9967
+user_smartphone_9.txt,FAIL,Provides a pure Android experience without bloatware,Nova X5 provides a multi-layer security architecture from chip to OS,0.9975
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 offers regular security patches with a documented public schedule,0.9846
+user_smartphone_9.txt,FAIL,"Gives you a pure Android experience, completely free of bloatware",Nova X5 features advanced computational photography powered by the Tensor G4 NPU,0.9985
+user_smartphone_9.txt,FAIL,"Gives you a pure Android experience, completely free of bloatware",Nova X5 offers real-time AI tools such as live translation,0.9984
+user_smartphone_9.txt,FAIL,Provides a pure Android experience without bloatware,Nova X5 offers smart image processing,0.9673
+user_smartphone_9.txt,FAIL,"Gives you a pure Android experience, completely free of bloatware",Nova X5 integrates hybrid on-device and cloud-based AI for select tasks,0.9988
+user_smartphone_9.txt,FAIL,Claims of wireless charging (not supported),Nova X5 has a battery capacity ranging from 4700–5000 mAh,0.9930
+user_smartphone_9.txt,FAIL,Claims of wireless charging (not supported),Nova X5 supports 60W USB-C fast charging,0.9974
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 does not support expandable storage via microSD,0.9923
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 offers internal storage options of 128 GB UFS 3.1,0.9739
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 offers internal storage options of 256 GB UFS 3.1,0.9772
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Nova X5 offers internal storage options of 512 GB UFS 3.1,0.9747
+user_smartphone_9.txt,FAIL,Wi-Fi 6/6E for fast wireless connectivity,"Nova X5 delivers a clean, bloatware-free Android experience",0.9881
+user_smartphone_9.txt,FAIL,Inventing satellite messaging or satellite SOS capabilities,Nova X5 has guaranteed OS and security updates for seven years,0.9570
+user_smartphone_9.txt,FAIL,Claims of wireless charging (not supported),Nova X5 is designed for consistent long-term software performance,0.9901
+user_smartphone_9.txt,FAIL,Claims of wireless charging (not supported),Nova X5 provides a reliable patch cadence,0.9958
+user_smartphone_9.txt,FAIL,Wi-Fi 6/6E for fast wireless connectivity,Nova X5 provides a pure Android experience,0.9919
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Actual battery life and performance may vary over the 7-year support period,0.9884
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Not all new software features released during the 7 years will be supported by older hardware,0.9954
+user_smartphone_9.txt,FAIL,"Gives you a pure Android experience, completely free of bloatware","Device utilizes a multi-layer security approach, but no system is impenetrable",0.9961
+user_smartphone_9.txt,FAIL,"Gives you a pure Android experience, completely free of bloatware",Some advanced AI features may require a stable internet connection (cloud processing),0.9989
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Network availability (including 5G) depends on carrier and coverage; speeds vary,0.9961
+user_smartphone_9.txt,FAIL,"Experience Android in its purest form, with absolutely zero bloatware",Battery capacity will degrade over time with normal Li-ion aging,0.9980
+user_smartphone_9.txt,FAIL,Gives you a bloatware-free and clean Android experience,Performance may decline with app complexity and OS evolution over time,0.9972

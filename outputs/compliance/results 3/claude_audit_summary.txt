@@ -1,0 +1,18 @@
+
+================================================================================
+CLAUDE COMPLIANCE AUDIT - SUMMARY
+================================================================================
+Total runs analyzed:     1603
+  ✓ COMPLIANT:           721 (45.0%)
+  ✗ NON-COMPLIANT:       790 (49.3%)
+  ! ERROR:               92
+
+Total violations found:  2017
+Average per run:         1.3
+
+Severity breakdown:
+  CRITICAL:              1
+  HIGH:                  145
+  MEDIUM:                625
+  LOW:                   18
+================================================================================

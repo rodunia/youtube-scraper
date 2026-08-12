@@ -99,6 +99,62 @@ def _ensure_schema_migrations(conn: sqlite3.Connection) -> None:
     if "failure_reason" not in video_columns:
         conn.execute("ALTER TABLE videos ADD COLUMN failure_reason TEXT")
 
+    comments_table_sql_row = conn.execute(
+        "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'comments'"
+    ).fetchone()
+    comments_table_sql = str(comments_table_sql_row["sql"] or "") if comments_table_sql_row else ""
+    if "source_engine IN ('api','ytdlp','playwright')" not in comments_table_sql:
+        conn.execute(
+            """
+            CREATE TABLE comments__migrated (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                run_id INTEGER NOT NULL,
+                channel_db_id INTEGER NOT NULL,
+                video_db_id INTEGER NOT NULL,
+                comment_id TEXT,
+                commenter_hash_id TEXT,
+                raw_text TEXT NOT NULL,
+                cleaned_text TEXT NOT NULL,
+                like_count INTEGER NOT NULL,
+                reply_count INTEGER NOT NULL,
+                published_at TEXT,
+                language TEXT,
+                comment_rank INTEGER NOT NULL,
+                is_spam INTEGER NOT NULL DEFAULT 0 CHECK(is_spam IN (0,1)),
+                is_template INTEGER NOT NULL DEFAULT 0 CHECK(is_template IN (0,1)),
+                is_duplicate INTEGER NOT NULL DEFAULT 0 CHECK(is_duplicate IN (0,1)),
+                spam_rule_hits TEXT,
+                source_engine TEXT NOT NULL CHECK(source_engine IN ('api','ytdlp','playwright')),
+                extraction_ts TEXT NOT NULL,
+                FOREIGN KEY(run_id) REFERENCES runs(id),
+                FOREIGN KEY(channel_db_id) REFERENCES channels(id),
+                FOREIGN KEY(video_db_id) REFERENCES videos(id)
+            )
+            """
+        )
+        conn.execute(
+            """
+            INSERT INTO comments__migrated (
+                id, run_id, channel_db_id, video_db_id, comment_id, commenter_hash_id,
+                raw_text, cleaned_text, like_count, reply_count, published_at,
+                language, comment_rank, is_spam, is_template, is_duplicate,
+                spam_rule_hits, source_engine, extraction_ts
+            )
+            SELECT
+                id, run_id, channel_db_id, video_db_id, comment_id, commenter_hash_id,
+                raw_text, cleaned_text, like_count, reply_count, published_at,
+                language, comment_rank, is_spam, is_template, is_duplicate,
+                spam_rule_hits, source_engine, extraction_ts
+            FROM comments
+            """
+        )
+        conn.execute("DROP TABLE comments")
+        conn.execute("ALTER TABLE comments__migrated RENAME TO comments")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_comments_run_id ON comments(run_id)")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_comments_video ON comments(video_db_id)")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_comments_channel ON comments(channel_db_id)")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_comments_flags ON comments(is_spam, is_template, is_duplicate)")
+
     annotation_columns = {
         str(row["name"])
         for row in conn.execute("PRAGMA table_info(annotations)").fetchall()

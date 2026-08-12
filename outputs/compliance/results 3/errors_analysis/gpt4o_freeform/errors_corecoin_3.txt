@@ -1,0 +1,18 @@
+After reviewing the marketing text and comparing it to the product specifications, I have identified the following errors:
+
+1. **Incorrect Claim:** "with an average block time of ~4 seconds."
+   - **What it should be:** The average block time is ~5 seconds (varies with network load).
+   - **Why this is an error:** The specifications state that the average block time is approximately 5 seconds, not 4 seconds.
+   - **Confidence Level:** High
+
+2. **Incorrect Claim:** "including optional light-validator nodes that do not stake."
+   - **What it should be:** The specifications do not mention support for non-staking light-validator nodes.
+   - **Why this is an error:** The specifications explicitly state that CoreCoin does not support non-staking light validators.
+   - **Confidence Level:** High
+
+3. **Incorrect Claim:** "trading is subject to 24/7 global activity without circuit breakers, with regional trading pauses during maintenance windows."
+   - **What it should be:** The specifications do not mention regional trading pauses or maintenance windows affecting trading.
+   - **Why this is an error:** The specifications prohibit claims of regional or geographic trading restrictions or pauses, and there is no mention of maintenance windows affecting trading.
+   - **Confidence Level:** High
+
+NO other ERRORS FOUND in the remaining sections of the marketing text.

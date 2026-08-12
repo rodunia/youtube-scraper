@@ -2412,6 +2412,7 @@ ANNOTATION_VIEW_STATE_KEYS = [
     "annotation_diversity_channel_cap",
     "annotation_niche_filter",
     "annotation_adjudication_filter",
+    "annotation_hide_adjudicated_in_coding",
     "annotation_show_label_summary",
     "annotation_show_trace_details",
     "annotation_save_as_adjudicated",
@@ -2460,6 +2461,7 @@ def _prime_annotation_simple_mode(run_id: int | None) -> None:
     st.session_state["annotation_diversity_channel_cap"] = 6
     st.session_state["annotation_batch_size"] = 6
     st.session_state["annotation_queue_limit"] = 1000
+    st.session_state["annotation_hide_adjudicated_in_coding"] = True
     st.session_state["annotation_show_trace_details"] = False
     st.session_state["annotation_show_label_summary"] = False
     st.session_state["annotation_save_as_adjudicated"] = False
@@ -6662,11 +6664,17 @@ def annotation_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
             st.rerun()
         return
 
-    f1, f2, f3, f4 = st.columns(4)
+    f1, f2, f3, f4, f5 = st.columns(5)
     only_uncoded_by_me = f1.checkbox("Only uncoded by me", value=(workflow_mode == "Coding"))
     needs_second_coder = f2.checkbox("Only comments with <2 coders", value=False)
     hide_spam = f3.checkbox("Hide spam/template/duplicate", value=True)
-    search = f4.text_input("Search comment text", value="", placeholder="keyword or phrase")
+    hide_adjudicated_in_coding = f4.checkbox(
+        "Hide already adjudicated",
+        value=bool(st.session_state.get("annotation_hide_adjudicated_in_coding", True)),
+        key="annotation_hide_adjudicated_in_coding",
+        disabled=(workflow_mode != "Coding"),
+    )
+    search = f5.text_input("Search comment text", value="", placeholder="keyword or phrase")
 
     adjudication_filter = "Disagreement only"
     adjudication_source = "manual_adjudication"
@@ -6807,6 +6815,9 @@ def annotation_tab(conn: sqlite3.Connection, annotator_id: str) -> None:
     if workflow_mode == "Coding" and needs_second_coder:
         filtered = filtered[filtered["coder_count"] < 2]
         filter_counts.append(("After <2 coders filter", len(filtered)))
+    if workflow_mode == "Coding" and hide_adjudicated_in_coding:
+        filtered = filtered[filtered["has_adjudicated"] == 0]
+        filter_counts.append(("After hide adjudicated filter", len(filtered)))
     if workflow_mode == "Adjudication":
         if adjudication_filter == "Unresolved disagreement only":
             filtered = filtered[(filtered["any_disagreement"] == 1) & (filtered["has_adjudicated"] == 0)]

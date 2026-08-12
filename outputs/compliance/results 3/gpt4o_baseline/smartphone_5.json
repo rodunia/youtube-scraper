@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "It supports 5G Sub-6 GHz and Wi-Fi 7.",
+      "error_type": "factual",
+      "explanation": "The specifications list support for Wi-Fi 6/6E, not Wi-Fi 7.",
+      "correct_value": "It supports 5G Sub-6 GHz and Wi-Fi 6/6E."
+    },
+    {
+      "claim": "Not stated in the provided information.",
+      "error_type": "factual",
+      "explanation": "The specifications explicitly state that wireless charging is not supported.",
+      "correct_value": "The Nova X5 does not support wireless charging."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 4687,
+  "completion_tokens": 165,
+  "total_tokens": 4852,
+  "product_id": "smartphone_mid",
+  "status": "success"
+}

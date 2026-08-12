@@ -62,7 +62,16 @@ def build_run_qa_report(
 
     niche_breakdown = conn.execute(
         """
-        WITH video_counts AS (
+        WITH run_channels AS (
+            SELECT DISTINCT channel_db_id
+            FROM videos
+            WHERE run_id = ?
+            UNION
+            SELECT DISTINCT channel_db_id
+            FROM comments
+            WHERE run_id = ?
+        ),
+        video_counts AS (
             SELECT channel_db_id, COUNT(*) AS videos
             FROM videos
             WHERE run_id = ?
@@ -79,12 +88,13 @@ def build_run_qa_report(
             COALESCE(SUM(vc.videos), 0) AS videos,
             COALESCE(SUM(cc.comments), 0) AS comments
         FROM channels ch
+        JOIN run_channels rc ON rc.channel_db_id = ch.id
         LEFT JOIN video_counts vc ON vc.channel_db_id = ch.id
         LEFT JOIN comment_counts cc ON cc.channel_db_id = ch.id
         GROUP BY ch.niche
         ORDER BY ch.niche
         """,
-        (run_id, run_id),
+        (run_id, run_id, run_id, run_id),
     ).fetchall()
 
     engine_counts = {row["source_engine"]: row["c"] for row in engine}
@@ -136,8 +146,6 @@ def build_run_qa_report(
                 SUM(COALESCE(v.comments_scanned, 0)) AS comments_scanned,
                 SUM(COALESCE(v.comments_saved, 0)) AS comments_saved,
                 SUM(COALESCE(v.comments_filtered, 0)) AS comments_filtered,
-                COUNT(DISTINCT CASE WHEN ch.coverage_shortfall = 1 THEN v.channel_db_id END) AS coverage_shortfall_channels,
-                COUNT(DISTINCT CASE WHEN ch.no_shorts_available = 1 THEN v.channel_db_id END) AS no_shorts_available_channels,
                 SUM(CASE WHEN v.comment_status = 'not_enough_comments' THEN 1 ELSE 0 END) AS not_enough_comment_videos,
                 SUM(CASE WHEN v.comment_status = 'comments_disabled' THEN 1 ELSE 0 END) AS comments_disabled_videos,
                 SUM(CASE WHEN v.extraction_failed = 1 THEN 1 ELSE 0 END) AS extraction_failed_videos
@@ -168,8 +176,6 @@ def build_run_qa_report(
             COALESCE(v.comments_scanned, 0) AS comments_scanned,
             COALESCE(v.comments_saved, 0) AS comments_saved,
             COALESCE(v.comments_filtered, 0) AS comments_filtered,
-            COALESCE(v.coverage_shortfall_channels, 0) AS coverage_shortfall_channels,
-            COALESCE(v.no_shorts_available_channels, 0) AS no_shorts_available_channels,
             COALESCE(v.not_enough_comment_videos, 0) AS not_enough_comment_videos,
             COALESCE(v.comments_disabled_videos, 0) AS comments_disabled_videos,
             COALESCE(v.extraction_failed_videos, 0) AS extraction_failed_videos
@@ -197,8 +203,6 @@ def build_run_qa_report(
                 "comments_scanned": 0,
                 "comments_saved": 0,
                 "comments_filtered": 0,
-                "coverage_shortfall_channels": 0,
-                "no_shorts_available_channels": 0,
                 "not_enough_comment_videos": 0,
                 "comments_disabled_videos": 0,
                 "extraction_failed_videos": 0,

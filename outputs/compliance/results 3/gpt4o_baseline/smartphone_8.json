@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "It also include offline AI-generated video rendering.",
+      "error_type": "hallucination",
+      "explanation": "The specifications do not mention offline AI-generated video rendering as a feature.",
+      "correct_value": "Remove the claim about offline AI-generated video rendering."
+    },
+    {
+      "claim": "Not stated in the provided information.",
+      "error_type": "factual",
+      "explanation": "The specifications explicitly state that wireless charging is not supported.",
+      "correct_value": "The Nova X5 does not support wireless charging."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 4699,
+  "completion_tokens": 147,
+  "total_tokens": 4846,
+  "product_id": "smartphone_mid",
+  "status": "success"
+}

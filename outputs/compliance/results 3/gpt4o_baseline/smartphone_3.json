@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "It offers storage options of 128 GB, 256 GB, or 1 TB, and RAM configurations of 8 GB or 12 GB.",
+      "error_type": "numerical",
+      "explanation": "The specifications list storage options as 128 GB, 256 GB, or 512 GB, not 1 TB.",
+      "correct_value": "128 GB, 256 GB, or 512 GB"
+    },
+    {
+      "claim": "Does the Nova X5 support wireless charging? A: Not stated in the provided information.",
+      "error_type": "factual",
+      "explanation": "The specifications explicitly state that wireless charging is not supported.",
+      "correct_value": "No, the Nova X5 does not support wireless charging."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 4690,
+  "completion_tokens": 192,
+  "total_tokens": 4882,
+  "product_id": "smartphone_mid",
+  "status": "success"
+}

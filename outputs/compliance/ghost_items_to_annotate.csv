@@ -1,0 +1,622 @@
+pilot_item_id,product_id,material_type,output_text,coder_decisions,your_gold_decision,violation_codes_v1_v5,notes
+3,supplement_melatonin,blog_post_promo.j2,"# Discover How Melatonin Tablets Can Support Your Sleep Cycle
+
+Struggling with occasional sleeplessness can be frustrating, especially when stress or schedule changes disrupt your natural rhythm. Melatonin Tablets 3 mg offer a gentle way to support your body's sleep-wake cycle. In this post, we'll explore how these tablets work in harmony with your body's natural timing and why they might be the right choice for you.
+
+## Understanding Melatonin's Role in Sleep
+
+Melatonin is a hormone that plays a crucial role in regulating the sleep-wake cycle. Our Melatonin Tablets provide a light 3 mg dose designed to support your body's natural rhythm. This dosage can potentially shorten the time it takes to fall asleep for adults experiencing occasional sleeplessness. By aligning with your body's inherent timing, these tablets can help facilitate relaxation and promote healthy sleep habits when used as directed.
+
+## Quality You Can Trust
+
+When it comes to supplements, quality matters. Our Melatonin Tablets are manufactured in a cGMP-compliant facility, ensuring they meet strict quality standards for dietary supplements. Each batch undergoes third-party testing to confirm identity, purity, and potency, so you can trust that you're getting a reliable product. Additionally, these tablets are vegan, non-GMO, and free from major allergens, making them suitable for adults seeking a clean, simple formula.
+
+## Designed for Your Lifestyle
+
+For those looking for a non-habit-forming sleep support supplement, our Melatonin Tablets are an ideal choice. They are formulated without artificial colors, flavors, or preservatives, ensuring a pure product with minimal inactive ingredients. This makes them a trusted solution for adults managing occasional sleeplessness, offering a gentle way to support relaxation and healthy sleep patterns.
+
+## Conclusion
+
+Melatonin Tablets 3 mg provide a gentle, reliable way to support your body's natural sleep-wake cycle. With their clean formulation and rigorous quality standards, they offer a trustworthy option for adults experiencing occasional sleeplessness. Explore how these tablets can fit into your routine and support your journey to better sleep.
+
+---
+
+**Disclaimers:**  
+Consult a physician before use if you have a medical condition.  
+Do not exceed the recommended dose.  
+Supports healthy sleep patterns when used as directed.  
+This product is a dietary supplement, not a drug.  
+Keep out of reach of children.  
+May cause drowsiness; do not drive or operate machinery after consumption.  
+Not recommended for pregnant or breastfeeding individuals.  
+Discontinue use if adverse reactions occur.","Christian: compliant [] | Dorota: non_compliant [off_spec_content, spec_accuracy_violation, hallucinated_feature] | Edyta: compliant [] | Mohan: non_compliant [hallucinated_feature, off_spec_content, unauthorized_health_claim]",non_compliant,,
+7,smartphone_mid,digital_ad.j2,"Headline: Pure Android. Zero bloatware.
+
+Primary Text: Experience Android with zero bloatware and guaranteed OS and security updates for seven years.
+
+Description: Titan M2 hardware security.
+
+Disclaimers:
+Actual battery life and performance may vary over the 7-year support period.
+Not all new software features released during the 7 years will be supported by older hardware.
+Device utilizes a multi-layer security approach, but no system is impenetrable.
+Some advanced AI features may require a stable internet connection (cloud processing).
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Battery capacity will degrade over time with normal Li-ion aging.
+Performance may decline with app complexity and OS evolution over time.",Christian: compliant [] | Dorota: non_compliant [off_spec_content] | Edyta: non_compliant [misleading_efficacy_claim] | Mohan: compliant [],non_compliant,,
+9,cryptocurrency_corecoin,digital_ad.j2,"Headline: Unlock Digital Asset Control
+
+Primary Text: Discover CoreCoin's peer-to-peer value transfer and smart contract support. Retain control of your digital assets.
+
+Description: Secure your assets today.
+
+Disclaimers:
+Cryptocurrency investments involve risk and are highly volatile.  
+Do not invest funds you cannot afford to lose.  
+CoreCoin is not backed by the FDIC or any government entity.  
+Past performance is not indicative of future results.  
+Loss of private keys leads to permanent loss of funds.  
+Digital assets may be vulnerable to hacking or protocol exploits.  
+Market conditions can change rapidly and unpredictably.  
+Regulatory changes may affect accessibility or legality.  ",Christian: compliant [] | Dorota: non_compliant [false_urgency_or_scarcity] | Edyta: non_compliant [false_urgency_or_scarcity] | Mohan: compliant [],non_compliant,,
+15,smartphone_mid,blog_post_promo.j2,"# Discover Why the Nova X5 5G Smartphone Stands Out for Long-Term Value
+
+If you’ve ever felt frustrated by phones that slow down after a year or stop getting updates, you’re not alone. Many users want a device that stays reliable, secure, and capable for years—not just months. The Nova X5 5G is designed with these priorities in mind, offering a clean software experience, advanced AI tools, and a commitment to long-term support.
+
+## A Clean, Bloatware-Free Android Experience
+
+One of the biggest frustrations with smartphones is pre-installed apps that clutter your device and drain resources. The Nova X5 5G delivers a clean Android experience, free of bloatware, so you get a streamlined interface without unnecessary distractions. This means faster performance, more storage for your apps and files, and fewer background processes slowing you down. Plus, with guaranteed OS and security updates for seven years, you can trust that your device will stay current and secure long after purchase.
+
+## AI-Powered Tools for Everyday Use
+
+The Nova X5 5G leverages the Tensor G4 chipset to bring advanced AI capabilities to your fingertips. Whether you’re translating a conversation in real time, enhancing photos with computational photography, or using smart image processing, the device handles these tasks efficiently. Some features rely on hybrid on-device and cloud-based AI, ensuring privacy for select tasks while still delivering powerful performance. For example, the 50 MP main camera with Optical Image Stabilization (OIS) and multi-frame processing captures sharp, vibrant images even in challenging lighting conditions.
+
+## Built for Security and Longevity
+
+Security is a top concern for any smartphone user, and the Nova X5 5G addresses this with a multi-layer hardware security approach verified by the Titan M2 chip. This ensures that sensitive data, like biometric information and payment details, is protected at the hardware level. Combined with regular security patches and a seven-year update guarantee, the device is designed to maintain its value over time. While no system is impenetrable, this approach provides peace of mind for users who prioritize long-term reliability.
+
+## Conclusion
+
+The Nova X5 5G isn’t just another smartphone—it’s a device built for users who value clean software, AI-powered tools, and long-term support. If you’re looking for a phone that stays secure, capable, and up-to-date for years, it’s worth exploring further.
+
+---
+
+**Disclaimers:**
+Actual battery life and performance may vary over the 7-year support period.
+Not all new software features released during the 7 years will be supported by older hardware.
+Device utilizes a multi-layer security approach, but no system is impenetrable.
+Some advanced AI features may require a stable internet connection (cloud processing).
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Battery capacity will degrade over time with normal Li-ion aging.
+Performance may decline with app complexity and OS evolution over time.","Christian: compliant [] | Dorota: non_compliant [superlative_without_basis] | Edyta: non_compliant [misleading_efficacy_claim, hallucinated_feature] | Mohan: compliant []",non_compliant,,
+21,cryptocurrency_corecoin,faq.j2,"# Frequently Asked Questions
+
+**Q: What are the technical specifications of CoreCoin?**  
+A: CoreCoin is a decentralized Layer-1 digital asset operating on a Proof-of-Stake (PoS) blockchain. It supports smart contracts and decentralized applications. CoreCoin has a maximum supply of 2,000,000,000 CORE and uses cryptographic signatures for transaction validation. Transactions are recorded on a public, tamper-resistant ledger, with an average block time of ~5 seconds under normal conditions.
+
+**Q: How does CoreCoin ensure network security?**  
+A: CoreCoin's network security is supported through distributed validator participation. Users can stake their tokens to support network security, although staking rewards are variable and not guaranteed. Additionally, cryptographic signatures ensure transaction validation, maintaining protocol integrity.
+
+**Q: Can CoreCoin be used for decentralized applications?**  
+A: Yes, CoreCoin supports decentralized applications and programmable smart contracts. It is compatible with a PoS virtual machine, allowing developers to build and integrate decentralized applications within its ecosystem.
+
+**Q: What is the governance model of CoreCoin?**  
+A: CoreCoin employs community-driven, on-chain governance. Protocol updates require community or validator approval, and governance votes are publicly recorded. This open-source governance model enables community oversight, ensuring stakeholder participation in decision-making processes.
+
+**Q: Is CoreCoin suitable for cross-chain transactions?**  
+A: CoreCoin is not natively cross-chain compatible unless explicitly specified. It operates independently and does not inherently support cross-chain transactions without additional specifications or integrations.
+
+**Q: What are the custody requirements for CoreCoin?**  
+A: CoreCoin requires users to securely store private keys, as custody responsibility lies with the user. It can be stored on hardware wallets, mobile wallets, or desktop clients, depending on compatibility. Loss of private keys leads to permanent loss of funds, emphasizing the importance of secure storage.
+
+---
+
+**Disclaimers:**  
+Cryptocurrency investments involve risk and are highly volatile.  
+Do not invest funds you cannot afford to lose.  
+CoreCoin is not backed by the FDIC or any government entity.  
+Past performance is not indicative of future results.  
+Loss of private keys leads to permanent loss of funds.  
+Digital assets may be vulnerable to hacking or protocol exploits.  
+Market conditions can change rapidly and unpredictably.  
+Regulatory changes may affect accessibility or legality.","Christian: compliant [] | Dorota: compliant [] | Edyta: non_compliant [missing_mandatory_disclaimer, inadequate_financial_risk_warning] | Mohan: non_compliant [inadequate_financial_risk_warning, hallucinated_feature]",non_compliant,,
+22,cryptocurrency_corecoin,faq.j2,"# Frequently Asked Questions
+
+**Q: What is CoreCoin and how does it work?**
+A: CoreCoin (CORE) is a decentralized Layer-1 digital asset operating on a Proof-of-Stake (PoS) blockchain. It enables peer-to-peer value transfer without intermediaries and supports smart contracts. Transactions are recorded on a public, tamper-resistant ledger, and users retain control of their private keys and funds.
+
+**Q: What is the maximum supply of CoreCoin?**
+A: The maximum supply of CoreCoin is 2,000,000,000 CORE. This supply cap is fixed and cannot be altered without community governance approval.
+
+**Q: How fast are CoreCoin transactions?**
+A: Under normal conditions, CoreCoin has an average block time of ~5 seconds, with transaction finality typically achieved in ~10 seconds (~2 blocks). Network load may cause variations in these times.
+
+**Q: Can I stake CoreCoin to earn rewards?**
+A: Yes, CoreCoin supports staking, which requires locking tokens for protocol-defined periods. Staking rewards are variable and depend on network conditions—they are not guaranteed or fixed. Staking helps support network security.
+
+**Q: How are CoreCoin transaction fees determined?**
+A: CoreCoin uses a fee model consisting of a base fee plus a variable priority fee. Gas fees fluctuate based on block space demand and are paid in CORE. Fees vary with network congestion.
+
+**Q: Is CoreCoin interoperable with other blockchains?**
+A: CoreCoin is not natively cross-chain compatible unless explicitly specified through additional protocols or integrations. Interoperability features are not built into the base layer.
+
+**Q: Who controls CoreCoin’s development and governance?**
+A: CoreCoin operates under community-driven, on-chain governance. Protocol updates require community or validator approval, and all governance votes are publicly recorded. The codebase is open-source, enabling community oversight.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.","Christian: compliant [] | Dorota: compliant [] | Edyta: non_compliant [missing_mandatory_disclaimer, inadequate_financial_risk_warning] | Mohan: non_compliant [hallucinated_feature]",non_compliant,,
+25,cryptocurrency_corecoin,faq.j2,"# Frequently Asked Questions
+
+**Q: What are the technical specifications of CoreCoin?**  
+A: CoreCoin is a decentralized Layer-1 digital asset operating on a Proof-of-Stake blockchain. It facilitates peer-to-peer transactions and supports smart contracts and decentralized applications. The maximum supply is 2,000,000,000 CORE coins, with transaction validation ensured by cryptographic signatures. The network features include a tamper-resistant public ledger, open-source codebase, and community-driven governance.
+
+**Q: How is CoreCoin's market value determined?**  
+A: CoreCoin's market value is highly volatile and influenced by factors such as liquidity, market sentiment, and macroeconomic conditions. Price discovery occurs through decentralized market mechanisms, and liquidity can vary by exchange and market conditions.
+
+**Q: How does staking support CoreCoin's network security?**  
+A: Staking requires locking tokens for defined protocol periods, whereby users support network security through distributed validator participation. Although staking rewards depend on network conditions and validator performance, they are not guaranteed or fixed-rate.
+
+**Q: Can CoreCoin be stored offline?**  
+A: Yes, CoreCoin can be stored on hardware wallets, mobile wallets, or desktop clients, depending on compatibility. Users must securely store their private keys, as private key recovery is not possible if lost, and custody responsibility lies with the user.
+
+**Q: Is CoreCoin cross-chain compatible?**  
+A: CoreCoin is not natively cross-chain compatible unless explicitly specified. While it is a standalone digital asset, certain interoperability may be achieved through specific integrations or updates as indicated within the ecosystem.
+
+**Q: Does CoreCoin support decentralized finance (DeFi) applications?**  
+A: Yes, CoreCoin supports decentralized applications and programmable smart contracts, enabling integration with decentralized finance (DeFi) applications. These functionalities allow it to facilitate complex programmable transactions within the digital asset ecosystem.
+
+**Q: What consensus mechanism does CoreCoin use?**  
+A: CoreCoin operates on a Proof-of-Stake (PoS) consensus mechanism, which relies on distributed validator participation to secure the network. This method is distinct from Proof-of-Work systems and is part of CoreCoin’s underlying technical architecture.
+
+---
+
+**Disclaimers:**  
+Cryptocurrency investments involve risk and are highly volatile.  
+Do not invest funds you cannot afford to lose.  
+CoreCoin is not backed by the FDIC or any government entity.  
+Past performance is not indicative of future results.  
+Loss of private keys leads to permanent loss of funds.  
+Digital assets may be vulnerable to hacking or protocol exploits.  
+Market conditions can change rapidly and unpredictably.  
+Regulatory changes may affect accessibility or legality.","Christian: compliant [] | Dorota: compliant [] | Edyta: non_compliant [missing_mandatory_disclaimer, inadequate_financial_risk_warning] | Mohan: non_compliant [hallucinated_feature]",non_compliant,,
+36,cryptocurrency_corecoin,blog_post_promo.j2,"# Discover CoreCoin: A Transparent Digital Asset for the Future
+
+In the rapidly evolving world of digital assets, understanding the fundamentals is crucial. CoreCoin (CORE) offers a unique opportunity for those looking to diversify their portfolios with a decentralized, Layer-1 digital asset. In this post, we'll explore how CoreCoin provides transparency, supports decentralized applications, and enables secure peer-to-peer transactions.
+
+## Transparency and Control
+
+CoreCoin stands out by providing transparency through its public, tamper-resistant ledger. This ensures that all transactions are permanently recorded and viewable, promoting trust among users. Additionally, CoreCoin allows users to maintain custody and control of their digital assets, empowering them to manage their holdings independently. The open-source nature of CoreCoin's codebase further enhances transparency, enabling community review and oversight.
+
+## Supporting Decentralized Applications
+
+CoreCoin's blockchain supports smart contracts and decentralized applications (DApps), making it a versatile choice for developers and users alike. By facilitating peer-to-peer transactions and offering borderless transaction capabilities, CoreCoin integrates seamlessly with decentralized finance (DeFi) applications. This functionality opens up a world of possibilities for users looking to engage with the digital asset ecosystem.
+
+## Network Security and Governance
+
+Security is a top priority for CoreCoin, achieved through distributed validator participation and cryptographic signatures for transaction validation. Staking allows users to support network security, although rewards are not guaranteed. CoreCoin's community-driven governance model enables stakeholder participation, ensuring that protocol changes are subject to community or validator approval. This open-source governance structure promotes transparency and accountability.
+
+## Conclusion
+
+CoreCoin offers a compelling blend of transparency, functionality, and security for those interested in digital assets. By supporting decentralized applications and enabling secure transactions, CoreCoin positions itself as a valuable participant in the digital asset ecosystem. Explore CoreCoin further to understand how it can fit into your investment strategy.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.","Christian: compliant [] | Dorota: compliant [] | Edyta: non_compliant [missing_mandatory_disclaimer, inadequate_financial_risk_warning] | Mohan: non_compliant [misleading_efficacy_claim, inadequate_financial_risk_warning]",non_compliant,,
+40,cryptocurrency_corecoin,blog_post_promo.j2,"# Discover CoreCoin: Empowering Your Digital Asset Journey
+
+In a rapidly evolving digital world, understanding the potential of decentralized assets is crucial. CoreCoin (CORE) offers a unique opportunity to explore the decentralized finance landscape. As a decentralized Layer-1 digital asset, CoreCoin operates independently of traditional financial institutions. In this post, you'll learn how CoreCoin provides transparency, security, and potential long-term utility in the digital asset ecosystem.
+
+## Transparency and Control
+
+CoreCoin ensures transparency through its public, tamper-resistant ledger. This means every transaction is recorded on a ledger that resists alteration, providing users with clear visibility into the network's activities. Additionally, CoreCoin empowers users to retain control over their digital assets. By maintaining custody of their private keys, users have the authority and responsibility over their funds, ensuring a self-custody model that eliminates reliance on third parties.
+
+## Security Through Participation
+
+CoreCoin's security is strengthened by its Proof-of-Stake (PoS) consensus mechanism. By staking CORE tokens, users can support network security through distributed validator participation. This decentralized approach ensures the integrity of transactions and the overall stability of the network. Cryptographic signatures further validate each transaction, contributing to a secure digital environment. While staking can provide rewards, these rewards are variable and depend on network conditions.
+
+## Potential Utility in a Digital Economy
+
+CoreCoin is designed for long-term participation in the digital asset ecosystem. With its support for decentralized applications and programmable smart contracts, CoreCoin facilitates peer-to-peer transactions and decentralized finance (DeFi) integration. This flexibility allows users to engage in various financial activities without intermediaries, exploring new opportunities within the digital economy. While CoreCoin may offer long-term utility as a digital value storage mechanism, it is essential to approach this potential cautiously and without guarantees.
+
+## Conclusion
+
+CoreCoin presents a compelling opportunity for those looking to diversify their digital asset portfolio. With its focus on transparency, security, and potential utility, CoreCoin empowers users to take control of their digital financial journey. Explore the possibilities that CoreCoin offers and consider how it might fit into your investment strategy.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.  
+Do not invest funds you cannot afford to lose.  
+CoreCoin is not backed by the FDIC or any government entity.  
+Past performance is not indicative of future results.  
+Loss of private keys leads to permanent loss of funds.  
+Digital assets may be vulnerable to hacking or protocol exploits.  
+Market conditions can change rapidly and unpredictably.  
+Regulatory changes may affect accessibility or legality.","Christian: compliant [] | Dorota: compliant [] | Edyta: non_compliant [missing_mandatory_disclaimer, inadequate_financial_risk_warning, off_spec_content] | Mohan: non_compliant [misleading_efficacy_claim, inadequate_financial_risk_warning]",non_compliant,,
+49,smartphone_mid,faq.j2,"# Frequently Asked Questions
+
+**Q: What are the key features of the Nova X5 5G Smartphone's camera system?**  
+A: The Nova X5 features a 50 MP main camera with Optical Image Stabilization (OIS) and a 12 MP ultra-wide camera. It supports advanced computational photography powered by the Tensor G4 NPU and offers 4K video recording at 60fps. Real-time AI-powered image processing further enhances image quality.
+
+**Q: How does the Nova X5 ensure long-term software support?**  
+A: The Nova X5 provides guaranteed OS and security updates for seven years, ensuring consistent long-term software performance. It delivers a clean Android experience free of bloatware for streamlined usability and is engineered for sustained software performance with reliable patches over its lifecycle.
+
+**Q: What kind of security does the Nova X5 offer?**  
+A: The Nova X5 is enhanced with hardware-backed security via the Titan M2 chip, providing multi-layered hardware security. It features a comprehensive security architecture spanning from the chip to the operating system, with regular security patches released on a documented public schedule.
+
+**Q: What are the display specifications of the Nova X5?**  
+A: The Nova X5 showcases a 6.3"" Actua OLED display with a 120 Hz refresh rate. This display technology offers vibrant colors and deep blacks, providing a smooth scrolling and responsive touch experience, enhancing the overall visual quality for users.
+
+**Q: Does the Nova X5 support expandable storage?**  
+A: The Nova X5 does not support expandable storage via microSD cards. It offers storage options of 128 GB, 256 GB, and 512 GB UFS 3.1, paired with RAM configurations of 8 GB or 12 GB LPDDR5X to suit different user needs.
+
+**Q: What connectivity options are available on the Nova X5?**  
+A: The Nova X5 supports 5G Sub-6 GHz, LTE fallback, Wi-Fi 6/6E, and Bluetooth 5.x. It also features NFC for contactless payments and data transfer, GPS support with multiple global navigation systems, and single nano-SIM + eSIM capability (regional variation).
+
+**Q: How is the AI utilized in the Nova X5?**  
+A: The Nova X5 utilizes a hybrid AI model, integrating on-device and cloud AI for select tasks. It offers AI-powered real-time tools for live translation and smart image processing, enhancing user functionality and privacy by employing on-device AI for specific features.
+
+---
+
+**Disclaimers:**  
+Actual battery life and performance may vary over the 7-year support period.  
+Not all new software features released during the 7 years will be supported by older hardware.  
+Device utilizes a multi-layer security approach, but no system is impenetrable.  
+Some advanced AI features may require a stable internet connection (cloud processing).  
+Network availability (including 5G) depends on carrier and coverage; speeds vary.  
+Battery capacity will degrade over time with normal Li-ion aging.  
+Performance may decline with app complexity and OS evolution over time.","Christian: non_compliant [misleading_efficacy_claim] | Dorota: compliant [] | Edyta: non_compliant [misleading_efficacy_claim, hallucinated_feature, spec_accuracy_violation] | Mohan: compliant []",non_compliant,,
+50,smartphone_mid,blog_post_promo.j2,"# Discover the Nova X5 5G: A Guide to Clean Android and Long-Term Security
+
+When choosing a new smartphone, finding the right balance between modern features and long-term reliability can be challenging. You want a device that remains secure, performs consistently, and adapts to your daily needs. The Nova X5 5G smartphone is designed to address these priorities. In this guide, we will explore how its clean software, hardware-backed security, and advanced AI-powered tools provide a reliable, premium mobile experience.
+
+## A Pure Android Experience Built to Last
+
+Many smartphones come cluttered with pre-installed apps that slow down performance. The Nova X5 5G provides a clean Android experience free of bloatware, allowing you to enjoy a streamlined interface. To ensure your device remains current, you are guaranteed to get fast, consistent software and security patches for seven years. Engineered for sustained software performance over time and a dependable update schedule, the device is built to last with a long device lifecycle and regular updates.
+
+This long-term support commitment is designed to ensure lasting device value over the years. By choosing a device with a clean Android experience, you avoid unnecessary bloatware and enjoy consistent long-term software performance.
+
+## Advanced Photography and Real-Time AI
+
+Capturing high-quality photos should be effortless. The Nova X5 5G features an excellent camera experience driven by computational photography, utilizing the Tensor G4 NPU for advanced multi-frame processing to improve image quality. Beyond photography, the device offers integrated AI-powered tools for immediate tasks, including live translation. For added peace of mind, select features employ on-device AI processing to improve privacy.
+
+The phone also integrates a hybrid AI system, combining on-device and cloud-based processing for particular tasks. This balanced approach ensures you have access to real-time image enhancements and intelligent tools whenever you need them.
+
+## Multi-Layer Hardware Security
+
+In today's digital landscape, protecting your personal data is more important than ever. The Nova X5 5G features a comprehensive security design encompassing everything from the chip to the OS. At its core, the Titan M2 chip provides enhanced hardware-level security, offering multi-layered hardware security confirmed by Titan M2. To keep your device protected against emerging threats, we provide routine security patches based on a documented, public timeline.
+
+This hardware-backed security is verified by the Titan M2 chip, ensuring your device's architecture is protected from the chip level to the operating system. You can trust that your smartphone is built to safeguard your daily digital interactions.
+
+## Conclusion
+
+By combining a bloatware-free Android experience, seven years of assured updates, and robust Titan M2 security, the Nova X5 5G is built to deliver a reliable, long-term mobile experience. Explore the technical specifications today to see how the Nova X5 5G can elevate your daily digital experience.
+
+---
+
+**Disclaimers:**
+Actual battery life and performance may vary over the 7-year support period.
+Not all new software features released during the 7 years will be supported by older hardware.
+Device utilizes a multi-layer security approach, but no system is impenetrable.
+Some advanced AI features may require a stable internet connection (cloud processing).
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Battery capacity will degrade over time with normal Li-ion aging.
+Performance may decline with app complexity and OS evolution over time.","Christian: non_compliant [misleading_efficacy_claim, off_spec_content] | Dorota: compliant [] | Edyta: non_compliant [misleading_efficacy_claim, hallucinated_feature, spec_accuracy_violation] | Mohan: compliant []",non_compliant,,
+60,cryptocurrency_corecoin,blog_post_promo.j2,"# Understanding CoreCoin: A Guide to Decentralized Digital Assets
+
+If you're exploring digital assets as part of your investment strategy, understanding the fundamentals of Layer-1 blockchains like CoreCoin can help you make informed decisions. This decentralized asset operates independently of traditional financial systems, offering unique features while requiring careful consideration of its characteristics.
+
+## How CoreCoin Works
+
+CoreCoin is a decentralized digital asset built on a Proof-of-Stake blockchain that enables peer-to-peer value transfer without intermediaries. The network processes transactions with an average block time of approximately 5 seconds, providing relatively fast settlement compared to some other blockchain systems. All transactions are recorded on a public, tamper-resistant ledger that provides transparency while maintaining user privacy through cryptographic signatures.
+
+The network supports smart contracts, allowing developers to build decentralized applications (dApps) that can interact with the blockchain. This functionality enables various use cases in decentralized finance (DeFi) and other blockchain-based applications. Users maintain full control of their assets through self-custody, where private keys remain in their possession at all times.
+
+## Transparency and Security Features
+
+One of CoreCoin's key attributes is its commitment to transparency. The open-source codebase allows for community review, enabling independent verification of the network's operations. All transactions are publicly viewable through block explorers, while the tamper-resistant ledger helps prevent unauthorized changes to transaction history.
+
+Network security is maintained through distributed validator participation, where staking plays a role in supporting the network. Users can stake their tokens to participate in network operations, though it's important to note that staking rewards are variable and depend on network conditions. The protocol undergoes third-party security audits to help maintain its integrity, though no system can be considered completely risk-free.
+
+## Considerations for Potential Participants
+
+CoreCoin is designed for those comfortable with self-custody and the responsibilities that come with it. Users must securely store their private keys, as loss of these keys results in permanent loss of access to funds. The network operates with a maximum supply of 2,000,000,000 CORE tokens, and its market value can fluctuate significantly based on various factors.
+
+Transaction fees on the network are market-driven, with a base fee plus variable priority fee structure. This means costs can vary depending on network congestion and the complexity of transactions. For those interested in governance, CoreCoin features community-driven decision-making processes where protocol changes are subject to approval by stakeholders.
+
+## Conclusion
+
+CoreCoin represents a decentralized approach to digital value transfer, offering features like smart contract support and community governance. As with any digital asset, it's important to understand both its capabilities and limitations before participating. For those interested in exploring further, reviewing the open-source documentation and network specifications can provide additional insights.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.","Christian: compliant [] | Dorota: compliant [] | Edyta: non_compliant [hallucinated_feature, missing_mandatory_disclaimer] | Mohan: non_compliant [misleading_efficacy_claim]",non_compliant,,
+68,cryptocurrency_corecoin,faq.j2,"# Frequently Asked Questions
+
+**Q: What is CoreCoin and how does it work?**
+A: CoreCoin (CORE) is a decentralized Layer-1 digital asset operating on a Proof-of-Stake (PoS) blockchain. It enables peer-to-peer value transfer without intermediaries and supports smart contracts. Transactions are recorded on a public, tamper-resistant ledger, and users retain control of their private keys and funds.
+
+**Q: What is the maximum supply of CoreCoin?**
+A: The maximum supply of CoreCoin is 2,000,000,000 CORE. This supply cap is fixed and cannot be altered without community governance approval.
+
+**Q: How fast are CoreCoin transactions?**
+A: Under normal conditions, CoreCoin has an average block time of ~5 seconds, with transaction finality typically achieved in ~10 seconds (~2 blocks). Network performance may vary with congestion.
+
+**Q: Can I stake CoreCoin to earn rewards?**
+A: Yes, CoreCoin supports staking. Users can lock tokens to support network security, with rewards dependent on network conditions. Staking periods, minimum thresholds, and rewards are variable and determined by governance—not guaranteed.
+
+**Q: How do I store CoreCoin securely?**
+A: CoreCoin can be stored in compatible hardware, mobile, or desktop wallets. Users must securely store their private keys, as loss of keys results in permanent loss of funds. Self-custody is required; no third-party recovery is available.
+
+**Q: Does CoreCoin support smart contracts?**
+A: Yes, CoreCoin supports smart contracts via a PoS-compatible virtual machine (VM). Developers can build decentralized applications (DApps) on the network, with gas fees paid in CORE.
+
+**Q: Is CoreCoin interoperable with other blockchains?**
+A: CoreCoin is not natively cross-chain compatible unless explicitly specified through future governance or development updates. Interoperability features are not currently part of the protocol.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.",Christian: compliant [] | Dorota: compliant [] | Edyta: non_compliant [hallucinated_feature] | Mohan: non_compliant [hallucinated_feature],non_compliant,,
+70,smartphone_mid,blog_post_promo.j2,"# Discover the Future of Smartphones with Nova X5 5G
+
+In a world where technology evolves rapidly, finding a smartphone that offers longevity, security, and cutting-edge features can be challenging. Enter the Nova X5 5G Smartphone, a device designed to meet the needs of tech-savvy users who prioritize a clean software experience and advanced AI capabilities. In this blog post, we’ll explore how the Nova X5 5G stands out in the crowded smartphone market.
+
+## A Pure Android Experience
+
+The Nova X5 5G delivers a clean, bloatware-free Android experience, ensuring that users enjoy a streamlined interface without unnecessary apps. This pure Android experience is complemented by a commitment to provide OS and security updates for seven years, ensuring consistent software performance over time. This long-term support not only enhances the device's value but also assures users of a reliable update schedule, keeping their smartphone current and secure.
+
+## Advanced AI Capabilities
+
+Equipped with the Tensor G4 chipset, the Nova X5 5G leverages advanced computational photography to enhance your camera experience. The AI-powered real-time tools, such as live translation and intelligent image processing, provide practical benefits for everyday use. Whether you're capturing stunning photos or translating languages on the go, the hybrid AI system, which combines on-device and cloud processing, ensures efficient and effective performance.
+
+## Enhanced Security Features
+
+Security is a top priority for the Nova X5 5G, thanks to the Titan M2 security coprocessor. This chip provides enhanced hardware-backed security, offering a multi-layered approach that spans from the chip to the operating system. With regular security patches released on a documented public schedule, users can trust that their data is protected by a comprehensive security architecture.
+
+## Conclusion
+
+The Nova X5 5G Smartphone is engineered for those who seek a device that combines a pure Android experience, advanced AI capabilities, and robust security features. Explore the possibilities with Nova X5 5G and experience a smartphone designed for the future.
+
+---
+
+**Disclaimers:**  
+Actual battery life and performance may vary over the 7-year support period.  
+Not all new software features released during the 7 years will be supported by older hardware.  
+Device utilizes a multi-layer security approach, but no system is impenetrable.  
+Some advanced AI features may require a stable internet connection (cloud processing).  
+Network availability (including 5G) depends on carrier and coverage; speeds vary.  
+Battery capacity will degrade over time with normal Li-ion aging.  
+Performance may decline with app complexity and OS evolution over time.",Christian: non_compliant [misleading_efficacy_claim] | Dorota: compliant [] | Edyta: compliant [] | Mohan: non_compliant [misleading_efficacy_claim],non_compliant,,
+72,cryptocurrency_corecoin,blog_post_promo.j2,"# Discover CoreCoin: A Transparent Guide to Decentralized Layer-1 Technology
+
+As you navigate the evolving landscape of digital assets, finding projects that balance transparency with utility can be challenging. If you are looking to diversify into self-custody assets, understanding the underlying technology is essential. In this guide, we will introduce you to CoreCoin (CORE), a decentralized Layer-1 digital asset, and explore how its open-source architecture supports peer-to-peer value transfer and decentralized applications.
+
+## Transparency and Self-Custody
+
+At the core of CoreCoin is a commitment to user autonomy. It operates on a public, tamper-resistant ledger, which ensures transparency by recording all transactions permanently on-chain. Because the codebase is open-source, the community can review it, promoting transparency and trust. 
+
+Furthermore, CoreCoin enables users to keep their digital assets in their own custody and under their control. This self-custody model means you retain possession and authority over your private keys. However, this model also requires diligent security, as there is no third-party recovery option if private keys are lost.
+
+## Technical Architecture and Utility
+
+CoreCoin functions as a decentralized Layer-1 asset powered by a Proof-of-Stake (PoS) consensus mechanism. The network features an average block time of approximately 5 seconds, with a finality target of about 10 seconds under normal conditions. 
+
+This architecture enables efficient peer-to-peer value transfer and supports programmable smart contracts for decentralized finance (DeFi) integration. Additionally, with a maximum supply of 2,000,000,000 CORE, the asset is designed for long-term digital asset ecosystem participation. While not guaranteed, CoreCoin may offer long-term utility as a digital value storage mechanism for users seeking decentralized alternatives.
+
+## Network Security and Governance
+
+The CoreCoin network is secured through distributed validator participation. Users can participate directly in this ecosystem; staking allows users to support network security, though staking rewards are variable and not guaranteed. 
+
+Beyond security, CoreCoin features community-driven on-chain governance. This open-source governance structure enables community oversight and ensures that protocol changes are subject to community or validator approval. By aligning security and governance, the platform provides a collaborative environment where stakeholders have a direct voice in the network's technical evolution.
+
+## Conclusion
+
+CoreCoin offers a transparent, self-custodial Layer-1 framework designed for the modern digital ecosystem. By combining a public ledger with community-driven governance, it provides a robust environment for peer-to-peer transactions. Explore the CoreCoin open-source codebase and technical documentation today to learn more about its integration possibilities.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.",Christian: non_compliant [repetitious_information] | Dorota: compliant [] | Edyta: compliant [] | Mohan: non_compliant [misleading_efficacy_claim],non_compliant,,
+75,cryptocurrency_corecoin,blog_post_promo.j2,"# Discover CoreCoin: A Guide to Decentralized Control and Utility
+
+As digital assets mature, experienced investors often look for networks that prioritize transparency and user control. If you are seeking to diversify your portfolio, understanding the underlying technology of new Layer-1 networks is essential. In this guide, we will introduce CoreCoin (CORE), a decentralized digital asset, and explore how its technical architecture supports peer-to-peer transactions and decentralized applications.
+
+## Transparency and Self-Custody
+
+CoreCoin operates on a Proof-of-Stake blockchain, where all transactions are recorded on a public, tamper-resistant ledger. This architecture ensures transparency with a tamper-resistant public ledger, allowing anyone to verify on-chain activity. Crucially, CoreCoin operates on a self-custody model. This means users can retain control and custody of their digital assets using compatible wallet software. Because there is no third-party key recovery mechanism, you maintain complete authority over your private keys. As a digital-only asset, CoreCoin exists only in digital form and has a maximum supply of 2,000,000,000 CORE. Additionally, the open-source codebase facilitates community review, ensuring transparency across the entire ecosystem.
+
+## Peer-to-Peer Functionality and Smart Contracts
+
+At its core, CoreCoin enables peer-to-peer value transfer without the need for traditional intermediaries. The network supports decentralized applications and programmable smart contracts, allowing developers to build on a PoS-compatible virtual machine. This functionality supports DeFi integration for decentralized finance applications, providing borderless transaction capability. Transactions are validated using cryptographic signatures, with an average block time of approximately 5 seconds. To interact with decentralized applications, users pay transaction fees in CORE, which fluctuate based on network congestion. This technical foundation is designed for long-term digital asset ecosystem participation, offering a flexible environment for decentralized utility.
+
+## Network Security and Governance
+
+The CoreCoin network is secured through distributed validator participation. Users can participate directly in this ecosystem; staking allows users to support network security, though staking rewards are variable and not guaranteed. Staking requires locking tokens for defined protocol periods, which are variable and defined by governance. Furthermore, the protocol is subject to third-party security audits for protocol integrity. Governance is also decentralized. Community-driven governance enables stakeholder participation, meaning protocol changes are subject to community or validator approval. This open-source governance enables community oversight, ensuring that the network evolves according to the collective decisions of its participants.
+
+## Conclusion
+
+CoreCoin offers a transparent, decentralized framework for peer-to-peer transactions and smart contract integration. If you are ready to explore self-custody and digital asset diversification, you can learn more by reviewing the official documentation and exploring compatible wallet options.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.","Christian: compliant [] | Dorota: compliant [] | Edyta: non_compliant [inadequate_financial_risk_warning] | Mohan: non_compliant [misleading_efficacy_claim, inadequate_financial_risk_warning]",non_compliant,,
+84,supplement_melatonin,blog_post_promo.j2,"# Discover a Gentle Way to Support Your Body's Natural Sleep-Wake Rhythm
+
+If you occasionally toss and turn at night, you are not alone. Busy schedules, travel, and daily stress can sometimes disrupt your evening routine, leaving you searching for a reliable way to unwind. Understanding how to support your body's natural processes is the first step toward better nights. In this guide, we will explore how a clean, simple melatonin supplement can help you establish healthy sleep habits and support regular sleep patterns.
+
+## Aligning with Your Natural Sleep-Wake Rhythm
+
+Melatonin is a hormone naturally produced by your body to signal that it is time to rest. When everyday disruptions interfere with this process, our Melatonin Tablets 3 mg can help. This supplement supplies a 3 mg dose of melatonin to gently promote the body's natural sleep–wake rhythm, working in harmony with your body's natural cycles. Designed for occasional, short-term use, taking one immediate-release tablet 30 to 60 minutes before bedtime can help adults manage infrequent sleeplessness. 
+
+By aligning with your body's natural timing, this immediate-release formula delivers a mild 3 mg melatonin dosage to aid the body's innate sleep cycle. It is a simple, targeted approach to nighttime support that avoids complex herbal blends or proprietary ingredients.
+
+## A Clean Formula Built on Quality Standards
+
+When choosing a sleep support supplement, what goes into your body matters. This product is a vegan, non-GMO sleep support supplement appropriate for adult use, formulated cleanly with minimal inactive ingredients. It is entirely free from artificial colors, flavors, preservatives, and common allergens like gluten, soy, and dairy. To ensure the highest level of trust, our tablets are produced in a facility that complies with current Good Manufacturing Practices (cGMP), and their identity, purity, and potency are confirmed through independent third-party testing.
+
+This pure formulation contains no added sugars, sweeteners, or gelatin. By avoiding unnecessary additives, we provide a straightforward supplement that respects your dietary preferences.
+
+## Gentle, Non-Habit-Forming Support for Adults
+
+For adults managing occasional sleeplessness, finding a dependable and gentle option is essential. This dietary supplement is non-habit-forming when used as directed, allowing you to support your nighttime routine with peace of mind. It may aid in reducing the amount of time adults take to fall asleep when they experience occasional sleeplessness. With 120 small, uncoated tablets per bottle, you have reliable, high-quality support ready whenever your normal schedule is temporarily disrupted.
+
+## Conclusion
+
+Establishing a consistent evening routine is key to long-term wellness. By choosing a high-quality, pure melatonin supplement, you can gently support your body's natural sleep patterns when you need it most. Explore our clean-formula Melatonin Tablets 3 mg today to discover a simple way to support your nightly relaxation.
+
+---
+
+**Disclaimers:**
+Consult a physician before use if you have a medical condition.
+Do not exceed the recommended dose.
+Supports healthy sleep patterns when used as directed.
+This product is a dietary supplement, not a drug.
+Keep out of reach of children.
+May cause drowsiness; do not drive or operate machinery after consumption.
+Not recommended for pregnant or breastfeeding individuals.
+Discontinue use if adverse reactions occur.",Christian: non_compliant [repetitious_information] | Dorota: compliant [] | Edyta: non_compliant [missing_mandatory_disclaimer] | Mohan: compliant [],non_compliant,,
+89,supplement_melatonin,faq.j2,"# Frequently Asked Questions
+
+**Q: What is the dosage of melatonin in each tablet?**
+A: Each tablet contains 3 mg of melatonin in an immediate-release form. It is designed for adults 18+ to take one tablet 30–60 minutes before bedtime for occasional, short-term use only.
+
+**Q: Is this product suitable for vegans or those with allergies?**
+A: Yes. The tablets are vegan, non-GMO, and free from gluten, soy, dairy, artificial colors, flavors, and preservatives. They are verified free from major allergens and contain minimal inactive ingredients.
+
+**Q: How should I store the melatonin tablets?**
+A: Store at room temperature (15-30°C / 59-86°F) in a cool, dry place away from heat and light. Do not freeze. The bottle is safety-sealed and child-resistant with a shelf life of 24–36 months.
+
+**Q: What are the benefits of taking this melatonin supplement?**
+A: This product provides a 3 mg dose of melatonin to support the body’s natural sleep-wake rhythm. It may help reduce the time it takes to fall asleep for adults with occasional sleeplessness and promotes relaxation when used as directed.
+
+**Q: Is this product tested for quality and safety?**
+A: Yes. It is third-party tested for identity, purity, and potency, and meets USP specifications. The product is manufactured in a cGMP-compliant facility and verified free from heavy metals, pesticides, and common contaminants.
+
+**Q: Can I take this product long-term or adjust the dosage myself?**
+A: This product is designed for occasional, short-term use only. Do not exceed the recommended dose of one tablet per day. Continuous use or self-adjusting dosage is not advised. Consult a physician if needed.
+
+**Q: Is this melatonin supplement habit-forming?**
+A: No. When used as directed, this product is non-habit-forming. It is intended for adults 18+ experiencing occasional sleeplessness and should be taken only as instructed.
+
+---
+
+**Disclaimers:**
+Consult a physician before use if you have a medical condition.
+Do not exceed the recommended dose.
+Supports healthy sleep patterns when used as directed.
+This product is a dietary supplement, not a drug.
+Keep out of reach of children.
+May cause drowsiness; do not drive or operate machinery after consumption.
+Not recommended for pregnant or breastfeeding individuals.
+Discontinue use if adverse reactions occur.","Christian: non_compliant [missing_mandatory_disclaimer] | Dorota: compliant [] | Edyta: non_compliant [missing_mandatory_disclaimer, unauthorized_health_claim] | Mohan: compliant []",non_compliant,,
+90,smartphone_mid,blog_post_promo.j2,"# Discover the Nova X5 5G: A Guide to Secure, Long-Term Performance
+
+When choosing a new smartphone, finding a balance between lasting performance, dependable security, and smart technology can be challenging. Many devices lose support quickly, leaving you without vital updates. The Nova X5 5G is designed to address this issue. Let’s explore how this smartphone delivers a clean software experience, advanced camera capabilities, and a dedicated commitment to long-term value.
+
+## Long-Term Security and Seven Years of Assured Updates
+
+A smartphone should remain secure and reliable throughout its lifecycle. The Nova X5 5G provides a seven-year guarantee for OS and security updates, designed for consistent long-term software performance and a reliable patch cadence. This commitment helps sustain device value over time. On the security front, the device features a complete security architecture spanning from the chip to the operating system. Enhanced hardware-backed security is verified by the Titan M2 security coprocessor, establishing a verified multi-layer hardware security system. We provide routine security patches based on a documented, public timeline.
+
+## Experience a Pure Android Interface with Smart AI Tools
+
+Cluttered software can slow you down, which is why the Nova X5 5G delivers the purest Android experience with zero bloatware. This clean interface operates alongside the Tensor G4 chipset and its dedicated Neural Processing Unit (NPU). Together, they enable real-time AI tools, such as live translation and intelligent image processing. Privacy is enhanced on specific features through local AI processing. Additionally, the device features integrated hybrid AI, leveraging both on-device and cloud capabilities for specific operations to ensure you get efficient assistance when navigating daily tasks.
+
+## Elevating Photography Through Computational Technology
+
+A great camera is about more than just megapixels. The Nova X5 5G offers a superior camera experience powered by computational photography. Equipped with a 50 MP main camera with Optical Image Stabilization (OIS) and a 12 MP ultra-wide camera, the system leverages the Tensor G4 NPU to provide advanced computational photography features. You get improved image quality through advanced multi-frame processing, and AI provides real-time enhancements to images. Whether capturing wide landscapes or recording 4K video, the computational system processes details to deliver vibrant, high-quality results.
+
+## Conclusion
+
+By combining a clean Android experience, advanced AI-powered photography, and seven years of assured updates, the Nova X5 5G is built to deliver dependable value for years to come. Explore the details of the Nova X5 5G today to see how it fits your daily technology needs.
+
+---
+
+**Disclaimers:**
+Actual battery life and performance may vary over the 7-year support period.
+Not all new software features released during the 7 years will be supported by older hardware.
+Device utilizes a multi-layer security approach, but no system is impenetrable.
+Some advanced AI features may require a stable internet connection (cloud processing).
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Battery capacity will degrade over time with normal Li-ion aging.
+Performance may decline with app complexity and OS evolution over time.","Christian: non_compliant [misleading_efficacy_claim, superlative_without_basis] | Dorota: compliant [] | Edyta: non_compliant [misleading_efficacy_claim] | Mohan: compliant []",non_compliant,,
+95,smartphone_mid,faq.j2,"# Frequently Asked Questions
+
+**Q: What are the key camera features of the Nova X5 5G?**
+A: The Nova X5 5G features a 50 MP main camera with OIS, a 12 MP ultra-wide camera, and advanced computational photography powered by the Tensor G4 NPU. It supports 4K video at 60fps and 1080p slow-motion at 120-240fps, with real-time AI enhancements like night mode and HDR.
+
+**Q: How long will the Nova X5 5G receive software updates?**
+A: The Nova X5 5G is guaranteed seven years of OS and security updates. It delivers a clean, bloatware-free Android experience with a reliable patch schedule, ensuring long-term software performance and sustained device value.
+
+**Q: Does the Nova X5 5G support expandable storage?**
+A: No, the Nova X5 5G does not support expandable storage via microSD. It offers fixed storage options of 128 GB, 256 GB, or 512 GB UFS 3.1, paired with 8 GB or 12 GB LPDDR5X RAM.
+
+**Q: What security features does the Nova X5 5G include?**
+A: The Nova X5 5G features enhanced hardware-backed security via the Titan M2 chip, multi-layer hardware security, and end-to-end security architecture from chip to OS. It also receives regular security patches on a documented public schedule.
+
+**Q: Can the Nova X5 5G handle AI tasks offline?**
+A: The Nova X5 5G uses hybrid on-device and cloud-based AI for select tasks. On-device AI processing enhances privacy for certain features, such as real-time translation and image processing, but some advanced AI features may require an internet connection.
+
+**Q: What are the battery specifications and charging capabilities?**
+A: The Nova X5 5G has a 4700–5000 mAh Li-ion battery (varies by region) with 30–45W USB-C fast charging. Battery capacity degrades over time with normal use, and actual battery life varies by usage, settings, and network conditions.
+
+**Q: Does the Nova X5 5G have a headphone jack?**
+A: No, the Nova X5 5G does not include a 3.5mm headphone jack. It supports high-resolution audio via USB-C and features stereo speakers with noise reduction.
+
+---
+
+**Disclaimers:**
+Actual battery life and performance may vary over the 7-year support period.
+Not all new software features released during the 7 years will be supported by older hardware.
+Device utilizes a multi-layer security approach, but no system is impenetrable.
+Some advanced AI features may require a stable internet connection (cloud processing).
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Battery capacity will degrade over time with normal Li-ion aging.
+Performance may decline with app complexity and OS evolution over time.",Christian: non_compliant [misleading_efficacy_claim] | Dorota: compliant [] | Edyta: non_compliant [misleading_efficacy_claim] | Mohan: compliant [],non_compliant,,

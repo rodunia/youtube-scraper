@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+      "error_type": "numerical",
+      "explanation": "The word 'tablets' should be singular to match the serving size of 1.",
+      "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+    },
+    {
+      "claim": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving, but may be include trace amount of wheat.",
+      "error_type": "factual",
+      "explanation": "The product specifications state that the tablets are free from gluten, soy, and dairy, and do not mention any trace amounts of wheat.",
+      "correct_value": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 3154,
+  "completion_tokens": 219,
+  "total_tokens": 3373,
+  "product_id": "supplement_melatonin",
+  "status": "success"
+}

@@ -1,0 +1,101 @@
+{
+  "materials": {
+    "material_uid": "run_id",
+    "run_id": "run_id",
+    "output_path": "output_path",
+    "product_id": "product_id",
+    "product_name": "product_name",
+    "material_type": "material_type",
+    "engine": "engine",
+    "model": "model",
+    "temperature": "temperature",
+    "time_of_day_label": "time_of_day_label",
+    "repetition_id": "repetition_id",
+    "scheduled_day_of_week": "scheduled_day_of_week",
+    "prompt": "prompt",
+    "material_text": "material_text",
+    "product_ground_truth": "product_ground_truth",
+    "expected_claims": "expected_claims",
+    "prohibited_claims": "prohibited_claims"
+  },
+  "metadata_columns": [
+    "prompt_id",
+    "temperature",
+    "run_id"
+  ],
+  "judge_assessments": [
+    {
+      "judge_name": {
+        "literal": "roberta_nli"
+      },
+      "approach": {
+        "literal": "two_stage_extraction_validation"
+      },
+      "judge_model": {
+        "literal": "roberta-large-mnli"
+      },
+      "status": "roberta_status",
+      "is_noncompliant": "roberta_noncompliant",
+      "violation_count": "roberta_violation_count",
+      "max_severity": "roberta_max_severity",
+      "raw_label": "roberta_label",
+      "rationale": "roberta_rationale",
+      "raw_payload": "roberta_raw_json"
+    },
+    {
+      "judge_name": {
+        "literal": "gpt4o"
+      },
+      "approach": {
+        "literal": "roberta_postprocess_reassessment"
+      },
+      "judge_model": {
+        "literal": "gpt-4o"
+      },
+      "status": "gpt4o_reassessment_status",
+      "is_noncompliant": "gpt4o_reassessment_noncompliant",
+      "violation_count": "gpt4o_reassessment_violation_count",
+      "max_severity": "gpt4o_reassessment_max_severity",
+      "raw_label": "gpt4o_reassessment_label",
+      "rationale": "gpt4o_reassessment_rationale",
+      "raw_payload": "gpt4o_reassessment_raw_json"
+    },
+    {
+      "judge_name": {
+        "literal": "gpt4o"
+      },
+      "approach": {
+        "literal": "direct_audit_conservative"
+      },
+      "judge_model": {
+        "literal": "gpt-4o"
+      },
+      "status": "gpt4o_direct_status",
+      "is_noncompliant": "gpt4o_direct_noncompliant",
+      "violation_count": "gpt4o_direct_violation_count",
+      "max_severity": "gpt4o_direct_max_severity",
+      "raw_label": "gpt4o_direct_label",
+      "rationale": "gpt4o_direct_rationale",
+      "raw_payload": "gpt4o_direct_raw_json"
+    },
+    {
+      "judge_name": {
+        "literal": "claude"
+      },
+      "approach": {
+        "literal": "direct_audit"
+      },
+      "judge_model": {
+        "literal": "claude"
+      },
+      "status": "claude_direct_status",
+      "is_noncompliant": "claude_direct_noncompliant",
+      "violation_count": "claude_direct_violation_count",
+      "max_severity": "claude_direct_max_severity",
+      "raw_label": "claude_direct_label",
+      "rationale": "claude_direct_rationale",
+      "raw_payload": "claude_direct_raw_json"
+    }
+  ]
+}
+

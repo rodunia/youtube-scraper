@@ -1,0 +1,7 @@
+PILOT STUDY HYPOTHESIS TESTING RESULTS
+================================================================================
+
+H1 p-value: 1.0514198130621501e-16
+H1 engine effect p-value: 0.00238055181095003
+H2 product effect p-value: 0.2854942021934862
+H3 mean CV: 0.20909864303087777

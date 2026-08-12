@@ -1,0 +1,17 @@
+================================================================================
+GREY AREA VALIDATION - SAMPLE SUMMARY
+================================================================================
+
+Total violations analyzed: 100
+
+VERDICT BREAKDOWN:
+  COMPLIANT (false positive): 84 (84.0%)
+  GREY_AREA (needs review):   16 (16.0%)
+  VIOLATION (true positive):  0 (0.0%)
+  ERROR:                      0
+
+EXTRAPOLATION TO FULL DATASET:
+  If false positive rate holds (84.0%):
+    Total NLI violations:      8649
+    Estimated true violations: 0
+    Estimated false positives: 7265

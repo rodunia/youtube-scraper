@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "It supports 60W USB-C fast charging, though charger availability may vary by region.",
+      "error_type": "numerical",
+      "explanation": "The product specifications state that the charging capability is 30\u201345W USB-C fast charging, not 60W.",
+      "correct_value": "30\u201345W USB-C fast charging"
+    },
+    {
+      "claim": "Not stated in the provided information.",
+      "error_type": "factual",
+      "explanation": "The specifications explicitly state that wireless charging is not supported.",
+      "correct_value": "The Nova X5 does not support wireless charging."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 4688,
+  "completion_tokens": 164,
+  "total_tokens": 4852,
+  "product_id": "smartphone_mid",
+  "status": "success"
+}

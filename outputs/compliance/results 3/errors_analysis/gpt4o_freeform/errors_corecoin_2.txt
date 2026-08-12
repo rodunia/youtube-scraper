@@ -1,0 +1,15 @@
+Upon reviewing the marketing text against the product specifications, I have identified the following errors:
+
+1. **Incorrect Claim:** "with an average block time of ~4 seconds."
+   - **Correction:** The average block time should be ~5 seconds.
+   - **Reason:** The specifications state that the average block time is approximately 5 seconds, not 4 seconds.
+   - **Confidence Level:** High
+
+2. **Incorrect Claim:** "including optional light-validator nodes that do not stake."
+   - **Correction:** CoreCoin does not support non-staking light validators.
+   - **Reason:** The specifications explicitly state that CoreCoin does not support non-staking light validators.
+   - **Confidence Level:** High
+
+These are the only discrepancies found between the marketing text and the product specifications. All other claims in the marketing text align with the provided specifications.
+
+If you have any further questions or need additional clarification, feel free to ask!

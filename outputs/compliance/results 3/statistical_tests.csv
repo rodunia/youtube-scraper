@@ -1,0 +1,8 @@
+test,method,statistic,p_value,result
+RQ1: People-pleasing bias (violations > 0),One-sample t-test,t = 36.369,1.9569e-212,SIGNIFICANT (p < 0.001)
+RQ2: Engine effect on compliance,Chi-square test,χ² = 17.391 (df=2),1.6735e-04,SIGNIFICANT (p < 0.001)
+RQ2: Engine effect on violation count,One-way ANOVA,F = 7.934,3.7254e-04,SIGNIFICANT (p < 0.001)
+Temperature effect on compliance,Chi-square test,χ² = 9.319 (df=2),9.4704e-03,p = 0.0095
+Temperature effect on violation count,One-way ANOVA,F = 4.389,1.2564e-02,p = 0.0126
+RQ3: Time-of-day effect on compliance,Chi-square test,χ² = 1.303 (df=2),5.2132e-01,p = 0.5213
+Product effect on compliance,Chi-square test,χ² = 673.086 (df=2),6.9387e-147,SIGNIFICANT (p < 0.001)

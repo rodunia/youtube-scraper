@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "The device additionally features a built-in antivirus engine that scans apps hourly.",
+      "error_type": "hallucination",
+      "explanation": "The product specifications do not mention a built-in antivirus engine or hourly app scanning.",
+      "correct_value": "No antivirus engine is specified in the product details."
+    },
+    {
+      "claim": "Not stated in the provided information.",
+      "error_type": "factual",
+      "explanation": "The specifications explicitly state that wireless charging is not supported.",
+      "correct_value": "The Nova X5 does not support wireless charging."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 4704,
+  "completion_tokens": 154,
+  "total_tokens": 4858,
+  "product_id": "smartphone_mid",
+  "status": "success"
+}

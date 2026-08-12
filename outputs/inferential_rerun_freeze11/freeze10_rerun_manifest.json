@@ -1,0 +1,24 @@
+{
+  "freeze_id": 11,
+  "freeze_uuid": "freeze-20260422T131415Z",
+  "freeze_name": "freeze-22-4-live-final",
+  "run_ids": [
+    11,
+    12,
+    17,
+    18,
+    20,
+    22,
+    23,
+    24
+  ],
+  "outputs_dir": "outputs/inferential_rerun_freeze11",
+  "required_outputs": {
+    "analytic_dataset": "outputs/inferential_rerun_freeze11/freeze10_analytic_response_frame.csv",
+    "model_effects": "outputs/inferential_rerun_freeze11/freeze10_model_effects.csv",
+    "crosstab": "outputs/inferential_rerun_freeze11/freeze10_cue_rate_crosstab.csv",
+    "forest_plot": "outputs/inferential_rerun_freeze11/freeze10_forest_plot.png",
+    "comparison_old_vs_new": "outputs/inferential_rerun_freeze11/freeze10_old_vs_new_comparison.csv",
+    "report": "outputs/inferential_rerun_freeze11/freeze10_rerun_report.md"
+  }
+}

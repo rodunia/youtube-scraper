@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+      "error_type": "numerical",
+      "explanation": "The word 'tablets' should be singular to match the serving size of 1.",
+      "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+    },
+    {
+      "claim": "Tablets may cause permanent drowsiness.",
+      "error_type": "factual",
+      "explanation": "The specifications state that drowsiness is temporary and intended, not permanent or long-lasting.",
+      "correct_value": "Tablets may cause temporary drowsiness."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 3154,
+  "completion_tokens": 177,
+  "total_tokens": 3331,
+  "product_id": "supplement_melatonin",
+  "status": "success"
+}

@@ -1,0 +1,23 @@
+metric,value
+freeze_name,KES-final
+freeze_id,8
+freeze_uuid,freeze-20260408T142800Z
+run_ids,"11, 18, 20, 22, 23, 24"
+instrumented_rows,222
+instrumented_positive_rows,95
+top_priority_rows,56
+top_priority_positive_rows,50
+top_priority_positive_rate,0.8928571428571429
+rest_positive_rate,0.2710843373493976
+priority_lift_top_vs_rest,3.293650793650794
+positive_capture_in_top_slice,0.5263157894736842
+disagreement_rate_top_slice,0.4642857142857143
+disagreement_rate_rest_slice,0.30120481927710846
+target_positive_share,0.8
+priority_review_depth_for_target_share,86
+random_mean_review_depth_for_target_share,176.6358
+random_p05_review_depth,164.0
+random_p95_review_depth,188.0
+review_burden_reduction_vs_random,0.5131224813995803
+random_simulations,5000
+random_seed,20260420

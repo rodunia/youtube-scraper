@@ -1,0 +1,31 @@
+{
+  "errors_detected": true,
+  "error_count": 3,
+  "errors": [
+    {
+      "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+      "error_type": "numerical",
+      "explanation": "The word 'tablets' should be singular to match the singular serving size.",
+      "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+    },
+    {
+      "claim": "Avoid using this product if you are over 18 years old.",
+      "error_type": "factual",
+      "explanation": "The product is intended for adults 18 years and older, not to be avoided by them.",
+      "correct_value": "Intended for adults 18 years and older."
+    },
+    {
+      "claim": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+      "error_type": "factual",
+      "explanation": "The specifications state that the product is tested for heavy metals including lead, arsenic, cadmium, and mercury, but do not specify a lead limit of < 0.5 ppm.",
+      "correct_value": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity, purity, and potency, including testing for heavy metals."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 3158,
+  "completion_tokens": 322,
+  "total_tokens": 3480,
+  "product_id": "supplement_melatonin",
+  "status": "success"
+}

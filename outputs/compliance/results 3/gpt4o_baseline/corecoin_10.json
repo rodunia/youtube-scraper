@@ -1,0 +1,19 @@
+{
+  "errors_detected": true,
+  "error_count": 1,
+  "errors": [
+    {
+      "claim": "Some staking tiers may offer fixed-rate returns depending on region.",
+      "error_type": "factual",
+      "explanation": "The product specifications clearly state that staking rewards are variable and NOT guaranteed or fixed-rate. Additionally, staking rewards are NOT region-based.",
+      "correct_value": "Staking rewards are variable and depend on network conditions, not fixed-rate or region-based."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 3615,
+  "completion_tokens": 111,
+  "total_tokens": 3726,
+  "product_id": "cryptocurrency_corecoin",
+  "status": "success"
+}

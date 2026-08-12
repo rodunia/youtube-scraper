@@ -1,0 +1,28 @@
+{
+  "status": "ok",
+  "generated_at_utc": "2026-04-20T20:33:19.388382+00:00",
+  "logic_version": "targeted_skeptical_queue.v1",
+  "db_path": "data/youtube_comments.db",
+  "freeze_id": 8,
+  "freeze_uuid": "freeze-20260408T142800Z",
+  "freeze_name": "KES-final",
+  "freeze_created_at": "2026-04-08T14:28:00.296519+00:00",
+  "freeze_run_ids": [
+    11,
+    18,
+    20,
+    22,
+    23,
+    24
+  ],
+  "total_comments": 33467,
+  "comments_after_resolved_and_flag_filters": 29198,
+  "comments_after_scoring_before_cap": 2394,
+  "candidate_threads_exported": 400,
+  "candidate_videos_exported": 200,
+  "candidate_channels_exported": 43,
+  "outside_freeze_comments_available": 4869,
+  "outside_freeze_videos_available": 248,
+  "outside_freeze_channels_available": 88,
+  "new_external_acquisition_executed": 0
+}

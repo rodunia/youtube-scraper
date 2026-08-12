@@ -1,0 +1,26 @@
+{
+  "freeze_id": 10,
+  "freeze_uuid": "freeze-20260422T131415Z",
+  "freeze_name": "freeze-20-4a",
+  "run_ids": [
+    11,
+    12,
+    17,
+    18,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25
+  ],
+  "outputs_dir": "outputs/inferential_rerun_freeze10",
+  "required_outputs": {
+    "analytic_dataset": "outputs/inferential_rerun_freeze10/freeze10_analytic_response_frame.csv",
+    "model_effects": "outputs/inferential_rerun_freeze10/freeze10_model_effects.csv",
+    "crosstab": "outputs/inferential_rerun_freeze10/freeze10_cue_rate_crosstab.csv",
+    "forest_plot": "outputs/inferential_rerun_freeze10/freeze10_forest_plot.png",
+    "comparison_old_vs_new": "outputs/inferential_rerun_freeze10/freeze10_old_vs_new_comparison.csv",
+    "report": "outputs/inferential_rerun_freeze10/freeze10_rerun_report.md"
+  }
+}

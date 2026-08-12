@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+      "error_type": "numerical",
+      "explanation": "The word 'tablets' should be singular to match the serving size of 1.",
+      "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+    },
+    {
+      "claim": "Melatonin should be taken every 2 hours for best results.",
+      "error_type": "factual",
+      "explanation": "This contradicts the usage instructions which state that melatonin should be taken once per 24 hours only.",
+      "correct_value": "Melatonin should be taken once per 24 hours only."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 3158,
+  "completion_tokens": 187,
+  "total_tokens": 3345,
+  "product_id": "supplement_melatonin",
+  "status": "success"
+}

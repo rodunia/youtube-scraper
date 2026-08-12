@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+      "error_type": "numerical",
+      "explanation": "The word 'tablets' should be singular to match the serving size of 1.",
+      "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+    },
+    {
+      "claim": "Do not exceed the recommended serving, and store at exactly 0\u00b0C.",
+      "error_type": "factual",
+      "explanation": "The product specifications state that the product should not be stored at 0\u00b0C or below.",
+      "correct_value": "Do not exceed the recommended serving, and store at room temperature (15-30\u00b0C / 59-86\u00b0F)."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 3153,
+  "completion_tokens": 199,
+  "total_tokens": 3352,
+  "product_id": "supplement_melatonin",
+  "status": "success"
+}

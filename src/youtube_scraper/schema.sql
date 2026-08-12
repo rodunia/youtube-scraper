@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS comments (
     is_template INTEGER NOT NULL DEFAULT 0 CHECK(is_template IN (0,1)),
     is_duplicate INTEGER NOT NULL DEFAULT 0 CHECK(is_duplicate IN (0,1)),
     spam_rule_hits TEXT,
-    source_engine TEXT NOT NULL CHECK(source_engine IN ('api','playwright')),
+    source_engine TEXT NOT NULL CHECK(source_engine IN ('api','ytdlp','playwright')),
     extraction_ts TEXT NOT NULL,
     FOREIGN KEY(run_id) REFERENCES runs(id),
     FOREIGN KEY(channel_db_id) REFERENCES channels(id),

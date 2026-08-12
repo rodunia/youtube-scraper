@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "The Nova X5 features a Tensor G4 chipset with a Neural Processing Unit, a 6.5\" Actua OLED display with 120 Hz refresh rate, and a camera system with a 50 MP main camera.",
+      "error_type": "numerical",
+      "explanation": "The display size is incorrectly stated as 6.5 inches, whereas the specifications list it as 6.3 inches.",
+      "correct_value": "6.3\" Actua OLED display"
+    },
+    {
+      "claim": "Does the Nova X5 support wireless charging? Not stated in the provided information.",
+      "error_type": "factual",
+      "explanation": "The specifications explicitly state that wireless charging is not supported.",
+      "correct_value": "The Nova X5 does not support wireless charging."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 4690,
+  "completion_tokens": 201,
+  "total_tokens": 4891,
+  "product_id": "smartphone_mid",
+  "status": "success"
+}

@@ -127,7 +127,7 @@ class YtDlpExtractor:
                     raw_commenter_id=str(c.get("author_id") or c.get("author") or "unknown"),
                     raw_text=text,
                     like_count=int(c.get("like_count") or 0),
-                    reply_count=int(c.get("replies") or 0),
+                    reply_count=self._parse_reply_count(c.get("replies")),
                     published_at=published_at,
                     language="",
                 )
@@ -139,3 +139,21 @@ class YtDlpExtractor:
 
         status = "ok" if len(selected) >= limit else "not_enough_comments"
         return selected, status
+
+    @staticmethod
+    def _parse_reply_count(value: object) -> int:
+        if isinstance(value, int):
+            return value
+        if isinstance(value, float):
+            return int(value)
+        if isinstance(value, list):
+            return len(value)
+        if isinstance(value, dict):
+            nested = value.get("total")
+            if isinstance(nested, (int, float)):
+                return int(nested)
+            return 0
+        try:
+            return int(str(value or 0))
+        except Exception:
+            return 0

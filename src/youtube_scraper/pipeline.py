@@ -165,6 +165,21 @@ def _derive_channel_url(identifier: str, channel_name: str) -> str:
     return ""
 
 
+def _resolve_fallback_channel_url(
+    pw: PlaywrightCommentExtractor,
+    target: TargetChannel,
+) -> str:
+    channel_url = target.channel_url or _derive_channel_url(target.channel_identifier, target.channel_name)
+    if "/results?" not in channel_url:
+        return channel_url
+    if not target.channel_name:
+        return ""
+    try:
+        return pw.resolve_channel_url(query=target.channel_name) or ""
+    except Exception:
+        return ""
+
+
 def _fallback_channel_key(target: TargetChannel) -> str:
     seed = f"{target.channel_identifier}|{target.channel_name}|{target.channel_url}"
     return "UNRESOLVED_" + hashlib.sha1(seed.encode("utf-8")).hexdigest()[:16]
@@ -642,32 +657,34 @@ def _run_live(
                 pass
 
         if not video_ids and config.execution_mode != "api_only":
-            channel_url = target.channel_url or _derive_channel_url(target.channel_identifier, target.channel_name)
+            channel_url = _resolve_fallback_channel_url(pw, target)
             try:
-                video_ids = _retry_playwright_call(
-                    lambda: ytdlp.list_recent_video_ids(
-                        channel_url=channel_url,
-                        limit=videos_per_channel,
-                        content_type=content_type,
-                    ),
-                    context=f"ytdlp_video_discovery({channel_url})",
-                )
+                if channel_url:
+                    video_ids = _retry_playwright_call(
+                        lambda: ytdlp.list_recent_video_ids(
+                            channel_url=channel_url,
+                            limit=videos_per_channel,
+                            content_type=content_type,
+                        ),
+                        context=f"ytdlp_video_discovery({channel_url})",
+                    )
             except Exception as exc:
                 if content_type == "shorts" and "does not have a shorts tab" in str(exc).lower():
                     no_shorts_available = True
                 video_ids = []
 
         if not video_ids and config.execution_mode != "api_only":
-            channel_url = target.channel_url or _derive_channel_url(target.channel_identifier, target.channel_name)
+            channel_url = _resolve_fallback_channel_url(pw, target)
             try:
-                video_ids = _retry_playwright_call(
-                    lambda: pw.list_recent_video_ids(
-                        channel_url=channel_url,
-                        limit=videos_per_channel,
-                        content_type=content_type,
-                    ),
-                    context=f"playwright_video_discovery({channel_url})",
-                )
+                if channel_url:
+                    video_ids = _retry_playwright_call(
+                        lambda: pw.list_recent_video_ids(
+                            channel_url=channel_url,
+                            limit=videos_per_channel,
+                            content_type=content_type,
+                        ),
+                        context=f"playwright_video_discovery({channel_url})",
+                    )
             except Exception as exc:
                 if content_type == "shorts" and "does not have a shorts tab" in str(exc).lower():
                     no_shorts_available = True
@@ -775,9 +792,15 @@ def _run_live(
                         comment_status = "extraction_failed"
                         failure_reason = "api_quota_exceeded"
                 except Exception:
-                    extraction_failed = True
-                    comment_status = "extraction_failed"
-                    failure_reason = "api_comment_extraction_failed"
+                    if config.execution_mode == "auto":
+                        source_engine = "playwright"
+                        collection_engine = None
+                        extracted = []
+                        comment_status = "ok"
+                    else:
+                        extraction_failed = True
+                        comment_status = "extraction_failed"
+                        failure_reason = "api_comment_extraction_failed"
 
             if source_engine == "playwright" and not extraction_failed:
                 try:
@@ -881,7 +904,7 @@ def _run_live(
                     is_template=processed.is_template,
                     is_duplicate=processed.is_duplicate,
                     spam_rule_hits=processed.spam_rule_hits,
-                    source_engine=source_engine,
+                    source_engine=collection_engine or source_engine,
                 )
                 comment_counter += 1
 

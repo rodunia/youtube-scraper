@@ -1,0 +1,276 @@
+dataset_name,material_uid,run_id,output_path,product_id,product_name,material_type,engine,model,temperature,time_of_day_label,repetition_id,scheduled_day_of_week,priority_score,priority_bucket,reason,judge_count,positive_judges,negative_judges,error_judges,max_violation_count,judge_signal_summary,prompt,material_text,product_ground_truth
+old-compliance-pilot-test,97552ca2bec6751dd1c8a0c67c268a3a314d599f,97552ca2bec6751dd1c8a0c67c268a3a314d599f,outputs/97552ca2bec6751dd1c8a0c67c268a3a314d599f.txt,cryptocurrency_corecoin,,blog_post_promo.j2,google,models/gemini-flash-latest,0.2,afternoon,2,Monday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Understanding CoreCoin: A Guide to Transparency and User Control
+
+As the digital asset landscape continues to evolve, experienced investors are increasingly looking for platforms that prioritize transparency and user autonomy. CoreCoin (CORE) is a decentralized Layer-1 digital asset designed to facilitate peer-to-peer value transfer without the need for traditional intermediaries. In this guide, we will explore the technical foundations of the CoreCoin blockchain and how its open-source architecture supports a community-driven ecosystem.
+
+## Technical Architecture and Functionality
+
+CoreCoin operates on a Proof-of-Stake (PoS) blockchain, utilizing cryptographic signatures like ECDSA or Ed25519 to ensure transaction validation. With an average block time of approximately five seconds and a finality target of about ten seconds under normal conditions, the network is built for consistent performance. Beyond simple transfers, CoreCoin supports programmable smart contracts via a PoS-compatible Virtual Machine. This functionality",
+old-compliance-pilot-test,27e5f63c18b93d1eaa4a1be40c999e5844fc9dde,27e5f63c18b93d1eaa4a1be40c999e5844fc9dde,outputs/27e5f63c18b93d1eaa4a1be40c999e5844fc9dde.txt,cryptocurrency_corecoin,,blog_post_promo.j2,google,models/gemini-flash-latest,0.2,afternoon,2,Thursday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Understanding CoreCoin: A Guide to Transparency and Control in Digital Assets
+
+As the digital landscape evolves, many experienced investors are looking beyond traditional systems toward decentralized alternatives. CoreCoin (CORE) is a Layer-1 digital asset designed to provide a foundation for peer-to-peer value transfer and smart contract integration. By understanding the underlying Proof-of-Stake (PoS) architecture",
+old-compliance-pilot-test,ff147b0cde51863696541e27ee588992f39260a8,ff147b0cde51863696541e27ee588992f39260a8,outputs/ff147b0cde51863696541e27ee588992f39260a8.txt,cryptocurrency_corecoin,,blog_post_promo.j2,google,models/gemini-flash-latest,0.2,evening,1,Tuesday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Understanding CoreCoin: A Guide to Transparency and Control in Digital Assets
+
+As the digital landscape evolves, many experienced investors are looking beyond traditional markets to explore the potential of decentralized technology. CoreCoin (CORE) represents a Layer-1 digital asset designed to facilitate peer-to-peer value transfer without the need for intermediaries. In this guide, you will discover how this Proof-of-Stake blockchain operates and why its focus on transparency and user custody is central to its design.
+
+## Decentralized Architecture and User Control
+
+CoreCoin operates as a decentralized Layer-1 asset on a Proof-of-Stake (PoS) blockchain. One of its primary features is that it allows users to maintain custody and control of their digital assets through compatible wallet software. Because it exists independently of government or bank control, users retain authority over their digital property",
+old-compliance-pilot-test,9674b25d592acca33c000b85bb76e41a19956647,9674b25d592acca33c000b85bb76e41a19956647,outputs/9674b25d592acca33c000b85bb76e41a19956647.txt,cryptocurrency_corecoin,,blog_post_promo.j2,google,models/gemini-flash-latest,0.2,evening,3,Tuesday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Understanding CoreCoin: A Guide to Transparency and Control in Digital Assets
+
+Navigating the evolving digital asset landscape requires a clear understanding of the underlying technology. For experienced investors seeking to diversify, CoreCoin (CORE) offers a decentralized Layer-1 blockchain designed for peer-to-peer value transfer. By operating independently of traditional intermediaries, this Proof-of-Stake network provides a foundation",
+old-compliance-pilot-test,9cd3dd9e08f8169c65013813cdee622f80e36fb0,9cd3dd9e08f8169c65013813cdee622f80e36fb0,outputs/9cd3dd9e08f8169c65013813cdee622f80e36fb0.txt,cryptocurrency_corecoin,,blog_post_promo.j2,google,models/gemini-flash-latest,0.2,morning,3,Friday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Understanding CoreCoin: A Guide to Decentralized Layer-1 Technology
+
+As the digital asset landscape matures, experienced investors often look beyond the surface to understand the underlying technology of new networks. CoreCoin (CORE) represents a decentralized Layer-1 digital asset designed to facilitate peer-to-peer value transfer without the need for traditional intermediaries. By exploring its Proof-of-Stake architecture,",
+old-compliance-pilot-test,23823dfa80f1a753f5b0608e406f6bbc3d873359,23823dfa80f1a753f5b0608e406f6bbc3d873359,outputs/23823dfa80f1a753f5b0608e406f6bbc3d873359.txt,cryptocurrency_corecoin,,blog_post_promo.j2,google,models/gemini-flash-latest,0.2,morning,2,Saturday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Discover CoreCoin: Transparency and Control in the Digital Asset Space
+
+Navigating the evolving digital asset landscape requires a clear understanding of the underlying technology and its practical applications. CoreCoin (CORE) is a decentralized Layer-1 digital asset that operates on a Proof-of-Stake (PoS) blockchain. In this guide, you will learn how CORE facilitates peer-to-",
+old-compliance-pilot-test,eb2224b83d0fa74d72ed1f5e3b735299cebfb77d,eb2224b83d0fa74d72ed1f5e3b735299cebfb77d,outputs/eb2224b83d0fa74d72ed1f5e3b735299cebfb77d.txt,cryptocurrency_corecoin,,blog_post_promo.j2,google,models/gemini-flash-latest,0.6,morning,1,Sunday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Understanding CoreCoin: A Guide to Decentralized Layer-1 Technology
+
+Navigating the evolving landscape of digital assets requires a clear understanding of the technology powering your portfolio. As a decentralized Layer-1 digital asset, CoreCoin (CORE) provides a foundation for peer-to-peer value transfer without traditional intermediaries. In this guide, you will discover the technical specifications of the CORE network and",
+old-compliance-pilot-test,b39f1ce0ec5d74303527f7e01310688a00837cef,b39f1ce0ec5d74303527f7e01310688a00837cef,outputs/b39f1ce0ec5d74303527f7e01310688a00837cef.txt,cryptocurrency_corecoin,,blog_post_promo.j2,google,models/gemini-flash-latest,0.6,morning,2,Wednesday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Understanding CoreCoin: A Decentralized Layer-1 Asset for Digital Diversification
+
+As digital ecosystems continue to expand, understanding the underlying technology of new assets is essential for informed participation. CoreCoin (CORE) is a decentralized Layer-1 digital asset designed to facilitate peer-to-peer value transfer without the need for traditional intermediaries. This guide explores how CORE utilizes Proof-",
+old-compliance-pilot-test,7bbb8371770cc48c5607617a7c6f8a37e354a369,7bbb8371770cc48c5607617a7c6f8a37e354a369,outputs/7bbb8371770cc48c5607617a7c6f8a37e354a369.txt,cryptocurrency_corecoin,,blog_post_promo.j2,google,models/gemini-flash-latest,1.0,evening,2,Thursday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Understanding CoreCoin: A Transparent Foundation for the Digital Asset Ecosystem
+
+Navigating the evolving landscape of digital assets requires a clear understanding of the underlying technology. For experienced investors looking to diversify, CoreCoin (CORE) offers a decentralized Layer-1 solution built on a Proof-of-Stake (PoS) blockchain. In this guide, you will discover the core mechanics of the CORE network and how its technical architecture",
+old-compliance-pilot-test,c360655ffe1bf7e2625c74b6a1101bf121e0dab1,c360655ffe1bf7e2625c74b6a1101bf121e0dab1,outputs/c360655ffe1bf7e2625c74b6a1101bf121e0dab1.txt,cryptocurrency_corecoin,,blog_post_promo.j2,openai,gpt-4o-2024-08-06,0.2,evening,2,Friday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Discover CoreCoin: A Transparent Digital Asset for the Future
+
+In the rapidly evolving world of digital assets, understanding the fundamentals is crucial. CoreCoin (CORE) offers a unique opportunity for those looking to diversify their portfolios with a decentralized, Layer-1 digital asset. In this post, you'll learn about CoreCoin's key features, its potential utility, and how it empowers users with control and transparency.
+
+## Empowering Users with Control
+
+CoreCoin operates on a Proof-of-Stake (PoS) blockchain, enabling peer-to-peer value transfer without intermediaries. This decentralized approach allows users to maintain control and custody of their digital assets, a significant advantage for those who prioritize autonomy. With CoreCoin, you can keep your digital property in your own hands, ensuring that you have possession and authority over your assets at all times.
+
+## Transparency Through Open-Source Technology
+
+Transparency is a cornerstone of CoreCoin's design. The network provides transparency via a public, tamper-resistant ledger, ensuring that all transactions are permanently recorded and viewable through public block explorers. Additionally, CoreCoin's open-source codebase allows for community review, promoting transparency and trust. This open nature not only facilitates community oversight but also ensures that the network remains secure through distributed validator participation.
+
+## Potential Utility and Governance
+
+CoreCoin is designed for long-term digital asset ecosystem participation, supporting decentralized applications and programmable smart contracts. While its market value is highly volatile, CoreCoin may offer long-term utility as a digital value storage mechanism. Governance is community-driven, enabling stakeholder participation and ensuring that protocol changes are subject to community or validator approval. This democratic approach to governance fosters a sense of ownership and involvement among users.
+
+## Conclusion
+
+CoreCoin stands out as a transparent and user-empowered digital asset, offering potential utility and robust governance. Whether you're exploring decentralized finance or seeking a new way to manage digital assets, CoreCoin provides a foundation for future participation. To learn more about CoreCoin and its capabilities, explore the resources available and consider how it might fit into your digital asset strategy.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.  
+Do not invest funds you cannot afford to lose.  
+CoreCoin is not backed by the FDIC or any government entity.  
+Past performance is not indicative of future results.  
+Loss of private keys leads to permanent loss of funds.  
+Digital assets may be vulnerable to hacking or protocol exploits.  
+Market conditions can change rapidly and unpredictably.  
+Regulatory changes may affect accessibility or legality.",
+old-compliance-pilot-test,fc002918da2365dbda97a238a156489aee35880b,fc002918da2365dbda97a238a156489aee35880b,outputs/fc002918da2365dbda97a238a156489aee35880b.txt,cryptocurrency_corecoin,,blog_post_promo.j2,openai,gpt-4o-2024-08-06,0.6,evening,3,Thursday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Discover CoreCoin: Empowering Your Digital Asset Journey
+
+In a rapidly evolving digital world, understanding the potential of decentralized assets like CoreCoin (CORE) is crucial. CoreCoin is a decentralized Layer-1 digital asset operating on a Proof-of-Stake (PoS) blockchain, offering a unique blend of technology and empowerment. In this post, we'll explore how CoreCoin enables peer-to-peer transactions, supports decentralized applications, and provides transparency and security for users.
+
+## Peer-to-Peer Transactions with CoreCoin
+
+CoreCoin facilitates peer-to-peer value transfers, eliminating the need for intermediaries. This means users can transact directly with one another, providing a borderless transaction capability that transcends traditional banking systems. The decentralized nature of CoreCoin's PoS blockchain ensures that these transactions are recorded on a public, tamper-resistant ledger, offering transparency and security. This feature allows users to maintain control over their digital assets, a crucial aspect for those seeking autonomy in their financial dealings.
+
+## Supporting Decentralized Applications
+
+CoreCoin isn't just about transactions; it also supports decentralized applications (DApps) and programmable smart contracts. This capability opens the door to a myriad of applications in decentralized finance (DeFi) and beyond. By integrating smart contracts, CoreCoin allows for complex transactions and agreements to be executed automatically when predefined conditions are met. This feature enhances the utility of CoreCoin within the digital asset ecosystem, enabling users to participate in various innovative financial applications.
+
+## Ensuring Transparency and Security
+
+Security and transparency are at the heart of CoreCoin's design. The network is secured through distributed validator participation, which helps maintain the integrity of the blockchain. Cryptographic signatures ensure transaction validation, providing users with confidence in the system's reliability. Moreover, CoreCoin's open-source codebase promotes transparency, allowing community review and oversight. This transparency ensures that users are informed and can trust the network's operations.
+
+## Conclusion
+
+CoreCoin offers a compelling combination of peer-to-peer transaction capabilities, support for decentralized applications, and robust security measures. As you explore the potential of digital assets, consider how CoreCoin can empower your journey in the digital asset ecosystem. To learn more about CoreCoin and its features, explore further resources and engage with the community.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.  
+Do not invest funds you cannot afford to lose.  
+CoreCoin is not backed by the FDIC or any government entity.  
+Past performance is not indicative of future results.  
+Loss of private keys leads to permanent loss of funds.  
+Digital assets may be vulnerable to hacking or protocol exploits.  
+Market conditions can change rapidly and unpredictably.  
+Regulatory changes may affect accessibility or legality.",
+old-compliance-pilot-test,3e595b1e4edf25cab8c4a72cc5f83607e7b3ddff,3e595b1e4edf25cab8c4a72cc5f83607e7b3ddff,outputs/3e595b1e4edf25cab8c4a72cc5f83607e7b3ddff.txt,cryptocurrency_corecoin,,blog_post_promo.j2,openai,gpt-4o-2024-08-06,1.0,evening,1,Friday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Discover CoreCoin: Empowering Your Digital Asset Journey
+
+In a rapidly evolving digital world, understanding CoreCoin (CORE) can offer valuable insights into the future of digital assets. As a decentralized Layer-1 digital asset, CoreCoin offers unique features and opportunities for those seeking to diversify their portfolio. This educational guide introduces you to the fundamentals of CoreCoin, its benefits, and how it can fit into your investment strategy.
+
+## CoreCoin’s Underlying Technology
+
+At the heart of CoreCoin's operations is a robust Proof-of-Stake (PoS) blockchain, which enables peer-to-peer value transfers without intermediaries. This means transactions are direct, reducing the need for traditional banking systems. Additionally, CoreCoin supports decentralized applications and smart contracts, paving the way for innovative decentralized finance (DeFi) solutions. Its open-source codebase ensures transparency, allowing the community to review and contribute to its ecosystem.
+
+## Network Security and User Autonomy
+
+CoreCoin's security model is built on distributed validator participation, which helps secure the network and validate transactions through cryptographic signatures. Users have the ability to maintain control and custody of their digital assets, empowering them to be their own bank. This self-custody model requires secure storage of private keys, as these keys represent ownership and access to the assets.
+
+## Governance and Community Involvement
+
+CoreCoin operates with a community-driven governance model, giving stakeholders the chance to participate in protocol changes. This model facilitates open-source governance, ensuring that updates undergo community or validator approval. Through on-chain voting, CoreCoin users can have a meaningful say in the platform's future direction, which underscores the decentralization ethos at its core.
+
+## Conclusion
+
+Explore the potential of CoreCoin for your digital investment strategy. By keeping control of your assets and engaging with its transparent, community-focused governance, CoreCoin offers a unique approach to digital currency participation. Dive deeper to understand how CoreCoin can empower your journey in the digital asset space.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.  
+Do not invest funds you cannot afford to lose.  
+CoreCoin is not backed by the FDIC or any government entity.  
+Past performance is not indicative of future results.  
+Loss of private keys leads to permanent loss of funds.  
+Digital assets may be vulnerable to hacking or protocol exploits.  
+Market conditions can change rapidly and unpredictably.  
+Regulatory changes may affect accessibility or legality.",
+old-compliance-pilot-test,933ce8d29164e080c80ae4eaf9b2b7f08ceff8c4,933ce8d29164e080c80ae4eaf9b2b7f08ceff8c4,outputs/933ce8d29164e080c80ae4eaf9b2b7f08ceff8c4.txt,cryptocurrency_corecoin,,blog_post_promo.j2,openai,gpt-4o-2024-08-06,1.0,evening,3,Monday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Discover CoreCoin: Empowering Your Digital Asset Journey
+
+In a rapidly evolving digital world, understanding innovative technologies like CoreCoin is essential for savvy investors looking to diversify. CoreCoin is a decentralized digital asset running on a Proof-of-Stake (PoS) blockchain, designed for seamless peer-to-peer value transfer. This post uncovers the potential benefits of integrating CoreCoin into your digital portfolio, emphasizing its transparency, security, and functionality.
+
+## Transparency and Control
+
+Transparency and control are at the heart of CoreCoin's infrastructure. It offers users a tamper-resistant public ledger, ensuring every transaction is accounted for and verified. This ledger gives you the confidence to manage your digital assets effectively, knowing your transactions are securely recorded. In addition, CoreCoin empowers you to maintain custody and control of your digital assets, allowing you to manage them without third-party interference.
+
+## Decentralized Functionality
+
+CoreCoin's decentralized nature supports an ecosystem of smart contracts and decentralized applications, commonly referred to as dApps. These capabilities allow you to engage in peer-to-peer transactions that know no borders, introducing a flexible and programmable layer to financial interactions. The network's capacity to support DeFi integration broadens your digital asset's utility, providing a versatile platform for future technological endeavors.
+
+## Community-Driven Governance
+
+The governance of CoreCoin is as flexible as its technical innovation, driven by community participation to ensure stakeholder representation. Open-source governance models facilitate transparent oversight, while any protocol changes necessitate community or validator approval, giving power back to the users. This framework promotes a collaborative environment where users actively shape the network’s future, aligning it with their collective interests.
+
+## Conclusion
+
+CoreCoin offers a transparent, secure, and dynamic approach to digital asset management, paving the way for enhanced control and innovation. By exploring its unique features, you can empower your digital asset journey with a robust and adaptable platform. Dive deeper into the potential of CoreCoin and discover how it can aid your financial strategy.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.",
+old-compliance-pilot-test,e65bcc368cfce6d4c01812d11fd32094034d401b,e65bcc368cfce6d4c01812d11fd32094034d401b,outputs/e65bcc368cfce6d4c01812d11fd32094034d401b.txt,cryptocurrency_corecoin,,blog_post_promo.j2,openai,gpt-4o-2024-08-06,1.0,evening,1,Thursday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_blog_post_promo_v1,"# Discover CoreCoin: Empowering Your Digital Asset Journey
+
+In a rapidly evolving digital world, understanding innovative technologies like CoreCoin is essential for savvy investors looking to diversify. CoreCoin is a decentralized digital asset running on a Proof-of-Stake (PoS) blockchain, designed for seamless peer-to-peer value transfer. This post uncovers the potential benefits of integrating CoreCoin into your digital portfolio, emphasizing its transparency, security, and functionality.
+
+## Transparency and Control
+
+Transparency and control are at the heart of CoreCoin's infrastructure. It offers users a tamper-resistant public ledger, ensuring every transaction is accounted for and verified. This ledger gives you the confidence that your transactions are secure and transparent. Additionally, CoreCoin empowers you with full control over your digital assets, allowing for self-custody. This means your assets remain in your possession, enhancing both security and control.
+
+## Decentralized Value Transfer
+
+CoreCoin supports decentralized applications and smart contract integration, facilitating borderless and efficient peer-to-peer transactions. This functionality opens avenues for diverse financial applications, including decentralized finance (DeFi). By engaging with these capabilities, you can participate in a global network of value transfer without relying on traditional intermediaries, thus keeping your transactions direct and efficient. 
+
+## Community-Driven Security and Governance
+
+Security within the CoreCoin network is reinforced by its community-driven governance model. This model enables stakeholders to have a say in protocol updates, ensuring that changes are made with community consent. Moreover, network security is supported by distributed validator participation, where users who stake their CORE contribute to maintaining the network's integrity. This system of staking not only secures the network but also allows for engaged community involvement in its evolution.
+
+## Conclusion
+
+CoreCoin offers a glimpse into the future of digital asset management, where transparency, security, and community involvement are paramount. Embrace the opportunity to learn and explore this innovative platform. For more information and to delve deeper into what CoreCoin can offer you, explore our resources today.
+
+---
+
+**Disclaimers:**
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.",
+old-compliance-pilot-test,dc742b463728e886c438166c6a52a31e877bd6ee,dc742b463728e886c438166c6a52a31e877bd6ee,outputs/dc742b463728e886c438166c6a52a31e877bd6ee.txt,cryptocurrency_corecoin,,digital_ad.j2,google,models/gemini-flash-latest,0.2,afternoon,1,Monday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_digital_ad_v1,"Headline: Discover Transparent Digital Ownership
+
+Primary Text: Want full asset control? CoreCoin enables borderless, peer-to-peer transfers on a transparent, tamper-resistant ledger.
+
+Description: Explore the Open-Source Network
+
+Disclaimers:
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin",
+old-compliance-pilot-test,cd72a60ae475b9a3e565611b2c1fe1a89d685626,cd72a60ae475b9a3e565611b2c1fe1a89d685626,outputs/cd72a60ae475b9a3e565611b2c1fe1a89d685626.txt,cryptocurrency_corecoin,,digital_ad.j2,google,models/gemini-flash-latest,0.2,afternoon,3,Sunday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_digital_ad_v1,"Headline: Maintain Control of Your Digital Assets
+
+Primary Text: Experience borderless transactions and full custody. CoreCoin’s open-source tech puts you in control. Explore CORE now.
+
+Description: Public, tamper-resistant ledger
+
+Disclaimers:
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.",
+old-compliance-pilot-test,2a79f862ed6e11ad75c41c8166e8f64aa1220ec5,2a79f862ed6e11ad75c41c8166e8f64aa1220ec5,outputs/2a79f862ed6e11ad75c41c8166e8f64aa1220ec5.txt,cryptocurrency_corecoin,,digital_ad.j2,google,models/gemini-flash-latest,0.2,evening,1,Friday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_digital_ad_v1,"Headline: Take Control of Your Digital Assets
+
+Primary Text: Retain full custody of your digital assets. CoreCoin offers a transparent, peer-to-peer network for global value transfer.
+
+Description: Transparent Public Ledger
+
+Disclaimers:
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.",
+old-compliance-pilot-test,99056d04ad1c17bea90e9c540b12fd2b175dedf3,99056d04ad1c17bea90e9c540b12fd2b175dedf3,outputs/99056d04ad1c17bea90e9c540b12fd2b175dedf3.txt,cryptocurrency_corecoin,,digital_ad.j2,google,models/gemini-flash-latest,0.2,evening,2,Friday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_digital_ad_v1,"Headline: Take Control of Your Digital Assets
+
+Primary Text: Maintain full custody of your assets. CoreCoin offers a transparent, tamper-resistant ledger for peer-to-peer value transfer.
+
+Description: Explore Open-Source Utility
+
+Disclaimers:
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.",
+old-compliance-pilot-test,0bfb751473dd23ed08dd4d3f282bfa4ea054c49d,0bfb751473dd23ed08dd4d3f282bfa4ea054c49d,outputs/0bfb751473dd23ed08dd4d3f282bfa4ea054c49d.txt,cryptocurrency_corecoin,,digital_ad.j2,google,models/gemini-flash-latest,0.2,evening,3,Monday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_digital_ad_v1,"Headline: Take Control of Your Digital Assets
+
+Primary Text: Maintain full custody of your assets with CoreCoin’s transparent, tamper-resistant ledger and P2P value transfer.
+
+Description: Explore Decentralized Utility
+
+Disclaimers:
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.",
+old-compliance-pilot-test,71d741ea1dee44b6a53610d33ece502b74a8c5a1,71d741ea1dee44b6a53610d33ece502b74a8c5a1,outputs/71d741ea1dee44b6a53610d33ece502b74a8c5a1.txt,cryptocurrency_corecoin,,digital_ad.j2,google,models/gemini-flash-latest,0.2,evening,2,Wednesday,0.0,audit_sample,stratified_calibration_candidate,2,0,2,0,0,gpt4o:direct_audit_old:completed:0: | historical_extraction_nli:claim_extraction_nli_old:completed:0:,cryptocurrency_corecoin_digital_ad_v1,"Headline: Maintain Full Custody of Your Assets
+
+Primary Text: Retain control of your digital property. CORE offers a transparent, tamper-resistant ledger for peer-to-peer transactions.
+
+Description: Explore the CORE ecosystem.
+
+Disclaimers:
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.",

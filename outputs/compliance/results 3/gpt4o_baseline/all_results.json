@@ -1,0 +1,698 @@
+{
+  "corecoin_1": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "with an average block time of ~4 seconds.",
+        "error_type": "numerical",
+        "explanation": "The average block time is specified as ~5 seconds in the product specifications, not ~4 seconds.",
+        "correct_value": "~5 seconds"
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3603,
+    "completion_tokens": 88,
+    "total_tokens": 3691,
+    "product_id": "cryptocurrency_corecoin",
+    "status": "success"
+  },
+  "corecoin_10": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "Some staking tiers may offer fixed-rate returns depending on region.",
+        "error_type": "factual",
+        "explanation": "The product specifications clearly state that staking rewards are variable and NOT guaranteed or fixed-rate. Additionally, staking rewards are NOT region-based.",
+        "correct_value": "Staking rewards are variable and depend on network conditions, not fixed-rate or region-based."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3615,
+    "completion_tokens": 111,
+    "total_tokens": 3726,
+    "product_id": "cryptocurrency_corecoin",
+    "status": "success"
+  },
+  "corecoin_2": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "including optional light-validator nodes that do not stake.",
+        "error_type": "factual",
+        "explanation": "The specifications state that CoreCoin does NOT support non-staking light validators.",
+        "correct_value": "CoreCoin does not support non-staking light validators."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3613,
+    "completion_tokens": 91,
+    "total_tokens": 3704,
+    "product_id": "cryptocurrency_corecoin",
+    "status": "success"
+  },
+  "corecoin_3": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "Price discovery occurs through decentralized market mechanisms, and trading is subject to 24/7 global activity without circuit breakers, with regional trading pauses during maintenance windows.",
+        "error_type": "factual",
+        "explanation": "The product specifications state that there are no regional or geographic trading restrictions or pauses, and no market circuit breakers or trading halts. The claim about regional trading pauses during maintenance windows contradicts this.",
+        "correct_value": "Price discovery occurs through decentralized market mechanisms, and trading is subject to 24/7 global activity without circuit breakers or regional trading pauses."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3611,
+    "completion_tokens": 152,
+    "total_tokens": 3763,
+    "product_id": "cryptocurrency_corecoin",
+    "status": "success"
+  },
+  "corecoin_4": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "Some wallets also offer automatic key-shrading for backup without user setup.",
+        "error_type": "hallucination",
+        "explanation": "The product specifications do not mention any feature related to automatic key-sharding for backup. In fact, the specifications emphasize that private keys cannot be recovered if lost and that self-custody requires technical knowledge and security practices.",
+        "correct_value": "No automatic key-sharding feature is mentioned in the specifications."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3598,
+    "completion_tokens": 127,
+    "total_tokens": 3725,
+    "product_id": "cryptocurrency_corecoin",
+    "status": "success"
+  },
+  "corecoin_5": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "It is compatible with PoS-compatible virtual machines, and allows limited execution of EVM smart contracts without gas fees.",
+        "error_type": "factual",
+        "explanation": "The claim that CoreCoin allows execution of EVM smart contracts without gas fees contradicts the specification that smart contract execution requires gas fees.",
+        "correct_value": "Smart contract execution requires gas fees."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3603,
+    "completion_tokens": 112,
+    "total_tokens": 3715,
+    "product_id": "cryptocurrency_corecoin",
+    "status": "success"
+  },
+  "corecoin_6": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "governance proposals automatically pass if quorum is not reached.",
+        "error_type": "factual",
+        "explanation": "The product specifications state that governance proposals require quorum thresholds and do not automatically pass without approval.",
+        "correct_value": "Governance proposals require quorum thresholds and do not automatically pass without approval."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3591,
+    "completion_tokens": 99,
+    "total_tokens": 3690,
+    "product_id": "cryptocurrency_corecoin",
+    "status": "success"
+  },
+  "corecoin_7": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "CoreCoin is not natively cross-chain compatible unless explicitly specified, but its RPC layer can stimulate cross-chain calls for testing.",
+        "error_type": "factual",
+        "explanation": "The specifications state that CoreCoin is not natively cross-chain compatible and that the RPC does NOT simulate cross-chain calls. The claim about the RPC layer stimulating cross-chain calls for testing contradicts this.",
+        "correct_value": "CoreCoin is not natively cross-chain compatible unless explicitly specified."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3596,
+    "completion_tokens": 133,
+    "total_tokens": 3729,
+    "product_id": "cryptocurrency_corecoin",
+    "status": "success"
+  },
+  "corecoin_8": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "Unstaking early may reduce a user's historical reward rate.",
+        "error_type": "factual",
+        "explanation": "The product specifications state that unstaking does NOT reduce or affect historical reward calculations.",
+        "correct_value": "Unstaking early does not reduce a user's historical reward rate."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3608,
+    "completion_tokens": 94,
+    "total_tokens": 3702,
+    "product_id": "cryptocurrency_corecoin",
+    "status": "success"
+  },
+  "corecoin_9": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "Validator inactivity may temporarily lock governance rights.",
+        "error_type": "factual",
+        "explanation": "The product specifications state that validator inactivity does NOT lock governance voting rights.",
+        "correct_value": "Validator inactivity does not lock governance voting rights."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3611,
+    "completion_tokens": 86,
+    "total_tokens": 3697,
+    "product_id": "cryptocurrency_corecoin",
+    "status": "success"
+  },
+  "melatonin_1": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "The serving size is 1 tablets, which contains 5 mg of melatonin per serving.",
+        "error_type": "numerical",
+        "explanation": "The product specifications state that each tablet contains 3 mg of melatonin, not 5 mg.",
+        "correct_value": "3 mg of melatonin per serving"
+      },
+      {
+        "claim": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+        "error_type": "factual",
+        "explanation": "The product specifications mention third-party testing for identity, purity, and potency, but do not specify a lead limit of < 0.5 ppm.",
+        "correct_value": "Third-party tested for identity, purity, and potency"
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3145,
+    "completion_tokens": 210,
+    "total_tokens": 3355,
+    "product_id": "supplement_melatonin",
+    "status": "success"
+  },
+  "melatonin_10": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+        "error_type": "numerical",
+        "explanation": "The word 'tablets' should be singular to match the serving size of 1.",
+        "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+      },
+      {
+        "claim": "Tablets may cause permanent drowsiness.",
+        "error_type": "factual",
+        "explanation": "The specifications state that drowsiness is temporary and intended, not permanent or long-lasting.",
+        "correct_value": "Tablets may cause temporary drowsiness."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3154,
+    "completion_tokens": 177,
+    "total_tokens": 3331,
+    "product_id": "supplement_melatonin",
+    "status": "success"
+  },
+  "melatonin_2": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "Each bottle contains 100 tablets.",
+        "error_type": "numerical",
+        "explanation": "The product specifications state that each bottle contains 120 tablets.",
+        "correct_value": "Each bottle contains 120 tablets."
+      },
+      {
+        "claim": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+        "error_type": "factual",
+        "explanation": "The product specifications state that the tablets are third-party tested for identity, purity, and potency, and tested for heavy metals including lead, arsenic, cadmium, and mercury, but do not specify a lead limit of < 0.5 ppm.",
+        "correct_value": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity, purity, and potency, and tested for heavy metals."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3145,
+    "completion_tokens": 235,
+    "total_tokens": 3380,
+    "product_id": "supplement_melatonin",
+    "status": "success"
+  },
+  "melatonin_3": {
+    "errors_detected": true,
+    "error_count": 3,
+    "errors": [
+      {
+        "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+        "error_type": "numerical",
+        "explanation": "The word 'tablets' should be singular to match the serving size of 1.",
+        "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+      },
+      {
+        "claim": "Yes, these tablets are suitable for vegans and vegetarians, and also contain natural fish-derived ingredients.",
+        "error_type": "factual",
+        "explanation": "The product is specified as vegan and does not contain any fish-derived ingredients.",
+        "correct_value": "Yes, these tablets are suitable for vegans and vegetarians."
+      },
+      {
+        "claim": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+        "error_type": "factual",
+        "explanation": "The specifications state that the product is tested for heavy metals including lead, arsenic, cadmium, and mercury, but do not specify a lead limit of < 0.5 ppm.",
+        "correct_value": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity, purity, and potency."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3153,
+    "completion_tokens": 325,
+    "total_tokens": 3478,
+    "product_id": "supplement_melatonin",
+    "status": "success"
+  },
+  "melatonin_4": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+        "error_type": "numerical",
+        "explanation": "The word 'tablets' should be singular to match the serving size of 1.",
+        "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+      },
+      {
+        "claim": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving, but may be include trace amount of wheat.",
+        "error_type": "factual",
+        "explanation": "The product specifications state that the tablets are free from gluten, soy, and dairy, and do not mention any trace amounts of wheat.",
+        "correct_value": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3154,
+    "completion_tokens": 219,
+    "total_tokens": 3373,
+    "product_id": "supplement_melatonin",
+    "status": "success"
+  },
+  "melatonin_5": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+        "error_type": "numerical",
+        "explanation": "The word 'tablets' should be singular to match the serving size of 1.",
+        "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+      },
+      {
+        "claim": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 5 ppm).",
+        "error_type": "factual",
+        "explanation": "The specifications state that the product is tested for heavy metals including lead, arsenic, cadmium, and mercury, but do not specify a lead limit of < 5 ppm.",
+        "correct_value": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity, purity, and potency, including testing for heavy metals."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3143,
+    "completion_tokens": 248,
+    "total_tokens": 3391,
+    "product_id": "supplement_melatonin",
+    "status": "success"
+  },
+  "melatonin_6": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+        "error_type": "numerical",
+        "explanation": "The word 'tablets' should be singular to match the serving size of 1.",
+        "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+      },
+      {
+        "claim": "Do not exceed the recommended serving, and store at exactly 0\u00b0C.",
+        "error_type": "factual",
+        "explanation": "The product specifications state that the product should not be stored at 0\u00b0C or below.",
+        "correct_value": "Do not exceed the recommended serving, and store at room temperature (15-30\u00b0C / 59-86\u00b0F)."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3153,
+    "completion_tokens": 199,
+    "total_tokens": 3352,
+    "product_id": "supplement_melatonin",
+    "status": "success"
+  },
+  "melatonin_7": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+        "error_type": "numerical",
+        "explanation": "The word 'tablets' should be singular to match the serving size of 1.",
+        "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+      },
+      {
+        "claim": "Melatonin should be taken every 2 hours for best results.",
+        "error_type": "factual",
+        "explanation": "This contradicts the usage instructions which state that melatonin should be taken once per 24 hours only.",
+        "correct_value": "Melatonin should be taken once per 24 hours only."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3158,
+    "completion_tokens": 187,
+    "total_tokens": 3345,
+    "product_id": "supplement_melatonin",
+    "status": "success"
+  },
+  "melatonin_8": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "This product is approved by the FDA for sleep regulation.",
+        "error_type": "factual",
+        "explanation": "The product specifications state that the product is not FDA-approved as a drug and is regulated under DSHEA as a dietary supplement.",
+        "correct_value": "This product is not approved by the FDA for sleep regulation."
+      },
+      {
+        "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+        "error_type": "numerical",
+        "explanation": "The claim contains a grammatical error; '1 tablets' should be singular.",
+        "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3156,
+    "completion_tokens": 187,
+    "total_tokens": 3343,
+    "product_id": "supplement_melatonin",
+    "status": "success"
+  },
+  "melatonin_9": {
+    "errors_detected": true,
+    "error_count": 3,
+    "errors": [
+      {
+        "claim": "The serving size is 1 tablets, which contains 3 mg of melatonin per serving.",
+        "error_type": "numerical",
+        "explanation": "The word 'tablets' should be singular to match the singular serving size.",
+        "correct_value": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving."
+      },
+      {
+        "claim": "Avoid using this product if you are over 18 years old.",
+        "error_type": "factual",
+        "explanation": "The product is intended for adults 18 years and older, not to be avoided by them.",
+        "correct_value": "Intended for adults 18 years and older."
+      },
+      {
+        "claim": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+        "error_type": "factual",
+        "explanation": "The specifications state that the product is tested for heavy metals including lead, arsenic, cadmium, and mercury, but do not specify a lead limit of < 0.5 ppm.",
+        "correct_value": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity, purity, and potency, including testing for heavy metals."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 3158,
+    "completion_tokens": 322,
+    "total_tokens": 3480,
+    "product_id": "supplement_melatonin",
+    "status": "success"
+  },
+  "smartphone_1": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "The Nova X5 features a Tensor G4 chipset with a Neural Processing Unit, a 6.5\" Actua OLED display with 120 Hz refresh rate, and a camera system with a 50 MP main camera.",
+        "error_type": "numerical",
+        "explanation": "The display size is incorrectly stated as 6.5 inches, whereas the specifications list it as 6.3 inches.",
+        "correct_value": "6.3\" Actua OLED display"
+      },
+      {
+        "claim": "Does the Nova X5 support wireless charging? Not stated in the provided information.",
+        "error_type": "factual",
+        "explanation": "The specifications explicitly state that wireless charging is not supported.",
+        "correct_value": "The Nova X5 does not support wireless charging."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 4690,
+    "completion_tokens": 201,
+    "total_tokens": 4891,
+    "product_id": "smartphone_mid",
+    "status": "success"
+  },
+  "smartphone_10": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "It offers internal storage options of 128 GB, 256 GB, or 512 GB UFS 3.1, and supports external SSD expansion via the SIM tray.",
+        "error_type": "factual",
+        "explanation": "The product specifications state that the Nova X5 does not support expandable storage via microSD, and there is no mention of external SSD expansion via the SIM tray.",
+        "correct_value": "The Nova X5 does not support expandable storage via microSD or external SSD expansion."
+      },
+      {
+        "claim": "Does the Nova X5 support wireless charging? Not stated in the provided information.",
+        "error_type": "factual",
+        "explanation": "The product specifications explicitly state that wireless charging is not supported.",
+        "correct_value": "The Nova X5 does not support wireless charging."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 4700,
+    "completion_tokens": 207,
+    "total_tokens": 4907,
+    "product_id": "smartphone_mid",
+    "status": "success"
+  },
+  "smartphone_2": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "The Nova X5 features a Tensor G4 chipset with a Neural Processing Unit, a 6.3\" Actua OLED display with 120 Hz refresh rate, and a camera system with a 48 MP main camera.",
+        "error_type": "numerical",
+        "explanation": "The specifications list the main camera as 50 MP, not 48 MP.",
+        "correct_value": "50 MP main camera"
+      },
+      {
+        "claim": "Does the Nova X5 support wireless charging? Not stated in the provided information.",
+        "error_type": "factual",
+        "explanation": "The specifications explicitly state that wireless charging is not supported.",
+        "correct_value": "The Nova X5 does not support wireless charging."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 4690,
+    "completion_tokens": 188,
+    "total_tokens": 4878,
+    "product_id": "smartphone_mid",
+    "status": "success"
+  },
+  "smartphone_3": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "It offers storage options of 128 GB, 256 GB, or 1 TB, and RAM configurations of 8 GB or 12 GB.",
+        "error_type": "numerical",
+        "explanation": "The specifications list storage options as 128 GB, 256 GB, or 512 GB, not 1 TB.",
+        "correct_value": "128 GB, 256 GB, or 512 GB"
+      },
+      {
+        "claim": "Does the Nova X5 support wireless charging? A: Not stated in the provided information.",
+        "error_type": "factual",
+        "explanation": "The specifications explicitly state that wireless charging is not supported.",
+        "correct_value": "No, the Nova X5 does not support wireless charging."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 4690,
+    "completion_tokens": 192,
+    "total_tokens": 4882,
+    "product_id": "smartphone_mid",
+    "status": "success"
+  },
+  "smartphone_4": {
+    "errors_detected": true,
+    "error_count": 1,
+    "errors": [
+      {
+        "claim": "RAM configurations of 8 GB or 16 GB.",
+        "error_type": "numerical",
+        "explanation": "The specifications list RAM configurations as 8 GB or 12 GB LPDDR5X, not 16 GB.",
+        "correct_value": "8 GB or 12 GB"
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 4690,
+    "completion_tokens": 96,
+    "total_tokens": 4786,
+    "product_id": "smartphone_mid",
+    "status": "success"
+  },
+  "smartphone_5": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "It supports 5G Sub-6 GHz and Wi-Fi 7.",
+        "error_type": "factual",
+        "explanation": "The specifications list support for Wi-Fi 6/6E, not Wi-Fi 7.",
+        "correct_value": "It supports 5G Sub-6 GHz and Wi-Fi 6/6E."
+      },
+      {
+        "claim": "Not stated in the provided information.",
+        "error_type": "factual",
+        "explanation": "The specifications explicitly state that wireless charging is not supported.",
+        "correct_value": "The Nova X5 does not support wireless charging."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 4687,
+    "completion_tokens": 165,
+    "total_tokens": 4852,
+    "product_id": "smartphone_mid",
+    "status": "success"
+  },
+  "smartphone_6": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "Q: Does the Nova X5 support wireless charging? A: Yes, it supports 10W Qi wireless charging.",
+        "error_type": "factual",
+        "explanation": "The product specifications do not mention support for wireless charging. In fact, it is listed under prohibited or unsupported claims.",
+        "correct_value": "The Nova X5 does not support wireless charging."
+      },
+      {
+        "claim": "Q: What security features does the Nova X5 offer? A: The Nova X5 includes enhanced hardware-backed security via the Titan M2 chip, providing a multi-layer security architecture from chip to OS. It also offers regular security patches with a documented public schedule, ensuring ongoing protection.",
+        "error_type": "factual",
+        "explanation": "While the Titan M2 chip and multi-layer security architecture are correct, the claim implies that the security system ensures ongoing protection, which contradicts the specification that no system is impenetrable.",
+        "correct_value": "The Nova X5 includes enhanced hardware-backed security via the Titan M2 chip, providing a multi-layer security architecture from chip to OS. It also offers regular security patches with a documented public schedule, but no system is impenetrable."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 4694,
+    "completion_tokens": 284,
+    "total_tokens": 4978,
+    "product_id": "smartphone_mid",
+    "status": "success"
+  },
+  "smartphone_7": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "The device additionally features a built-in antivirus engine that scans apps hourly.",
+        "error_type": "hallucination",
+        "explanation": "The product specifications do not mention a built-in antivirus engine or hourly app scanning.",
+        "correct_value": "No antivirus engine is specified in the product details."
+      },
+      {
+        "claim": "Not stated in the provided information.",
+        "error_type": "factual",
+        "explanation": "The specifications explicitly state that wireless charging is not supported.",
+        "correct_value": "The Nova X5 does not support wireless charging."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 4704,
+    "completion_tokens": 154,
+    "total_tokens": 4858,
+    "product_id": "smartphone_mid",
+    "status": "success"
+  },
+  "smartphone_8": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "It also include offline AI-generated video rendering.",
+        "error_type": "hallucination",
+        "explanation": "The specifications do not mention offline AI-generated video rendering as a feature.",
+        "correct_value": "Remove the claim about offline AI-generated video rendering."
+      },
+      {
+        "claim": "Not stated in the provided information.",
+        "error_type": "factual",
+        "explanation": "The specifications explicitly state that wireless charging is not supported.",
+        "correct_value": "The Nova X5 does not support wireless charging."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 4699,
+    "completion_tokens": 147,
+    "total_tokens": 4846,
+    "product_id": "smartphone_mid",
+    "status": "success"
+  },
+  "smartphone_9": {
+    "errors_detected": true,
+    "error_count": 2,
+    "errors": [
+      {
+        "claim": "It supports 60W USB-C fast charging, though charger availability may vary by region.",
+        "error_type": "numerical",
+        "explanation": "The product specifications state that the charging capability is 30\u201345W USB-C fast charging, not 60W.",
+        "correct_value": "30\u201345W USB-C fast charging"
+      },
+      {
+        "claim": "Not stated in the provided information.",
+        "error_type": "factual",
+        "explanation": "The specifications explicitly state that wireless charging is not supported.",
+        "correct_value": "The Nova X5 does not support wireless charging."
+      }
+    ],
+    "model": "gpt-4o",
+    "temperature": 0,
+    "prompt_tokens": 4688,
+    "completion_tokens": 164,
+    "total_tokens": 4852,
+    "product_id": "smartphone_mid",
+    "status": "success"
+  }
+}

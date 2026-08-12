@@ -1,0 +1,4 @@
+time_of_day,total_runs,non_compliant_runs,total_violations,avg_violations,std_violations,non_compliant_pct
+afternoon,539,285,674,1.25,1.37,52.9
+evening,539,267,625,1.16,1.31,49.5
+morning,540,281,622,1.15,1.25,52.0

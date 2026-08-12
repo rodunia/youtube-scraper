@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "Each bottle contains 100 tablets.",
+      "error_type": "numerical",
+      "explanation": "The product specifications state that each bottle contains 120 tablets.",
+      "correct_value": "Each bottle contains 120 tablets."
+    },
+    {
+      "claim": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+      "error_type": "factual",
+      "explanation": "The product specifications state that the tablets are third-party tested for identity, purity, and potency, and tested for heavy metals including lead, arsenic, cadmium, and mercury, but do not specify a lead limit of < 0.5 ppm.",
+      "correct_value": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity, purity, and potency, and tested for heavy metals."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 3145,
+  "completion_tokens": 235,
+  "total_tokens": 3380,
+  "product_id": "supplement_melatonin",
+  "status": "success"
+}

@@ -1,0 +1,16 @@
+Filename,Status,Violated_Rule,Extracted_Claim,Confidence_Score
+user_melatonin_8.txt,FAIL,120 tablets per bottle,Serving size is 1 tablet,0.9857
+user_melatonin_8.txt,FAIL,No herbal extracts or proprietary blends,Each tablet contains 3 mg of melatonin per serving,0.9829
+user_melatonin_8.txt,FAIL,Solid oral tablet (immediate-release only),Each bottle contains 120 tablets,0.9668
+user_melatonin_8.txt,FAIL,Claims about modifying REM or deep-sleep architecture,Tablets are suitable for vegans,0.9173
+user_melatonin_8.txt,FAIL,Verified to contain 3 mg melatonin per serving,Tablets contain 0 mg gluten per serving,0.9984
+user_melatonin_8.txt,FAIL,Verified to contain 3 mg melatonin per serving,Tablets contain 0 mg soy per serving,0.9981
+user_melatonin_8.txt,FAIL,Verified to contain 3 mg melatonin per serving,Tablets contain 0 mg dairy per serving,0.9980
+user_melatonin_8.txt,FAIL,Melatonin does not modify REM/deep-sleep architecture,Manufactured in a facility that follows current Good Manufacturing Practices (cGMP),0.9854
+user_melatonin_8.txt,FAIL,Claims about modifying REM or deep-sleep architecture,Third-party tested for identity and heavy metals (lead < 0.5 ppm),0.9878
+user_melatonin_8.txt,FAIL,Functions in harmony with your body's inherent timing.,These statements have not been evaluated by the Food and Drug Administration,0.9266
+user_melatonin_8.txt,FAIL,"Guarantees of next-day alertness, performance, productivity, or cognitive benefits","This product is not intended to diagnose, treat, cure, or prevent any disease",0.9126
+user_melatonin_8.txt,FAIL,Operates in sync with your body's natural cycles.,Keep out of reach of children,0.9965
+user_melatonin_8.txt,FAIL,Not recommended for pregnant or breastfeeding individuals,"Consult a healthcare professional if pregnant, nursing, taking medications, or have a medical condition",0.9922
+user_melatonin_8.txt,FAIL,Solid oral tablet (immediate-release only),Do not exceed the recommended serving,0.9381
+user_melatonin_8.txt,FAIL,This product is NOT FDA-approved as a drug,This product is approved by the FDA for sleep regulation,0.9918

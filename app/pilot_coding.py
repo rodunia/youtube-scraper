@@ -20,6 +20,7 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
+
 try:
     import yaml
     from jinja2 import Environment
@@ -80,6 +81,15 @@ def init_db() -> None:
             skip_reason     TEXT DEFAULT '',
             submitted_at    TEXT NOT NULL,
             UNIQUE(coder_id, pilot_item_id)
+        );
+        CREATE TABLE IF NOT EXISTS review_evidence (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            coder_id        TEXT NOT NULL,
+            pilot_item_id   INTEGER NOT NULL,
+            code_name       TEXT NOT NULL,
+            evidence_text   TEXT NOT NULL,
+            submitted_at    TEXT NOT NULL,
+            UNIQUE(coder_id, pilot_item_id, code_name)
         );
     """)
     con.commit()
@@ -199,6 +209,42 @@ def db_load_skip_ids(coder_id: str) -> set[int]:
     ).fetchall()
     con.close()
     return {r[0] for r in rows}
+
+
+def db_save_evidence(coder_id: str, pilot_item_id: int, evidence: dict[str, str]) -> None:
+    """Upsert evidence snippets {code_name: text}. Empty strings delete the row."""
+    con = _conn()
+    now = _now()
+    for code_name, text in evidence.items():
+        text = text.strip()
+        if text:
+            con.execute(
+                """INSERT INTO review_evidence
+                   (coder_id, pilot_item_id, code_name, evidence_text, submitted_at)
+                   VALUES (?,?,?,?,?)
+                   ON CONFLICT(coder_id, pilot_item_id, code_name) DO UPDATE SET
+                     evidence_text = excluded.evidence_text,
+                     submitted_at  = excluded.submitted_at""",
+                (coder_id, pilot_item_id, code_name, text, now),
+            )
+        else:
+            con.execute(
+                "DELETE FROM review_evidence WHERE coder_id=? AND pilot_item_id=? AND code_name=?",
+                (coder_id, pilot_item_id, code_name),
+            )
+    con.commit()
+    con.close()
+
+
+def db_load_evidence(coder_id: str, pilot_item_id: int) -> dict[str, str]:
+    """Return {code_name: evidence_text} for this coder+item."""
+    con = _conn()
+    rows = con.execute(
+        "SELECT code_name, evidence_text FROM review_evidence WHERE coder_id=? AND pilot_item_id=?",
+        (coder_id, pilot_item_id),
+    ).fetchall()
+    con.close()
+    return {r[0]: r[1] for r in rows}
 
 
 def db_all_progress() -> dict[str, int]:
@@ -906,14 +952,30 @@ def _coding_panel(item: dict, item_id: int, coder_id: str) -> None:
         key=f"sel_{coder_id}_{item_id}",
     )
 
-    # Show definition for each selected code
+    # Show definition + evidence input for each selected code
+    saved_evidence = db_load_evidence(coder_id, item_id)
+    pending = st.session_state.get(f"pending_evidence_{item_id}", "")
+
     if selected_codes:
+        st.markdown("**Evidence snippets** _(select text in the output above, then paste or assign here)_")
         for sc in selected_codes:
             defn = code_defs.get(sc, "")
             badge = badges.get(sc, "")
-            badge_str = f"**[{badge}]** " if badge else ""
-            if defn:
-                st.caption(f"{badge_str}**{sc}** — {defn}")
+            badge_str = f"[{badge}] " if badge else ""
+            with st.container():
+                st.caption(f"{badge_str}**{sc}**" + (f" — {defn}" if defn else ""))
+                ev_key = f"ev_{coder_id}_{item_id}_{sc}"
+                # Pre-fill with pending snippet if field is empty
+                default_ev = saved_evidence.get(sc, "")
+                if not default_ev and pending and ev_key not in st.session_state:
+                    default_ev = pending
+                st.text_input(
+                    "Evidence quote",
+                    value=default_ev,
+                    placeholder="Paste or select the phrase that triggered this code…",
+                    key=ev_key,
+                    label_visibility="collapsed",
+                )
 
     st.markdown("**＋ New code** _(not in the list above? add it here)_")
     new_col1, new_col2 = st.columns([3, 5])
@@ -989,6 +1051,14 @@ def _coding_panel(item: dict, item_id: int, coder_id: str) -> None:
                     violation_codes=selected_codes,
                     notes=notes,
                 )
+                # Save evidence snippets for each selected code
+                evidence = {
+                    sc: st.session_state.get(f"ev_{coder_id}_{item_id}_{sc}", "")
+                    for sc in selected_codes
+                }
+                db_save_evidence(coder_id, item_id, evidence)
+                # Clear pending snippet
+                st.session_state.pop(f"pending_evidence_{item_id}", None)
             except Exception as exc:
                 st.error(f"Could not save review — please try again. ({exc})")
                 st.stop()

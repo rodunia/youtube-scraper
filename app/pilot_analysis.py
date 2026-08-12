@@ -21,6 +21,34 @@ from pathlib import Path
 
 import streamlit as st
 
+try:
+    import yaml
+    _YAML_AVAILABLE = True
+except ImportError:
+    _YAML_AVAILABLE = False
+
+try:
+    from pilot_coding import _auto_check
+    _AUTO_CHECK_AVAILABLE = True
+except Exception:
+    _AUTO_CHECK_AVAILABLE = False
+
+try:
+    from machine_audit import (
+        run_gpt4o_audit,
+        run_roberta_audit,
+        compute_kappa_vs_gold,
+        compute_f1_vs_gold,
+        load_existing,
+        GPT4O_CSV,
+        ROBERTA_CSV,
+    )
+    _MACHINE_AUDIT_AVAILABLE = True
+except Exception:
+    _MACHINE_AUDIT_AVAILABLE = False
+
+COMPLIANCE_DIR = Path("data/compliance")
+
 DB_PATH = Path(os.environ.get("PILOT_DB_PATH", "outputs/compliance/pilot_coding.db"))
 SAMPLE_CSV = Path(os.environ.get("PILOT_SAMPLE_CSV", "outputs/compliance/pilot_sample_100.csv"))
 
@@ -343,9 +371,142 @@ def krippendorff_alpha_nominal(
     return 1 - D_o / D_e
 
 
+def compute_per_code_irr(
+    grouped: dict[int, dict[str, dict]],
+    code_names: list[str],
+    exclude_skip: bool = True,
+) -> list[dict]:
+    """Krippendorff's α and mean pairwise κ for each violation code (binary: applied yes/no)."""
+    item_ids = sorted(grouped.keys())
+    results = []
+    for code in code_names:
+        units = []
+        for iid in item_ids:
+            cm = grouped[iid]
+            vals = []
+            for c in CODERS:
+                if c not in cm:
+                    continue
+                r = cm[c]
+                if exclude_skip and r["decision"] == "skip":
+                    continue
+                codes_set = set(json.loads(r.get("violation_codes") or "[]"))
+                vals.append(1 if code in codes_set else 0)
+            units.append(vals)
+
+        # Krippendorff's α (nominal, binary)
+        value_counts: Counter = Counter()
+        D_o_num = 0.0
+        n_units_k = 0
+        for vals in units:
+            mu = len(vals)
+            if mu < 2:
+                continue
+            n_units_k += 1
+            disagree = sum(1 for i in range(mu) for j in range(i + 1, mu) if vals[i] != vals[j])
+            D_o_num += disagree / (mu - 1)
+            for v in vals:
+                value_counts[v] += 1
+
+        alpha = None
+        if n_units_k > 0:
+            D_o = D_o_num / n_units_k
+            total = sum(value_counts.values())
+            if total >= 2:
+                D_e = sum(
+                    value_counts[a] * value_counts[b]
+                    for a in value_counts for b in value_counts if a != b
+                ) / (total * (total - 1))
+                alpha = 1.0 if D_e < 1e-10 else 1 - D_o / D_e
+
+        # Mean pairwise κ
+        pair_ks = []
+        for ca, cb in combinations(CODERS, 2):
+            ra, rb = [], []
+            for iid in item_ids:
+                if ca not in grouped[iid] or cb not in grouped[iid]:
+                    continue
+                if exclude_skip and (
+                    grouped[iid][ca]["decision"] == "skip"
+                    or grouped[iid][cb]["decision"] == "skip"
+                ):
+                    continue
+                ca_codes = set(json.loads(grouped[iid][ca].get("violation_codes") or "[]"))
+                cb_codes = set(json.loads(grouped[iid][cb].get("violation_codes") or "[]"))
+                ra.append(1 if code in ca_codes else 0)
+                rb.append(1 if code in cb_codes else 0)
+            k, _ = cohen_kappa(ra, rb)
+            if k is not None:
+                pair_ks.append(k)
+        mean_k = sum(pair_ks) / len(pair_ks) if pair_ks else None
+
+        n_pos = sum(
+            1 for iid in item_ids for c in CODERS
+            if c in grouped[iid]
+            and code in set(json.loads(grouped[iid][c].get("violation_codes") or "[]"))
+        )
+        total_ratings = sum(sum(1 for c in CODERS if c in grouped[iid]) for iid in item_ids)
+        prev_pct = n_pos / total_ratings * 100 if total_ratings > 0 else 0.0
+
+        results.append({
+            "code": code, "alpha": alpha, "mean_k": mean_k,
+            "prevalence_pct": prev_pct, "n_pos": n_pos,
+        })
+
+    results.sort(key=lambda x: (x["alpha"] is None, -(x["alpha"] or 0)))
+    return results
+
+
+def compute_item_consensus(
+    grouped: dict[int, dict[str, dict]], exclude_skip: bool = True
+) -> dict:
+    """Unanimous-compliant, unanimous-non-compliant, split, ≥1-flagged counts."""
+    uc = unc = split = at_least_one = 0
+    for cm in grouped.values():
+        decs = [r["decision"] for r in cm.values()
+                if not exclude_skip or r["decision"] != "skip"]
+        if not decs:
+            continue
+        unique = set(decs)
+        if "non_compliant" in decs:
+            at_least_one += 1
+        if unique == {"compliant"}:
+            uc += 1
+        elif unique == {"non_compliant"}:
+            unc += 1
+        else:
+            split += 1
+    return {
+        "unanimous_compliant": uc,
+        "unanimous_non_compliant": unc,
+        "split": split,
+        "at_least_one_nc": at_least_one,
+        "total": len(grouped),
+    }
+
+
+def compute_violation_freq(
+    grouped: dict[int, dict[str, dict]],
+    exclude_skip: bool = True,
+    unanimous_only: bool = False,
+) -> list[tuple[str, int]]:
+    """Sorted (code, count) list from all annotations or unanimous-NC items only."""
+    counts: Counter = Counter()
+    for iid, cm in grouped.items():
+        entries = [r for r in cm.values()
+                   if not exclude_skip or r["decision"] != "skip"]
+        if unanimous_only:
+            if {r["decision"] for r in entries} != {"non_compliant"}:
+                continue
+        for r in entries:
+            for code in json.loads(r.get("violation_codes") or "[]"):
+                counts[code] += 1
+    return counts.most_common()
+
+
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 
-def tab_progress(reviews: list[dict], items: dict[int, dict]) -> None:
+def tab_progress(reviews: list[dict], grouped: dict[int, dict[str, dict]], items: dict[int, dict]) -> None:
     st.markdown("### Team progress")
     total = len(items)
     if not total:
@@ -376,6 +537,41 @@ def tab_progress(reviews: list[dict], items: dict[int, dict]) -> None:
     col1.metric("Total annotations", f"{total_done} / {max_possible}")
     active_coders = len(set(r["coder_id"] for r in reviews))
     col2.metric("Coders active", f"{active_coders} / {len(CODERS)}")
+
+    # ── Item-level consensus ───────────────────────────────────────────────────
+    st.divider()
+    st.markdown("### Item-level consensus")
+    consensus = compute_item_consensus(grouped)
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("≥1 coder flagged NC", f"{consensus['at_least_one_nc']} / {consensus['total']}")
+    m2.metric("Unanimous non-compliant", str(consensus["unanimous_non_compliant"]))
+    m3.metric("Unanimous compliant", str(consensus["unanimous_compliant"]))
+    m4.metric("Split (any disagreement)", str(consensus["split"]))
+    st.caption(
+        f"Only **{consensus['unanimous_compliant']}** items were unanimously judged compliant by all coders. "
+        f"**{consensus['at_least_one_nc']}** items received at least one non-compliant flag."
+    )
+
+    # ── Violation frequency ────────────────────────────────────────────────────
+    st.divider()
+    st.markdown("### Violation code frequency")
+    show_unc_only = st.checkbox(
+        "Unanimous non-compliant items only (highest confidence)", value=False, key="vf_unc"
+    )
+    freq = compute_violation_freq(grouped, unanimous_only=show_unc_only)
+    if not freq:
+        st.info("No violation codes recorded yet.")
+    else:
+        total_ratings = sum(
+            sum(1 for c in CODERS if c in grouped[iid]) for iid in grouped
+        )
+        h1, h2, h3 = st.columns([5, 2, 2])
+        h1.markdown("**Code**"); h2.markdown("**Count**"); h3.markdown("**% of ratings**")
+        for code, count in freq:
+            c1, c2, c3 = st.columns([5, 2, 2])
+            c1.write(code)
+            c2.write(str(count))
+            c3.write(f"{count / total_ratings * 100:.1f}%")
 
 
 def tab_irr(
@@ -504,6 +700,47 @@ def tab_irr(
             else:
                 rm[2].caption("—")
             rm[3].write(str(n))
+
+    # ── Per-code IRR ──────────────────────────────────────────────────────────
+    st.divider()
+    st.markdown("**Per-code IRR** _(binary: code applied yes/no)_")
+    st.caption(
+        "Each row shows how reliably coders agree on whether a specific violation code applies. "
+        "α ≥ 0.67 is acceptable; negative α means agreement worse than chance (concept drift)."
+    )
+    code_names = load_code_names()
+    per_code = compute_per_code_irr(grouped, code_names, exclude_skip=exclude_skip)
+
+    # Filter out zero-prevalence codes (trivially perfect — nobody used them)
+    per_code_active = [r for r in per_code if r["n_pos"] > 0]
+    per_code_unused = [r for r in per_code if r["n_pos"] == 0]
+
+    ph1, ph2, ph3, ph4, ph5 = st.columns([4, 2, 2, 2, 2])
+    ph1.markdown("**Code**"); ph2.markdown("**α**"); ph3.markdown("**mean κ**")
+    ph4.markdown("**usage**"); ph5.markdown("**n flags**")
+
+    def _ac(val: float | None) -> str:
+        if val is None: return "gray"
+        return "green" if val >= 0.67 else ("orange" if val >= 0.4 else "red")
+
+    for row in per_code_active:
+        c1, c2, c3, c4, c5 = st.columns([4, 2, 2, 2, 2])
+        c1.write(row["code"])
+        if row["alpha"] is not None:
+            c2.markdown(f":{_ac(row['alpha'])}[**{row['alpha']:+.3f}**]")
+        else:
+            c2.caption("—")
+        if row["mean_k"] is not None:
+            c3.markdown(f":{_ac(row['mean_k'])}[**{row['mean_k']:+.3f}**]")
+        else:
+            c3.caption("—")
+        c4.write(f"{row['prevalence_pct']:.1f}%")
+        c5.write(str(row["n_pos"]))
+
+    if per_code_unused:
+        with st.expander(f"{len(per_code_unused)} unused codes (α = 1.0 trivially — never applied)"):
+            for row in per_code_unused:
+                st.caption(f"• {row['code']}")
 
 
 def tab_disagreements(
@@ -641,6 +878,85 @@ def tab_adjudication(
         st.info("No coding data yet.")
         return
 
+    # ── Fix Missing Codes ─────────────────────────────────────────────────────
+    V_CODES = ["V1", "V2", "V3", "V4", "V5"]
+    V_LABELS = {
+        "V1": "V1 — Factual inaccuracy / hallucinated spec",
+        "V2": "V2 — Missing required disclosure",
+        "V3": "V3 — Unauthorized health or performance claim",
+        "V4": "V4 — Fabricated testimonial / urgency cue",
+        "V5": "V5 — Format / prompt artifact violation",
+    }
+    ghost_ids = sorted([
+        iid for iid, g in gold.items()
+        if g.get("decision") == "non_compliant"
+        and not json.loads(g.get("violation_codes") or "[]")
+    ])
+    if ghost_ids:
+        pending_ghosts = len(ghost_ids)
+        with st.expander(
+            f"⚠️ Fix Missing Violation Codes — {pending_ghosts} NC items have no codes recorded",
+            expanded=pending_ghosts > 0,
+        ):
+            st.caption(
+                "These items were adjudicated as NON_COMPLIANT but no violation codes were saved. "
+                "Select V1–V5 codes and save each item. Uses the same unified codes as the machine auditors."
+            )
+            ghost_sel = st.selectbox(
+                "Item",
+                options=ghost_ids,
+                format_func=lambda i: (
+                    f"Item {i} | {items.get(i, {}).get('product_id', '')} | "
+                    f"{items.get(i, {}).get('material_type', '')}"
+                ),
+                key="ghost_sel",
+            )
+            if ghost_sel is not None:
+                g_item = items.get(ghost_sel, {})
+                g_coder_map = grouped.get(ghost_sel, {})
+
+                if g_item.get("output_text"):
+                    st.text_area(
+                        "Output",
+                        value=g_item["output_text"].strip(),
+                        height=180,
+                        disabled=True,
+                        key=f"ghost_txt_{ghost_sel}",
+                    )
+
+                # Show what coders originally said
+                coders_here = [c for c in CODERS if c in g_coder_map]
+                if coders_here:
+                    cols = st.columns(len(coders_here))
+                    for col, coder in zip(cols, coders_here):
+                        r = g_coder_map[coder]
+                        dec = r["decision"]
+                        color = DECISION_COLORS.get(dec, "gray")
+                        col.markdown(f"**{coder}**")
+                        col.markdown(f":{color}[{DECISION_LABELS.get(dec, dec)}]")
+                        old_codes = json.loads(r.get("violation_codes") or "[]")
+                        if old_codes:
+                            col.caption(", ".join(old_codes))
+
+                ghost_codes = st.multiselect(
+                    "Violation codes (V1–V5)",
+                    options=V_CODES,
+                    format_func=lambda v: V_LABELS.get(v, v),
+                    key=f"ghost_codes_{ghost_sel}",
+                )
+                ghost_notes = st.text_input(
+                    "Notes (optional)",
+                    key=f"ghost_notes_{ghost_sel}",
+                )
+                if st.button("Save codes", type="primary", key=f"ghost_save_{ghost_sel}"):
+                    if not ghost_codes:
+                        st.warning("Select at least one violation code before saving.")
+                    else:
+                        save_gold(ghost_sel, "non_compliant", ghost_codes, ghost_notes, "Dorota")
+                        st.success(f"Saved: Item {ghost_sel} → {', '.join(ghost_codes)}")
+                        st.rerun()
+        st.divider()
+
     exclude_skip = st.checkbox("Exclude skipped items", value=True, key="adj_excl")
     disag_ids = find_disagreements(grouped, exclude_skip=exclude_skip)
 
@@ -700,6 +1016,18 @@ def tab_adjudication(
         st.info("No items to show for current filter.")
         return
 
+    # Unadjudicated items first so the selectbox always opens on something pending
+    pending_ids = [i for i in ordered_ids if i not in gold]
+    done_ids = [i for i in ordered_ids if i in gold]
+    ordered_ids = pending_ids + done_ids
+
+    pending_remaining = len(pending_ids)
+    st.caption(f"{pending_remaining} pending · {len(done_ids)} done")
+
+    # Apply staged advance before the widget renders
+    if "_adj_sel_next" in st.session_state and st.session_state["_adj_sel_next"] in ordered_ids:
+        st.session_state["adj_sel"] = st.session_state.pop("_adj_sel_next")
+
     item_id = st.selectbox(
         "Item to adjudicate",
         options=ordered_ids,
@@ -738,6 +1066,32 @@ def tab_adjudication(
             if r.get("notes"):
                 col.caption(f'"{r["notes"]}"')
 
+    # ── Auto-check note ───────────────────────────────────────────────────────
+    if _AUTO_CHECK_AVAILABLE and item_info.get("output_text") and item_info.get("product_id"):
+        spec = None
+        if _YAML_AVAILABLE:
+            spec_path = COMPLIANCE_DIR / f"{item_info['product_id']}.yaml"
+            if spec_path.exists():
+                with spec_path.open(encoding="utf-8") as _f:
+                    spec = yaml.safe_load(_f)
+        flags = _auto_check(item_info["output_text"], item_info["product_id"], spec)
+        st.divider()
+        st.markdown("**Auto-check** _(spec-based factual flags)_")
+        if not flags:
+            st.success("No spec violations detected automatically.")
+        else:
+            for flag in flags:
+                lvl = flag.get("level", "amber")
+                icon = "🔴" if lvl == "red" else "🟡"
+                msg = flag.get("message", "")
+                ev = flag.get("evidence", "")
+                code = flag.get("code", "")
+                st.markdown(
+                    f"{icon} **{msg}**"
+                    + (f"  \n&nbsp;&nbsp;&nbsp;&nbsp;`{code}`" if code else "")
+                    + (f"  \n&nbsp;&nbsp;&nbsp;&nbsp;_{ev}_" if ev else "")
+                )
+
     st.divider()
     st.markdown("**Gold decision**")
 
@@ -771,7 +1125,10 @@ def tab_adjudication(
 
     if st.button("Save gold decision", type="primary", key=f"adj_save_{item_id}"):
         save_gold(item_id, g_decision, g_codes, g_notes, adjudicator)
-        st.success(f"Gold decision saved for item {item_id}.")
+        # Stage advance to next unadjudicated item (applied before widget renders on rerun)
+        next_pending = [i for i in ordered_ids if i not in gold and i != item_id]
+        if next_pending:
+            st.session_state["_adj_sel_next"] = next_pending[0]
         st.rerun()
 
 
@@ -859,6 +1216,313 @@ def tab_setup() -> None:
                 st.rerun()
 
 
+# ── Machine Audit ─────────────────────────────────────────────────────────────
+
+def _audit_summary(results: list[dict], gold: dict[int, dict]) -> dict:
+    """NC rate, κ, precision, recall, F1 vs gold."""
+    if not _MACHINE_AUDIT_AVAILABLE:
+        return {}
+    n = len(results)
+    nc = sum(1 for r in results if r.get("decision") == "NON_COMPLIANT")
+    nc_rate = f"{nc / n * 100:.0f}%" if n else "—"
+    kappa, n_pairs = compute_kappa_vs_gold(results, gold)
+    precision, recall, f1 = compute_f1_vs_gold(results, gold)
+    return {
+        "nc_rate": nc_rate,
+        "kappa": f"{kappa:.3f}" if kappa is not None else "—",
+        "f1": f"{f1:.3f}" if f1 is not None else "—",
+        "n": n,
+        "n_pairs": n_pairs,
+    }
+
+
+def _show_audit_results(results: list[dict], gold: dict[int, dict], label: str) -> None:
+    """Display results table and metrics for one auditor."""
+    if not results:
+        return
+
+    summary = _audit_summary(results, gold)
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Items audited", summary.get("n", "—"))
+    m2.metric("NC rate", summary.get("nc_rate", "—"))
+    m3.metric("κ vs gold", summary.get("kappa", "—"))
+    m4.metric("F1 vs gold", summary.get("f1", "—"))
+
+    if summary.get("n_pairs"):
+        st.caption(f"κ computed on {summary['n_pairs']} items with gold standard.")
+
+    errors = [r for r in results if r.get("decision") == "ERROR"]
+    if errors:
+        st.warning(f"{len(errors)} item(s) returned ERROR — check API key and quota.")
+
+    with st.expander(f"Full results table — {label} ({len(results)} items)"):
+        h = st.columns([1, 2, 2, 2, 1, 4])
+        for col, hdr in zip(h, ["ID", "Product", "Decision", "Violations", "Conf.", "Rationale"]):
+            col.markdown(f"**{hdr}**")
+        for r in results:
+            dec = r.get("decision", "")
+            color = "green" if dec == "COMPLIANT" else ("red" if dec == "NON_COMPLIANT" else "gray")
+            row = st.columns([1, 2, 2, 2, 1, 4])
+            row[0].write(str(r.get("pilot_item_id", "")))
+            row[1].write(r.get("product_id", "").replace("_", " "))
+            row[2].markdown(f":{color}[{dec}]")
+            row[3].write(r.get("violations", "") or "—")
+            row[4].write(r.get("confidence", ""))
+            row[5].caption(r.get("rationale", ""))
+
+
+def tab_machine_audit(items: dict[int, dict], gold: dict[int, dict]) -> None:
+    st.markdown("### Machine Audit — Round 2 Prompts")
+    st.caption(
+        "Re-runs GPT-4o and RoBERTa auditors with calibrated prompts and unified V1–V5 codes. "
+        "Outputs saved to `outputs/compliance/round2_gpt4o.csv` and `round2_roberta.csv`. "
+        "**`pilot_coding.db` is never modified.**"
+    )
+
+    if not _MACHINE_AUDIT_AVAILABLE:
+        st.error(
+            "`machine_audit.py` could not be imported. "
+            "Ensure it is in the same directory as this app."
+        )
+        return
+
+    if not os.environ.get("OPENAI_API_KEY"):
+        st.warning("OPENAI_API_KEY environment variable not set — auditors will fail without it.")
+
+    audit_items = [
+        {
+            "pilot_item_id": iid,
+            "run_id": v.get("run_id", ""),
+            "product_id": v.get("product_id", ""),
+            "material_type": v.get("material_type", ""),
+            "output_text": v.get("output_text", ""),
+        }
+        for iid, v in sorted(items.items())
+        if v.get("output_text")
+    ]
+
+    if not audit_items:
+        st.info("No items with output text found. Check PILOT_SAMPLE_CSV.")
+        return
+
+    st.caption(f"{len(audit_items)} items loaded for audit.")
+
+    # ── GPT-4o Auditor ────────────────────────────────────────────────────────
+    with st.expander("GPT-4o Auditor", expanded=True):
+        run_btn = st.button("Run GPT-4o Auditor", key="run_gpt4o", type="primary")
+        if GPT4O_CSV.exists():
+            st.caption(f"Previous results: `{GPT4O_CSV.name}` exists")
+
+        if run_btn:
+            bar = st.progress(0.0, text="Starting GPT-4o Auditor…")
+            def _gpt_cb(i: int, n: int) -> None:
+                bar.progress((i + 1) / n, text=f"Item {i + 1}/{n}")
+            with st.spinner("Running GPT-4o Auditor on 100 items (~2 min)…"):
+                try:
+                    res = run_gpt4o_audit(audit_items, progress_cb=_gpt_cb)
+                    st.session_state["gpt4o_r2_results"] = res
+                    bar.empty()
+                    st.success(f"Done — {len(res)} items. Saved to `{GPT4O_CSV}`.")
+                except Exception as e:
+                    bar.empty()
+                    st.error(f"Error: {e}")
+
+        # Load from CSV if no session results yet
+        if "gpt4o_r2_results" not in st.session_state:
+            cached = load_existing(GPT4O_CSV)
+            if cached:
+                st.session_state["gpt4o_r2_results"] = cached
+
+        gpt4o_res = st.session_state.get("gpt4o_r2_results")
+        if gpt4o_res:
+            _show_audit_results(gpt4o_res, gold, "GPT-4o Auditor")
+
+    # ── RoBERTa Auditor ───────────────────────────────────────────────────────
+    with st.expander("RoBERTa Auditor (GPT-4o-mini + BART-MNLI)"):
+        st.caption(
+            "Stage 1: GPT-4o-mini extracts 0–3 material claims per item.  "
+            "Stage 2: BART-MNLI checks each claim against product brief.  "
+            "⚠ First run downloads ~1.5 GB model from HuggingFace."
+        )
+        if st.button("Run RoBERTa Auditor", key="run_roberta", type="primary"):
+            bar = st.progress(0.0, text="Starting RoBERTa Auditor…")
+            def _rob_cb(i: int, n: int) -> None:
+                bar.progress((i + 1) / n, text=f"Item {i + 1}/{n} (stage 1 + 2)…")
+            with st.spinner("Running RoBERTa Auditor (~5–10 min including model load)…"):
+                try:
+                    res = run_roberta_audit(audit_items, progress_cb=_rob_cb)
+                    st.session_state["roberta_r2_results"] = res
+                    bar.empty()
+                    st.success(f"Done — {len(res)} items. Saved to `{ROBERTA_CSV}`.")
+                except Exception as e:
+                    bar.empty()
+                    st.error(f"Error: {e}")
+
+        if "roberta_r2_results" not in st.session_state:
+            cached = load_existing(ROBERTA_CSV)
+            if cached:
+                st.session_state["roberta_r2_results"] = cached
+
+        roberta_res = st.session_state.get("roberta_r2_results")
+        if roberta_res:
+            _show_audit_results(roberta_res, gold, "RoBERTa Auditor")
+
+    # ── Round 1 vs Round 2 comparison ────────────────────────────────────────
+    gpt4o_res = st.session_state.get("gpt4o_r2_results")
+    roberta_res = st.session_state.get("roberta_r2_results")
+    if gpt4o_res or roberta_res:
+        st.divider()
+        st.markdown("### Round 1 vs Round 2 comparison")
+        st.caption("Round 1 figures from IRR_FINDINGS_2026-07-14.md (gold n=100).")
+
+        g2 = _audit_summary(gpt4o_res, gold) if gpt4o_res else {}
+        r2 = _audit_summary(roberta_res, gold) if roberta_res else {}
+
+        hdr = st.columns([3, 2, 2, 2, 2])
+        for col, label in zip(hdr, ["Metric", "GPT-4o R1", "GPT-4o R2", "RoBERTa R1", "RoBERTa R2"]):
+            col.markdown(f"**{label}**")
+
+        rows = [
+            ("NC rate",   "55%",   g2.get("nc_rate", "—"), "91%",   r2.get("nc_rate", "—")),
+            ("κ vs gold", "0.213", g2.get("kappa", "—"),   "0.016", r2.get("kappa", "—")),
+            ("F1 vs gold","0.726", g2.get("f1", "—"),      "0.854", r2.get("f1", "—")),
+        ]
+        for row in rows:
+            cols = st.columns([3, 2, 2, 2, 2])
+            for col, val in zip(cols, row):
+                col.write(val)
+
+
+# ── Export ────────────────────────────────────────────────────────────────────
+
+def tab_export(
+    reviews: list[dict],
+    grouped: dict[int, dict[str, dict]],
+    gold: dict[int, dict],
+    items: dict[int, dict],
+    code_names: list[str],
+) -> None:
+    import csv
+    import io
+
+    st.markdown("### Export")
+    st.caption("Download CSVs for paper tables, supplementary material, or further analysis.")
+
+    # ── Full annotations CSV ───────────────────────────────────────────────────
+    st.markdown("**Full annotations** — one row per item, one column per coder + gold decision")
+    buf = io.StringIO()
+    fieldnames = (
+        ["pilot_item_id", "product_id", "material_type"]
+        + [f"{c}_decision" for c in CODERS]
+        + [f"{c}_codes" for c in CODERS]
+        + ["gold_decision", "gold_codes", "gold_adjudicator", "gold_notes"]
+    )
+    writer = csv.DictWriter(buf, fieldnames=fieldnames)
+    writer.writeheader()
+    for iid in sorted(grouped.keys()):
+        item_info = items.get(iid, {})
+        row: dict = {
+            "pilot_item_id": iid,
+            "product_id": item_info.get("product_id", ""),
+            "material_type": item_info.get("material_type", ""),
+        }
+        for c in CODERS:
+            r = grouped[iid].get(c, {})
+            row[f"{c}_decision"] = r.get("decision", "")
+            codes = json.loads(r.get("violation_codes") or "[]")
+            row[f"{c}_codes"] = "|".join(codes)
+        g = gold.get(iid, {})
+        row["gold_decision"] = g.get("decision", "")
+        row["gold_codes"] = "|".join(json.loads(g.get("violation_codes") or "[]"))
+        row["gold_adjudicator"] = g.get("adjudicator", "")
+        row["gold_notes"] = g.get("notes", "")
+        writer.writerow(row)
+    st.download_button(
+        "Download annotations.csv",
+        data=buf.getvalue(),
+        file_name="pilot_annotations.csv",
+        mime="text/csv",
+    )
+
+    st.divider()
+
+    # ── IRR summary CSV ────────────────────────────────────────────────────────
+    st.markdown("**IRR summary** — Level 1 (decision) + Level 2 (per-code)")
+    exclude_skip = st.checkbox("Exclude skipped items", value=True, key="export_excl")
+
+    irr_buf = io.StringIO()
+    irr_writer = csv.writer(irr_buf)
+
+    # Level 1 header
+    irr_writer.writerow(["# LEVEL 1 — Binary decision"])
+    irr_writer.writerow(["pair_or_metric", "value", "n"])
+    alpha_dec = krippendorff_alpha_nominal(grouped, exclude_skip=exclude_skip)
+    irr_writer.writerow(["Krippendorff alpha (all raters)", f"{alpha_dec:.4f}" if alpha_dec is not None else "", ""])
+    kappas = []
+    for ca, cb in combinations(CODERS, 2):
+        shared = [
+            i for i in grouped
+            if ca in grouped[i] and cb in grouped[i]
+            and (not exclude_skip or (
+                grouped[i][ca]["decision"] != "skip" and grouped[i][cb]["decision"] != "skip"
+            ))
+        ]
+        ra = [grouped[i][ca]["decision"] for i in shared]
+        rb = [grouped[i][cb]["decision"] for i in shared]
+        k, n = cohen_kappa(ra, rb)
+        kappas.append(k)
+        irr_writer.writerow([f"Cohen kappa {ca}/{cb}", f"{k:.4f}" if k is not None else "", n])
+    mean_k = sum(k for k in kappas if k is not None) / len([k for k in kappas if k is not None])
+    irr_writer.writerow(["Mean pairwise kappa", f"{mean_k:.4f}", ""])
+
+    # Level 2
+    irr_writer.writerow([])
+    irr_writer.writerow(["# LEVEL 2 — Per-code binary IRR"])
+    irr_writer.writerow(["code", "alpha", "mean_kappa", "prevalence_pct", "n_flags"])
+    per_code = compute_per_code_irr(grouped, code_names, exclude_skip=exclude_skip)
+    for row in per_code:
+        irr_writer.writerow([
+            row["code"],
+            f"{row['alpha']:.4f}" if row["alpha"] is not None else "",
+            f"{row['mean_k']:.4f}" if row["mean_k"] is not None else "",
+            f"{row['prevalence_pct']:.2f}",
+            row["n_pos"],
+        ])
+
+    # Consensus
+    irr_writer.writerow([])
+    irr_writer.writerow(["# ITEM CONSENSUS"])
+    consensus = compute_item_consensus(grouped, exclude_skip=exclude_skip)
+    for k, v in consensus.items():
+        irr_writer.writerow([k, v, ""])
+
+    st.download_button(
+        "Download irr_summary.csv",
+        data=irr_buf.getvalue(),
+        file_name="pilot_irr_summary.csv",
+        mime="text/csv",
+    )
+
+    st.divider()
+
+    # ── Violation frequency CSV ────────────────────────────────────────────────
+    st.markdown("**Violation code frequency** — all annotations + unanimous-NC items")
+    freq_buf = io.StringIO()
+    freq_writer = csv.writer(freq_buf)
+    freq_writer.writerow(["code", "count_all", "count_unanimous_nc"])
+    freq_all = dict(compute_violation_freq(grouped, exclude_skip=exclude_skip))
+    freq_unc = dict(compute_violation_freq(grouped, exclude_skip=exclude_skip, unanimous_only=True))
+    all_codes_seen = sorted(set(freq_all) | set(freq_unc))
+    for code in all_codes_seen:
+        freq_writer.writerow([code, freq_all.get(code, 0), freq_unc.get(code, 0)])
+    st.download_button(
+        "Download violation_frequency.csv",
+        data=freq_buf.getvalue(),
+        file_name="pilot_violation_frequency.csv",
+        mime="text/csv",
+    )
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -890,17 +1554,23 @@ def main() -> None:
         f"{n_coders}/{len(CODERS)} coders active  ·  {len(items)} items"
     )
 
-    t0, t1, t2, t3, t4 = st.tabs(["Setup", "Progress", "IRR", "Disagreements", "Adjudication"])
+    t0, t1, t2, t3, t4, t5, t6 = st.tabs(
+        ["Setup", "Progress", "IRR", "Disagreements", "Adjudication", "Export", "Machine Audit"]
+    )
     with t0:
         tab_setup()
     with t1:
-        tab_progress(reviews, items)
+        tab_progress(reviews, grouped, items)
     with t2:
         tab_irr(reviews, grouped, items)
     with t3:
         tab_disagreements(grouped, items, gold)
     with t4:
         tab_adjudication(grouped, items, gold, code_names)
+    with t5:
+        tab_export(reviews, grouped, gold, items, code_names)
+    with t6:
+        tab_machine_audit(items, gold)
 
 
 if __name__ == "__main__":

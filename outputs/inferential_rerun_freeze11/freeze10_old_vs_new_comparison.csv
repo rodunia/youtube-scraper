@@ -1,0 +1,8 @@
+metric,baseline_old_frame,freeze10_rerun,delta_new_minus_old
+Response rows,933.0,1075.0,142.0
+Videos in response frame,272.0,351.0,79.0
+Skeptical top-cue videos,17.0,30.0,13.0
+Skeptical-cue response rows,161.0,159.0,-2.0
+Downstream skepticism rate | skeptical cue,0.37888198757763975,0.44025157232704404,0.06136958474940429
+Downstream skepticism rate | non-skeptical cue,0.031088082901554404,0.0665938864628821,0.035505803561327695
+Top-cue main effect OR,7.927484424924973,5.2891262478050125,-2.6383581771199607

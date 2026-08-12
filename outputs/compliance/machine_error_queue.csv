@@ -1,0 +1,1 @@
+dataset_name,material_uid,run_id,output_path,product_id,product_name,material_type,engine,model,temperature,time_of_day_label,repetition_id,scheduled_day_of_week,priority_score,priority_bucket,reason,judge_count,positive_judges,negative_judges,error_judges,max_violation_count,judge_signal_summary,prompt,material_text,product_ground_truth

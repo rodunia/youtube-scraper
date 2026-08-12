@@ -1,0 +1,1 @@
+is_skeptical ~ top_comment_skeptical * C(channel_niche, Treatment(reference='Lifestyle')) + top_comment_skeptical * top_comment_like_count_z + top_comment_skeptical * hours_since_top_comment_z + top_comment_like_count_z + hours_since_top_comment_z

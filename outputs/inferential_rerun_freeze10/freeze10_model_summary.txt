@@ -1,0 +1,19 @@
+                                                   Binomial Mixed GLM Results
+=================================================================================================================================
+                                                                                   Type Post. Mean Post. SD   SD  SD (LB) SD (UB)
+---------------------------------------------------------------------------------------------------------------------------------
+Intercept                                                                             M    -2.8889   0.1218                      
+C(channel_niche, Treatment(reference='Lifestyle'))[T.Beauty]                          M    -1.7006   0.2523                      
+C(channel_niche, Treatment(reference='Lifestyle'))[T.Tech]                            M     0.2565   0.1783                      
+top_comment_skeptical                                                                 M     1.6657   0.2115                      
+top_comment_skeptical:C(channel_niche, Treatment(reference='Lifestyle'))[T.Beauty]    M     3.7082   0.3140                      
+top_comment_skeptical:C(channel_niche, Treatment(reference='Lifestyle'))[T.Tech]      M    -1.3259   0.3874                      
+top_comment_like_count_z                                                              M    -1.5360   0.5072                      
+top_comment_skeptical:top_comment_like_count_z                                        M    -0.4318   0.9375                      
+hours_since_top_comment_z                                                             M    -0.0252   0.1417                      
+top_comment_skeptical:hours_since_top_comment_z                                       M     0.4120   0.5014                      
+channel_re                                                                            V     0.1926   0.0908 1.212   1.011   1.454
+video_re                                                                              V    -0.0675   0.0377 0.935   0.867   1.008
+=================================================================================================================================
+Parameter types are mean structure (M) and variance structure (V)
+Variance parameters are modeled as log standard deviations

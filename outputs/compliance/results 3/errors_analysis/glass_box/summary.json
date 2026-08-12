@@ -1,0 +1,212 @@
+[
+  {
+    "file": "errors_smartphone_1",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "violation_count": 24,
+    "output_csv": "results/errors_analysis/glass_box/errors_smartphone_1.csv"
+  },
+  {
+    "file": "errors_melatonin_1",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "violation_count": 17,
+    "output_csv": "results/errors_analysis/glass_box/errors_melatonin_1.csv"
+  },
+  {
+    "file": "errors_corecoin_1",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "violation_count": 30,
+    "output_csv": "results/errors_analysis/glass_box/errors_corecoin_1.csv"
+  },
+  {
+    "file": "errors_smartphone_2",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "violation_count": 24,
+    "output_csv": "results/errors_analysis/glass_box/errors_smartphone_2.csv"
+  },
+  {
+    "file": "errors_melatonin_2",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "violation_count": 17,
+    "output_csv": "results/errors_analysis/glass_box/errors_melatonin_2.csv"
+  },
+  {
+    "file": "errors_corecoin_2",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "violation_count": 36,
+    "output_csv": "results/errors_analysis/glass_box/errors_corecoin_2.csv"
+  },
+  {
+    "file": "errors_smartphone_3",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "violation_count": 24,
+    "output_csv": "results/errors_analysis/glass_box/errors_smartphone_3.csv"
+  },
+  {
+    "file": "errors_melatonin_3",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "violation_count": 19,
+    "output_csv": "results/errors_analysis/glass_box/errors_melatonin_3.csv"
+  },
+  {
+    "file": "errors_corecoin_3",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "violation_count": 36,
+    "output_csv": "results/errors_analysis/glass_box/errors_corecoin_3.csv"
+  },
+  {
+    "file": "errors_smartphone_4",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "violation_count": 24,
+    "output_csv": "results/errors_analysis/glass_box/errors_smartphone_4.csv"
+  },
+  {
+    "file": "errors_melatonin_4",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "violation_count": 20,
+    "output_csv": "results/errors_analysis/glass_box/errors_melatonin_4.csv"
+  },
+  {
+    "file": "errors_corecoin_4",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "violation_count": 36,
+    "output_csv": "results/errors_analysis/glass_box/errors_corecoin_4.csv"
+  },
+  {
+    "file": "errors_smartphone_5",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "violation_count": 24,
+    "output_csv": "results/errors_analysis/glass_box/errors_smartphone_5.csv"
+  },
+  {
+    "file": "errors_melatonin_5",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "violation_count": 19,
+    "output_csv": "results/errors_analysis/glass_box/errors_melatonin_5.csv"
+  },
+  {
+    "file": "errors_corecoin_5",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "violation_count": 36,
+    "output_csv": "results/errors_analysis/glass_box/errors_corecoin_5.csv"
+  },
+  {
+    "file": "errors_smartphone_6",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "violation_count": 25,
+    "output_csv": "results/errors_analysis/glass_box/errors_smartphone_6.csv"
+  },
+  {
+    "file": "errors_melatonin_6",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "violation_count": 21,
+    "output_csv": "results/errors_analysis/glass_box/errors_melatonin_6.csv"
+  },
+  {
+    "file": "errors_corecoin_6",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "violation_count": 34,
+    "output_csv": "results/errors_analysis/glass_box/errors_corecoin_6.csv"
+  },
+  {
+    "file": "errors_smartphone_7",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "violation_count": 26,
+    "output_csv": "results/errors_analysis/glass_box/errors_smartphone_7.csv"
+  },
+  {
+    "file": "errors_melatonin_7",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "violation_count": 22,
+    "output_csv": "results/errors_analysis/glass_box/errors_melatonin_7.csv"
+  },
+  {
+    "file": "errors_corecoin_7",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "violation_count": 39,
+    "output_csv": "results/errors_analysis/glass_box/errors_corecoin_7.csv"
+  },
+  {
+    "file": "errors_smartphone_8",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "violation_count": 27,
+    "output_csv": "results/errors_analysis/glass_box/errors_smartphone_8.csv"
+  },
+  {
+    "file": "errors_melatonin_8",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "violation_count": 23,
+    "output_csv": "results/errors_analysis/glass_box/errors_melatonin_8.csv"
+  },
+  {
+    "file": "errors_corecoin_8",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "violation_count": 39,
+    "output_csv": "results/errors_analysis/glass_box/errors_corecoin_8.csv"
+  },
+  {
+    "file": "errors_smartphone_9",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "violation_count": 27,
+    "output_csv": "results/errors_analysis/glass_box/errors_smartphone_9.csv"
+  },
+  {
+    "file": "errors_melatonin_9",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "violation_count": 24,
+    "output_csv": "results/errors_analysis/glass_box/errors_melatonin_9.csv"
+  },
+  {
+    "file": "errors_corecoin_9",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "violation_count": 38,
+    "output_csv": "results/errors_analysis/glass_box/errors_corecoin_9.csv"
+  },
+  {
+    "file": "errors_smartphone_10",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "violation_count": 28,
+    "output_csv": "results/errors_analysis/glass_box/errors_smartphone_10.csv"
+  },
+  {
+    "file": "errors_melatonin_10",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "violation_count": 25,
+    "output_csv": "results/errors_analysis/glass_box/errors_melatonin_10.csv"
+  },
+  {
+    "file": "errors_corecoin_10",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "violation_count": 36,
+    "output_csv": "results/errors_analysis/glass_box/errors_corecoin_10.csv"
+  }
+]

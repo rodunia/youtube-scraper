@@ -1,0 +1,25 @@
+{
+  "errors_detected": true,
+  "error_count": 2,
+  "errors": [
+    {
+      "claim": "Q: Does the Nova X5 support wireless charging? A: Yes, it supports 10W Qi wireless charging.",
+      "error_type": "factual",
+      "explanation": "The product specifications do not mention support for wireless charging. In fact, it is listed under prohibited or unsupported claims.",
+      "correct_value": "The Nova X5 does not support wireless charging."
+    },
+    {
+      "claim": "Q: What security features does the Nova X5 offer? A: The Nova X5 includes enhanced hardware-backed security via the Titan M2 chip, providing a multi-layer security architecture from chip to OS. It also offers regular security patches with a documented public schedule, ensuring ongoing protection.",
+      "error_type": "factual",
+      "explanation": "While the Titan M2 chip and multi-layer security architecture are correct, the claim implies that the security system ensures ongoing protection, which contradicts the specification that no system is impenetrable.",
+      "correct_value": "The Nova X5 includes enhanced hardware-backed security via the Titan M2 chip, providing a multi-layer security architecture from chip to OS. It also offers regular security patches with a documented public schedule, but no system is impenetrable."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 4694,
+  "completion_tokens": 284,
+  "total_tokens": 4978,
+  "product_id": "smartphone_mid",
+  "status": "success"
+}

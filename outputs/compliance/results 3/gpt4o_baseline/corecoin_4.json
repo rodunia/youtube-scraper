@@ -1,0 +1,19 @@
+{
+  "errors_detected": true,
+  "error_count": 1,
+  "errors": [
+    {
+      "claim": "Some wallets also offer automatic key-shrading for backup without user setup.",
+      "error_type": "hallucination",
+      "explanation": "The product specifications do not mention any feature related to automatic key-sharding for backup. In fact, the specifications emphasize that private keys cannot be recovered if lost and that self-custody requires technical knowledge and security practices.",
+      "correct_value": "No automatic key-sharding feature is mentioned in the specifications."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 3598,
+  "completion_tokens": 127,
+  "total_tokens": 3725,
+  "product_id": "cryptocurrency_corecoin",
+  "status": "success"
+}

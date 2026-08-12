@@ -1,0 +1,426 @@
+run_id,product_type,errors_found,error_count,elapsed_time,raw_response
+user_smartphone_1,smartphone,False,0,11.12,"**NO ERRORS FOUND**
+
+The marketing text provided aligns with the official product specifications and authorized marketing claims. Each claim made in the text is consistent with the specifications, and no prohibited claims or factual inaccuracies were identified. The text accurately reflects the capabilities and limitations of the Nova X5 5G Smartphone as outlined in the official specifications."
+user_smartphone_2,smartphone,False,0,0.79,NO ERRORS FOUND
+user_smartphone_3,smartphone,True,33,20.43,"**1. Incorrect Claim:** ""It offers storage options of 128 GB, 256 GB, or 1 TB.""
+
+   **Correction:** ""It offers storage options of 128 GB, 256 GB, or 512 GB UFS 3.1.""
+
+   **Reason:** The marketing text incorrectly states a 1 TB storage option, which is not supported according to the official specifications.
+
+   **Confidence Level:** High
+
+**2. Incorrect Claim:** ""The Nova X5 has a battery capacity ranging from 4700–5000 mAh, depending on the region.""
+
+   **Correction:** The official specifications do not provide a range for battery capacity, so this claim cannot be verified.
+
+   **Reason:** The marketing text provides a range for battery capacity, which is not mentioned in the official specifications.
+
+   **Confidence Level:** Medium
+
+**3. Incorrect Claim:** ""It supports 30–45W USB-C fast charging.""
+
+   **Correction:** The official specifications do not mention specific charging wattage, so this claim cannot be verified.
+
+   **Reason:** The marketing text specifies charging wattage, which is not detailed in the official specifications.
+
+   **Confidence Level:** Medium
+
+**4. Incorrect Claim:** ""It offers internal storage options of 128 GB, 256 GB, or 512 GB UFS 3.1.""
+
+   **Correction:** The marketing text correctly states the storage options here, but it contradicts the earlier incorrect claim of a 1 TB option.
+
+   **Reason:** This is a contradiction within the marketing text itself.
+
+   **Confidence Level:** High
+
+**5. Incorrect Claim:** ""The Nova X5 delivers a clean, bloatware-free Android experience with guaranteed OS and security updates for seven years.""
+
+   **Correction:** ""Software updates guaranteed, but feature compatibility may vary.""
+
+   **Reason:** The official specifications clarify that not all future Android features will work on this hardware, which is not mentioned in the marketing text.
+
+   **Confidence Level:** Medium
+
+**6. Incorrect Claim:** ""The Nova X5 features a Tensor G4 chipset with a Neural Processing Unit.""
+
+   **Correction:** The official specifications do not mention the Tensor G4 chipset specifically.
+
+   **Reason:** The marketing text specifies a chipset that is not confirmed in the official specifications.
+
+   **Confidence Level:** Medium
+
+**7. Incorrect Claim:** ""It supports 5G Sub-6 GHz and Wi-Fi 6/6E.""
+
+   **Correction:** The official specifications confirm support for 5G Sub-6 GHz, but do not mention Wi-Fi 6/6E.
+
+   **Reason:** The marketing text includes Wi-Fi 6/6E, which is not confirmed in the official specifications.
+
+   **Confidence Level:** Medium
+
+**8. Incorrect Claim:** ""The Nova X5 includes enhanced hardware-backed security via the Titan M2 chip.""
+
+   **Correction:** The official specifications mention a security chip but do not specify the Titan M2.
+
+   **Reason:** The marketing text specifies a security chip model not confirmed in the official specifications.
+
+   **Confidence Level:** Medium
+
+**Conclusion:** Multiple errors and inconsistencies were found in the marketing text compared to the official specifications."
+user_smartphone_4,smartphone,False,0,1.59,"**NO ERRORS FOUND**
+
+The marketing text provided aligns with the official product specifications and authorized marketing claims. Each claim made in the text is consistent with the specifications and clarifications provided. There are no numerical inaccuracies, feature hallucinations, logical contradictions, prohibited claims, or factual inconsistencies identified."
+user_smartphone_5,smartphone,False,0,2.06,"**NO ERRORS FOUND**
+
+The marketing text provided aligns with the official product specifications and authorized marketing claims. Each claim made in the text is consistent with the specifications, and no prohibited or inaccurate claims were identified. The text accurately reflects the device's features, capabilities, and limitations as outlined in the official specifications."
+user_smartphone_6,smartphone,False,0,1.94,"**NO ERRORS FOUND**
+
+The marketing text provided aligns with the official product specifications and authorized marketing claims. Each claim made in the text is consistent with the specifications, and no prohibited claims or factual inconsistencies are present. The text accurately reflects the device's features, capabilities, and limitations as outlined in the official specifications."
+user_smartphone_7,smartphone,False,0,2.43,"**NO ERRORS FOUND**
+
+The marketing text provided aligns with the official product specifications and authorized marketing claims. Each claim made in the text is consistent with the specifications, and no prohibited claims or factual inaccuracies were identified. The text accurately reflects the capabilities and limitations of the Nova X5 5G Smartphone as outlined in the official specifications."
+user_smartphone_8,smartphone,False,0,10.17,"Based on the provided marketing text and the official product specifications, here is the analysis:
+
+1. **Claim: ""The Nova X5 supports 5G Sub-6 GHz and Wi-Fi 6/6E.""**
+   - **What it should be:** The claim is consistent with the specifications, which state that mmWave 5G is not supported, only Sub-6 GHz.
+   - **Why this is not an error:** The marketing text correctly states the supported 5G bands.
+   - **Confidence Level:** High
+
+2. **Claim: ""The Nova X5 includes enhanced hardware-backed security via the Titan M2 chip, providing a multi-layer security architecture from chip to OS.""**
+   - **What it should be:** This claim aligns with the specifications, which mention a multi-layer security approach.
+   - **Why this is not an error:** The marketing text accurately reflects the security features.
+   - **Confidence Level:** High
+
+3. **Claim: ""The Nova X5 delivers a clean, bloatware-free Android experience with guaranteed OS and security updates for seven years.""**
+   - **What it should be:** The specifications confirm software updates are guaranteed, but feature compatibility may vary.
+   - **Why this is not an error:** The marketing text is consistent with the specifications regarding software updates.
+   - **Confidence Level:** High
+
+4. **Claim: ""The Nova X5 features advanced computational photography powered by the Tensor G4 NPU and offers real-time AI tools such as live translation and smart image processing.""**
+   - **What it should be:** The specifications support AI capabilities, including computational photography and AI tools.
+   - **Why this is not an error:** The marketing text accurately describes the AI features.
+   - **Confidence Level:** High
+
+5. **Claim: ""The Nova X5 has a battery capacity ranging from 4700–5000 mAh, depending on the region.""**
+   - **What it should be:** The specifications do not provide specific battery capacity details, but mention degradation over time.
+   - **Why this is not an error:** Without specific capacity details in the specifications, this claim cannot be verified as incorrect.
+   - **Confidence Level:** Medium
+
+6. **Claim: ""The Nova X5 does not support expandable storage via microSD.""**
+   - **What it should be:** The specifications confirm no expandable storage is available.
+   - **Why this is not an error:** The marketing text correctly states the storage options.
+   - **Confidence Level:** High
+
+7. **Claim: ""It also includes offline AI-generated video rendering.""**
+   - **What it should be:** The specifications mention AI capabilities but do not specifically confirm offline AI-generated video rendering.
+   - **Why this is an error:** The claim of offline AI-generated video rendering is not explicitly supported by the specifications.
+   - **Confidence Level:** Medium
+
+**Conclusion:**
+- **Error Found:** The claim about offline AI-generated video rendering is not supported by the specifications.
+- **NO ERRORS FOUND** for other claims."
+user_smartphone_9,smartphone,False,0,2.38,"**NO ERRORS FOUND**
+
+The marketing text provided aligns with the official product specifications and authorized marketing claims. Each claim made in the text is consistent with the specifications and clarifications provided. There are no numerical inaccuracies, feature hallucinations, logical contradictions, prohibited claims, or factual inconsistencies identified."
+user_smartphone_10,smartphone,True,29,10.27,"**1. Incorrect Claim:** ""It supports 5G Sub-6 GHz and Wi-Fi 6/6E.""
+
+   - **What it should be:** The claim about 5G Sub-6 GHz is correct, but there is no mention of Wi-Fi 6/6E support in the official specifications provided.
+   - **Why this is an error:** The marketing text claims support for Wi-Fi 6/6E, which is not mentioned in the official specifications.
+   - **Confidence Level:** Medium
+
+**2. Incorrect Claim:** ""It offers internal storage options of 128 GB, 256 GB, or 512 GB UFS 3.1, and supports external SSD expansion via the SIM tray.""
+
+   - **What it should be:** The official specifications do not mention support for external SSD expansion via the SIM tray.
+   - **Why this is an error:** The claim about external SSD expansion via the SIM tray is not supported by the official specifications.
+   - **Confidence Level:** High
+
+**3. Incorrect Claim:** ""The Nova X5 delivers a clean, bloatware-free Android experience with guaranteed OS and security updates for seven years.""
+
+   - **What it should be:** The official specifications mention software updates are guaranteed, but feature compatibility may vary, and not all new software features will be supported by older hardware.
+   - **Why this is an error:** The claim implies full feature support for seven years, which contradicts the official specifications that state feature compatibility may vary.
+   - **Confidence Level:** High
+
+**4. Incorrect Claim:** ""It supports 30–45W USB-C fast charging, though charger availability may vary by region.""
+
+   - **What it should be:** The official specifications do not provide specific details about the charging wattage.
+   - **Why this is an error:** The marketing text specifies a charging wattage range that is not confirmed by the official specifications.
+   - **Confidence Level:** Medium
+
+**5. Incorrect Claim:** ""The Nova X5 includes enhanced hardware-backed security via the Titan M2 chip, providing a multi-layer security architecture from chip to OS.""
+
+   - **What it should be:** The official specifications mention a security chip but do not specify the Titan M2 chip.
+   - **Why this is an error:** The specific mention of the Titan M2 chip is not supported by the official specifications.
+   - **Confidence Level:** Medium
+
+**6. Incorrect Claim:** ""Battery capacity will degrade over time with normal use.""
+
+   - **What it should be:** The official specifications state that battery degradation is unavoidable over years with normal Li-ion aging.
+   - **Why this is an error:** The marketing text should emphasize that degradation is unavoidable over years, aligning with the official specifications.
+   - **Confidence Level:** Low
+
+**7. Incorrect Claim:** ""Some advanced AI features may require a stable internet connection (cloud processing).""
+
+   - **What it should be:** The official specifications state that some AI processing requires cloud connectivity and varies by region.
+   - **Why this is an error:** The marketing text should specify that cloud connectivity requirements vary by region.
+   - **Confidence Level:** Low
+
+**Conclusion:** The marketing text contains several factual errors and inconsistencies with the official specifications."
+user_melatonin_1,melatonin,True,12,5.41,"1. **Incorrect Claim**: ""The serving size is 1 tablets, which contains 5 mg of melatonin per serving.""
+   - **What it should be**: The serving size should be 1 tablet containing 3 mg of melatonin per serving.
+   - **Why this is an error**: The marketing text states that each tablet contains 5 mg of melatonin, which contradicts the product name ""Melatonin Tablets 3 mg (Immediate-Release)"" indicating each tablet should contain 3 mg.
+   - **Confidence Level**: High
+
+2. **Incorrect Claim**: None found regarding the vegan suitability, allergen content, or manufacturing practices.
+   - **What it should be**: N/A
+   - **Why this is an error**: N/A
+   - **Confidence Level**: N/A
+
+3. **Prohibited Claim**: None found regarding FDA approval or medical claims.
+   - **What it should be**: N/A
+   - **Why this is an error**: N/A
+   - **Confidence Level**: N/A
+
+**Conclusion**: The only error found is the incorrect dosage of melatonin per tablet. All other claims are consistent with the official specifications."
+user_melatonin_2,melatonin,False,0,0.56,NO ERRORS FOUND
+user_melatonin_3,melatonin,True,8,4.42,"1. **Incorrect Claim**: ""Yes, these tablets are suitable for vegans and vegetarians, and also contain natural fish-derived ingredients.""
+   - **What it should be**: If the tablets contain fish-derived ingredients, they cannot be suitable for vegans.
+   - **Why this is an error**: The claim is logically contradictory. Vegan products cannot contain any animal-derived ingredients, including fish.
+   - **Confidence level**: High
+
+2. **Incorrect Claim**: ""These statements have not been evaluated by the Food and Drug Administration.""
+   - **What it should be**: This disclaimer is correct, but it should be noted that the product is not FDA-approved as a drug and is not evaluated by the FDA for safety or efficacy as a drug.
+   - **Why this is an error**: The disclaimer is incomplete in the context of the official specifications, which emphasize the lack of FDA approval and evaluation.
+   - **Confidence level**: Medium
+
+NO OTHER ERRORS FOUND"
+user_melatonin_4,melatonin,False,0,0.51,NO ERRORS FOUND
+user_melatonin_5,melatonin,False,0,0.47,NO ERRORS FOUND
+user_melatonin_6,melatonin,False,0,0.57,NO ERRORS FOUND
+user_melatonin_7,melatonin,False,0,9.11,"Upon reviewing the marketing text against the official product specifications, I have identified the following errors:
+
+1. **Incorrect Claim**: ""Melatonin should be taken every 2 hours for best results.""
+   - **Correction**: There is no official specification supporting the claim that melatonin should be taken every 2 hours. In fact, such frequent dosing is not typical for melatonin supplements and could be misleading.
+   - **Reason for Error**: This dosing recommendation contradicts common usage guidelines for melatonin, which typically suggest taking it once daily before bedtime.
+   - **Confidence Level**: High
+
+2. **Prohibited Claim**: The marketing text does not explicitly make any prohibited claims, but it implies a level of efficacy (""for best results"") that is not supported by the specifications, which state that melatonin does not guarantee immediate or universal sleep onset and does not work for 100% of users.
+   - **Correction**: The text should clarify that individual results may vary and that melatonin does not guarantee specific outcomes.
+   - **Reason for Error**: The implication of guaranteed results contradicts the specification that individual results may vary.
+   - **Confidence Level**: Medium
+
+3. **Prohibited Claim**: The marketing text states, ""These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease."" However, the text should also clarify that the product is not FDA-approved as a drug and has not been evaluated for safety or efficacy as a drug.
+   - **Correction**: Add a disclaimer that the product is not FDA-approved as a drug and has not been evaluated for safety or efficacy as a drug.
+   - **Reason for Error**: The omission of this information could mislead consumers about the regulatory status of the product.
+   - **Confidence Level**: High
+
+NO ERRORS FOUND in terms of numerical inaccuracies, feature hallucinations, or logical contradictions regarding the vegan suitability and allergen content."
+user_melatonin_8,melatonin,True,4,4.15,"Upon reviewing the marketing text against the official product specifications, I have identified the following factual error:
+
+1. **Incorrect Claim**: ""This product is approved by the FDA for sleep regulation.""
+   - **Correction**: This product is NOT FDA-approved as a drug and has NOT been evaluated by the FDA for safety or efficacy as a drug.
+   - **Reason for Error**: The official specifications clearly state that melatonin supplements do not have FDA approval for medical use, and this product is not FDA-approved as a drug. The marketing text incorrectly claims FDA approval, which contradicts the specifications.
+   - **Confidence Level**: High
+
+No other errors were found in the marketing text."
+user_melatonin_9,melatonin,True,4,2.44,"1. **Incorrect Claim**: ""Avoid using this product if you are over 18 years old.""
+   - **What it should be**: ""Intended for adults 18 years and older.""
+   - **Why this is an error**: The marketing text incorrectly advises against use by adults over 18, contradicting the specification that states the product is intended for adults 18 years and older.
+   - **Confidence Level**: High
+
+NO OTHER ERRORS FOUND"
+user_melatonin_10,melatonin,True,8,5.39,"Upon reviewing the marketing text against the official product specifications, I have identified the following factual errors:
+
+1. **Incorrect Claim**: ""Tablets may cause permanent drowsiness.""
+   - **Correction**: Drowsiness is temporary and intended (not permanent or long-lasting).
+   - **Reason**: The official specifications clarify that drowsiness is temporary and resolves after the sleep period ends. The claim of ""permanent drowsiness"" contradicts this.
+   - **Confidence Level**: High
+
+2. **Incorrect Claim**: ""These statements have not been evaluated by the Food and Drug Administration.""
+   - **Correction**: This statement is correct, but it should be noted that the product is not FDA-approved as a drug and is not evaluated by the FDA for safety or efficacy as a drug.
+   - **Reason**: While the statement itself is accurate, it is important to emphasize that the product is not FDA-approved as a drug, aligning with the official specifications.
+   - **Confidence Level**: High
+
+NO OTHER ERRORS FOUND"
+user_corecoin_1,corecoin,False,0,5.44,"After reviewing the marketing text against the official product specifications, here is the analysis:
+
+1. **Claim: ""CoreCoin is not natively cross-chain compatible unless explicitly specified.""**
+   - **What it should be:** CoreCoin is not natively cross-chain compatible.
+   - **Why this is an error:** The official specifications clearly state that CoreCoin is NOT natively cross-chain compatible, without any conditions or exceptions.
+   - **Confidence level:** High
+
+2. **Claim: ""Smart contract execution requires gas fees (NOT gas-free or zero-fee).""**
+   - **What it should be:** This claim is correct as per the official specifications.
+   - **Why this is not an error:** The marketing text correctly states that smart contract execution requires gas fees, aligning with the official specifications.
+   - **Confidence level:** High
+
+3. **Claim: ""Staking rewards depend on network participation and validator performance, but they are not guaranteed.""**
+   - **What it should be:** Staking rewards are variable and NOT guaranteed or fixed-rate.
+   - **Why this is not an error:** The marketing text accurately reflects the official specifications regarding the variability and non-guaranteed nature of staking rewards.
+   - **Confidence level:** High
+
+4. **Claim: ""CoreCoin employs a community-driven, on-chain governance model.""**
+   - **What it should be:** This claim is correct as per the official specifications.
+   - **Why this is not an error:** The marketing text correctly describes the governance model as community-driven and on-chain, which is consistent with the official specifications.
+   - **Confidence level:** High
+
+5. **Claim: ""CoreCoin supports smart contracts and decentralized application integration.""**
+   - **What it should be:** This claim is correct as per the official specifications.
+   - **Why this is not an error:** The marketing text accurately states that CoreCoin supports smart contracts and decentralized applications, aligning with the official specifications.
+   - **Confidence level:** High
+
+NO ERRORS FOUND in the remaining claims."
+user_corecoin_2,corecoin,True,8,3.74,"Upon reviewing the marketing text against the official product specifications, I have identified the following factual errors:
+
+1. **Incorrect Claim:** ""including optional light-validator nodes that do not stake.""
+   - **Correction:** The official specifications state that CoreCoin does NOT support non-staking light validators.
+   - **Reason for Error:** The marketing text incorrectly claims the support of non-staking light validators, which is not supported according to the official specifications.
+   - **Confidence Level:** High
+
+2. **Incorrect Claim:** ""CoreCoin is not natively cross-chain compatible unless explicitly specified.""
+   - **Correction:** The official specifications clearly state that CoreCoin is NOT natively cross-chain compatible, with no exceptions mentioned.
+   - **Reason for Error:** The marketing text suggests a possibility of native cross-chain compatibility if specified, which contradicts the official specifications.
+   - **Confidence Level:** High
+
+NO other errors were found in the marketing text."
+user_corecoin_3,corecoin,False,0,1.25,"**NO ERRORS FOUND**
+
+The marketing text provided aligns with the official product specifications. Each claim made in the text is consistent with the authorized marketing claims and important clarifications. There are no numerical inaccuracies, feature hallucinations, logical contradictions, prohibited claims, or factual inconsistencies with the specifications."
+user_corecoin_4,corecoin,False,0,1.09,"**NO ERRORS FOUND**
+
+The marketing text provided aligns with the official product specifications. Each claim made in the text is consistent with the authorized marketing claims and important clarifications. There are no numerical inaccuracies, feature hallucinations, logical contradictions, prohibited claims, or factual inconsistencies with the specifications."
+user_corecoin_5,corecoin,True,8,2.33,"Upon reviewing the marketing text against the official product specifications, I have identified the following factual errors:
+
+1. **Claim: ""CoreCoin supports smart contracts and decentralized application integration... allows limited execution of EVM smart contracts without gas fees.""**
+   - **Correction:** Smart contract execution requires gas fees (NOT gas-free or zero-fee).
+   - **Reason:** The official specifications clearly state that smart contract execution requires gas fees, contradicting the claim of ""without gas fees.""
+   - **Confidence Level:** High
+
+2. **Claim: ""CoreCoin is not natively cross-chain compatible unless explicitly specified.""**
+   - **Correction:** CoreCoin is NOT natively cross-chain compatible.
+   - **Reason:** The official specifications state that CoreCoin is not natively cross-chain compatible, and there is no mention of any exceptions.
+   - **Confidence Level:** High
+
+NO OTHER ERRORS FOUND"
+user_corecoin_6,corecoin,True,10,3.72,"After reviewing the marketing text against the official product specifications, I have identified the following errors:
+
+1. **Incorrect Claim:**
+   - ""Governance proposals automatically pass if quorum is not reached.""
+
+   **Correction:**
+   - Governance proposals require quorum thresholds and do not automatically pass without approval.
+
+   **Reason for Error:**
+   - The official specifications state that governance proposals require quorum thresholds and do not auto-pass without approval, contradicting the marketing text.
+
+   **Confidence Level: High**
+
+2. **Incorrect Claim:**
+   - ""CoreCoin is not natively cross-chain compatible unless explicitly specified.""
+
+   **Correction:**
+   - CoreCoin is not natively cross-chain compatible, and RPC does not simulate cross-chain calls.
+
+   **Reason for Error:**
+   - The marketing text implies a conditional compatibility, whereas the specifications clearly state that CoreCoin is not natively cross-chain compatible.
+
+   **Confidence Level: High**
+
+NO OTHER ERRORS FOUND"
+user_corecoin_7,corecoin,True,15,8.37,"**Analysis of Marketing Text:**
+
+1. **Claim: ""CoreCoin is not natively cross-chain compatible unless explicitly specified, but its RPC layer can stimulate cross-chain calls for testing.""**
+
+   - **Error:** The marketing text suggests that the RPC layer can stimulate cross-chain calls for testing.
+   - **Correction:** According to the official specifications, CoreCoin is NOT natively cross-chain compatible, and the RPC does NOT simulate cross-chain calls.
+   - **Reason:** This is a factual inconsistency with the official specifications, which clearly state that the RPC does not simulate cross-chain calls.
+   - **Confidence Level:** High
+
+2. **Claim: ""CoreCoin employs a community-driven, on-chain governance model. Protocol updates require community or validator approval, with governance participation dependent on wallet integration and token ownership.""**
+
+   - **Error:** The text implies that governance proposals can pass with either community or validator approval.
+   - **Correction:** Governance proposals require quorum thresholds and do NOT auto-pass without approval.
+   - **Reason:** The official specifications state that proposals require quorum thresholds, indicating a need for a specific level of participation or approval, not just any approval.
+   - **Confidence Level:** High
+
+3. **Claim: ""CoreCoin supports smart contracts and decentralized application integration.""**
+
+   - **Error:** The text does not mention that smart contract execution requires gas fees.
+   - **Correction:** Smart contract execution requires gas fees and is NOT gas-free or zero-fee.
+   - **Reason:** The omission of gas fees is a factual inconsistency with the specifications, which state that gas fees are required for smart contract execution.
+   - **Confidence Level:** High
+
+**Conclusion:**
+
+The marketing text contains three factual errors related to cross-chain compatibility, governance model requirements, and smart contract execution fees. Each error is a deviation from the official product specifications."
+user_corecoin_8,corecoin,True,15,4.39,"**Analysis of Marketing Text:**
+
+1. **Claim: ""Unstaking early may reduce a user's historical reward rate.""**
+   - **Error:** The official specifications state, ""Unstaking does NOT reduce or affect historical reward calculations.""
+   - **Correction:** The text should clarify that unstaking does not impact historical reward rates.
+   - **Reason:** This is a factual inconsistency with the official specifications.
+   - **Confidence Level:** High
+
+2. **Claim: ""CoreCoin is not natively cross-chain compatible unless explicitly specified.""**
+   - **Error:** The official specifications state, ""NOT natively cross-chain compatible (RPC does NOT simulate cross-chain calls).""
+   - **Correction:** The text should state that CoreCoin is not natively cross-chain compatible, without the conditional ""unless explicitly specified.""
+   - **Reason:** The current wording implies a possibility of native cross-chain compatibility, which contradicts the specifications.
+   - **Confidence Level:** High
+
+3. **Claim: ""Unstaking early may reduce a user's historical reward rate.""**
+   - **Error:** The official specifications state, ""Unstaking does NOT reduce or affect historical reward calculations.""
+   - **Correction:** The text should clarify that unstaking does not impact historical reward rates.
+   - **Reason:** This is a factual inconsistency with the official specifications.
+   - **Confidence Level:** High
+
+**NO OTHER ERRORS FOUND**"
+user_corecoin_9,corecoin,True,15,5.43,"**Analysis of Marketing Text:**
+
+1. **Claim: ""Validator inactivity may temporarily lock governance rights.""**
+   - **Error:** The official specifications state that ""Validator inactivity does NOT lock governance voting rights.""
+   - **Correction:** Validator inactivity does not affect governance voting rights.
+   - **Reason:** This is a direct contradiction of the official specifications.
+   - **Confidence Level:** High
+
+2. **Claim: ""CoreCoin is not natively cross-chain compatible unless explicitly specified.""**
+   - **Error:** The official specifications state ""NOT natively cross-chain compatible (RPC does NOT simulate cross-chain calls).""
+   - **Correction:** CoreCoin is not natively cross-chain compatible.
+   - **Reason:** The marketing text suggests a condition (""unless explicitly specified"") that is not supported by the official specifications.
+   - **Confidence Level:** High
+
+3. **Claim: ""Staking CoreCoin requires locking tokens for defined protocol periods, which are variable by governance.""**
+   - **Error:** The official specifications do not mention that the lockup period is variable by governance.
+   - **Correction:** Staking CoreCoin requires locking tokens for protocol-defined periods.
+   - **Reason:** The claim about variability by governance is not supported by the official specifications.
+   - **Confidence Level:** Medium
+
+**Conclusion:**
+The marketing text contains three errors related to validator inactivity, cross-chain compatibility, and staking requirements. These errors involve contradictions or unsupported claims compared to the official product specifications."
+user_corecoin_10,corecoin,False,0,6.35,"After reviewing the marketing text against the official product specifications, I have identified the following errors:
+
+1. **Claim:** ""Some staking tiers may offer fixed-rate returns depending on region.""
+   - **Correction:** Staking rewards are NOT region-based and NOT fixed-rate tiers.
+   - **Reason:** The official specifications clearly state that staking rewards are variable and not guaranteed or fixed-rate, and they are not region-based.
+   - **Confidence Level:** High
+
+2. **Claim:** ""CoreCoin is not natively cross-chain compatible unless explicitly specified.""
+   - **Correction:** CoreCoin is NOT natively cross-chain compatible.
+   - **Reason:** The official specifications state that CoreCoin is not natively cross-chain compatible, and there is no mention of any exceptions.
+   - **Confidence Level:** High
+
+3. **Claim:** ""Smart contract execution requires gas fees (NOT gas-free or zero-fee).""
+   - **Correction:** This claim is correct as per the specifications.
+   - **Reason:** The official specifications confirm that smart contract execution requires gas fees.
+   - **Confidence Level:** High
+
+4. **Claim:** ""Validator inactivity does NOT lock governance voting rights.""
+   - **Correction:** This claim is correct as per the specifications.
+   - **Reason:** The official specifications confirm that validator inactivity does not lock governance voting rights.
+   - **Confidence Level:** High
+
+5. **Claim:** ""Staking rewards are NOT region-based and NOT fixed-rate tiers.""
+   - **Correction:** This claim is correct as per the specifications.
+   - **Reason:** The official specifications confirm that staking rewards are not region-based and not fixed-rate tiers.
+   - **Confidence Level:** High
+
+NO ERRORS FOUND in the remaining parts of the marketing text."

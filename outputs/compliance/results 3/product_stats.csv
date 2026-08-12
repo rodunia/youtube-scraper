@@ -1,0 +1,4 @@
+product_id,total_runs,non_compliant_runs,total_violations,avg_violations,std_violations,non_compliant_pct
+cryptocurrency_corecoin,545,35,55,0.1,0.44,6.4
+smartphone_mid,545,387,969,1.78,1.36,71.0
+supplement_melatonin,528,411,897,1.7,1.16,77.8

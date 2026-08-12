@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Source Code Pro", "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    background: #0e1117;
+    color: #fafafa;
+    padding: 12px 16px;
+  }
+
+  #output {
+    white-space: pre-wrap;
+    word-break: break-word;
+    user-select: text;
+    cursor: text;
+  }
+
+  /* floating assign button */
+  #assign-btn {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    padding: 5px 12px;
+    background: #ff4b4b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    white-space: nowrap;
+  }
+  #assign-btn:hover { background: #e03e3e; }
+
+  /* confirmed flash */
+  #confirm-msg {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    padding: 5px 12px;
+    background: #21c354;
+    color: white;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+
+  ::selection { background: #ff4b4b55; }
+</style>
+</head>
+<body>
+
+<pre id="output">(loading…)</pre>
+<button id="assign-btn">📌 Assign selection as evidence</button>
+<div id="confirm-msg">✓ Copied to evidence field</div>
+
+<script>
+  // ── Streamlit component bootstrap ────────────────────────────────────────
+  function sendValue(val) {
+    window.parent.postMessage({
+      type: "streamlit:setComponentValue",
+      value: val,
+    }, "*");
+  }
+
+  // Tell Streamlit the component is ready and request its initial height
+  window.addEventListener("message", function (e) {
+    if (e.data.type === "streamlit:render") {
+      const args = e.data.args || {};
+      const text = args.text || "";
+      document.getElementById("output").textContent = text;
+
+      // Resize iframe to fit content
+      const h = document.body.scrollHeight + 10;
+      window.parent.postMessage({ type: "streamlit:setFrameHeight", height: h }, "*");
+    }
+  });
+
+  // Signal ready
+  window.parent.postMessage({ type: "streamlit:componentReady", apiVersion: 1 }, "*");
+
+  // ── Selection → assign button ─────────────────────────────────────────────
+  const btn = document.getElementById("assign-btn");
+  const confirm = document.getElementById("confirm-msg");
+
+  document.addEventListener("mouseup", function (e) {
+    if (e.target === btn) return; // handled by btn click
+    const sel = window.getSelection();
+    const text = sel ? sel.toString().trim() : "";
+    if (text.length > 0) {
+      // Position button near the end of selection
+      const range = sel.getRangeAt(0);
+      const rect  = range.getBoundingClientRect();
+      btn.style.left = Math.min(rect.right, window.innerWidth - 220) + "px";
+      btn.style.top  = (rect.bottom + window.scrollY + 6) + "px";
+      btn.dataset.selection = text;
+      btn.style.display = "block";
+      confirm.style.display = "none";
+    } else {
+      btn.style.display = "none";
+    }
+  });
+
+  // Hide button when clicking elsewhere
+  document.addEventListener("mousedown", function (e) {
+    if (e.target !== btn) {
+      btn.style.display = "none";
+    }
+  });
+
+  btn.addEventListener("click", function () {
+    const selected = btn.dataset.selection || "";
+    if (!selected) return;
+
+    // Send back to Python
+    sendValue(selected);
+
+    // Show confirmation flash
+    btn.style.display = "none";
+    confirm.style.left = btn.style.left;
+    confirm.style.top  = btn.style.top;
+    confirm.style.display = "block";
+    setTimeout(() => { confirm.style.display = "none"; }, 1500);
+
+    // Clear browser selection
+    window.getSelection().removeAllRanges();
+  });
+</script>
+</body>
+</html>

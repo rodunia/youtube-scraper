@@ -1,0 +1,212 @@
+[
+  {
+    "file": "errors_smartphone_1",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "error_count": 8,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_smartphone_1.txt"
+  },
+  {
+    "file": "errors_melatonin_1",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "error_count": 8,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_melatonin_1.txt"
+  },
+  {
+    "file": "errors_corecoin_1",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "error_count": 12,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_corecoin_1.txt"
+  },
+  {
+    "file": "errors_smartphone_2",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "error_count": 45,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_smartphone_2.txt"
+  },
+  {
+    "file": "errors_melatonin_2",
+    "product": "supplement_melatonin",
+    "errors_detected": false,
+    "error_count": 0,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_melatonin_2.txt"
+  },
+  {
+    "file": "errors_corecoin_2",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "error_count": 8,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_corecoin_2.txt"
+  },
+  {
+    "file": "errors_smartphone_3",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "error_count": 46,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_smartphone_3.txt"
+  },
+  {
+    "file": "errors_melatonin_3",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "error_count": 16,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_melatonin_3.txt"
+  },
+  {
+    "file": "errors_corecoin_3",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "error_count": 12,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_corecoin_3.txt"
+  },
+  {
+    "file": "errors_smartphone_4",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "error_count": 25,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_smartphone_4.txt"
+  },
+  {
+    "file": "errors_melatonin_4",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "error_count": 20,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_melatonin_4.txt"
+  },
+  {
+    "file": "errors_corecoin_4",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "error_count": 16,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_corecoin_4.txt"
+  },
+  {
+    "file": "errors_smartphone_5",
+    "product": "smartphone_mid",
+    "errors_detected": false,
+    "error_count": 0,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_smartphone_5.txt"
+  },
+  {
+    "file": "errors_melatonin_5",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "error_count": 20,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_melatonin_5.txt"
+  },
+  {
+    "file": "errors_corecoin_5",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "error_count": 20,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_corecoin_5.txt"
+  },
+  {
+    "file": "errors_smartphone_6",
+    "product": "smartphone_mid",
+    "errors_detected": false,
+    "error_count": 0,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_smartphone_6.txt"
+  },
+  {
+    "file": "errors_melatonin_6",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "error_count": 20,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_melatonin_6.txt"
+  },
+  {
+    "file": "errors_corecoin_6",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "error_count": 24,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_corecoin_6.txt"
+  },
+  {
+    "file": "errors_smartphone_7",
+    "product": "smartphone_mid",
+    "errors_detected": false,
+    "error_count": 0,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_smartphone_7.txt"
+  },
+  {
+    "file": "errors_melatonin_7",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "error_count": 24,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_melatonin_7.txt"
+  },
+  {
+    "file": "errors_corecoin_7",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "error_count": 36,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_corecoin_7.txt"
+  },
+  {
+    "file": "errors_smartphone_8",
+    "product": "smartphone_mid",
+    "errors_detected": true,
+    "error_count": 32,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_smartphone_8.txt"
+  },
+  {
+    "file": "errors_melatonin_8",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "error_count": 28,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_melatonin_8.txt"
+  },
+  {
+    "file": "errors_corecoin_8",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "error_count": 32,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_corecoin_8.txt"
+  },
+  {
+    "file": "errors_smartphone_9",
+    "product": "smartphone_mid",
+    "errors_detected": false,
+    "error_count": 0,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_smartphone_9.txt"
+  },
+  {
+    "file": "errors_melatonin_9",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "error_count": 32,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_melatonin_9.txt"
+  },
+  {
+    "file": "errors_corecoin_9",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "error_count": 32,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_corecoin_9.txt"
+  },
+  {
+    "file": "errors_smartphone_10",
+    "product": "smartphone_mid",
+    "errors_detected": false,
+    "error_count": 0,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_smartphone_10.txt"
+  },
+  {
+    "file": "errors_melatonin_10",
+    "product": "supplement_melatonin",
+    "errors_detected": true,
+    "error_count": 36,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_melatonin_10.txt"
+  },
+  {
+    "file": "errors_corecoin_10",
+    "product": "cryptocurrency_corecoin",
+    "errors_detected": true,
+    "error_count": 36,
+    "response_file": "results/errors_analysis/gpt4o_freeform/errors_corecoin_10.txt"
+  }
+]

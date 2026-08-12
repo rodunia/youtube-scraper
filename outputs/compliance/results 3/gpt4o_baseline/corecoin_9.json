@@ -1,0 +1,19 @@
+{
+  "errors_detected": true,
+  "error_count": 1,
+  "errors": [
+    {
+      "claim": "Validator inactivity may temporarily lock governance rights.",
+      "error_type": "factual",
+      "explanation": "The product specifications state that validator inactivity does NOT lock governance voting rights.",
+      "correct_value": "Validator inactivity does not lock governance voting rights."
+    }
+  ],
+  "model": "gpt-4o",
+  "temperature": 0,
+  "prompt_tokens": 3611,
+  "completion_tokens": 86,
+  "total_tokens": 3697,
+  "product_id": "cryptocurrency_corecoin",
+  "status": "success"
+}

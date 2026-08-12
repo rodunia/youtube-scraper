@@ -1,0 +1,170 @@
+
+================================================================================
+ROBUST DETECTION ANALYSIS - Multi-Stage Validation
+================================================================================
+
+================================================================================
+CORECOIN DETECTION ANALYSIS
+================================================================================
+
+File 1 : ✅ DETECTED      - Block time 4s (should be ~5s)
+         (45 violations, 1 matched)
+         Best match: "Average block time is ~4 seconds..." (95.08%)
+
+File 2 : ✅ DETECTED      - Light validators (non-staking)
+         (46 violations, 1 matched)
+         Best match: "CoreCoin includes optional light-validator nodes that do not..." (95.40%)
+
+File 3 : ✅ DETECTED      - Regional trading pauses
+         (48 violations, 1 matched)
+         Best match: "There are regional trading pauses during maintenance windows..." (98.62%)
+
+File 4 : ✅ DETECTED      - Automatic key sharding
+         (44 violations, 2 matched)
+         Best match: "Some wallets offer automatic key-shrading for backup without..." (98.55%)
+
+File 5 : ✅ DETECTED      - EVM without gas fees
+         (46 violations, 12 matched)
+         Best match: "CoreCoin allows limited execution of EVM smart contracts wit..." (99.37%)
+
+File 6 : ✅ DETECTED      - Auto-pass proposals without quorum
+         (45 violations, 2 matched)
+         Best match: "Cryptocurrency investments involve risk and are highly volat..." (98.35%)
+
+File 7 : ✅ DETECTED      - RPC simulates cross-chain
+         (47 violations, 2 matched)
+         Best match: "CoreCoin is not natively cross-chain compatible unless expli..." (97.40%)
+
+File 8 : ✅ DETECTED      - Early unstaking reduces rewards
+         (48 violations, 1 matched)
+         Best match: "Unstaking early may reduce a user's historical reward rate..." (99.82%)
+
+File 9 : ✅ DETECTED      - Inactivity locks governance
+         (48 violations, 9 matched)
+         Best match: "CoreCoin enables the development and execution of programmab..." (99.43%)
+
+File 10: ✅ DETECTED      - Region-based staking tiers
+         (45 violations, 1 matched)
+         Best match: "Some staking tiers may offer fixed-rate returns depending on..." (99.81%)
+
+================================================================================
+SUMMARY
+================================================================================
+Detection Rate: 10/10 (100%)
+Average violations per file: 46.2
+Total violations: 462
+
+================================================================================
+SMARTPHONE DETECTION ANALYSIS
+================================================================================
+
+File 1 : ✅ DETECTED      - Display 6.5" (should be 6.3")
+         (39 violations, 1 matched)
+         Best match: "Nova X5 has a 6.5 inch Actua OLED display..." (98.99%)
+
+File 2 : ✅ DETECTED      - Camera 48 MP (should be 50 MP)
+         (39 violations, 1 matched)
+         Best match: "Nova X5 has a camera system with a 48 MP main camera..." (99.00%)
+
+File 3 : ✅ DETECTED      - 1 TB storage option
+         (39 violations, 1 matched)
+         Best match: "Nova X5 offers storage options of 1 TB..." (93.47%)
+
+File 4 : ✅ DETECTED      - 16 GB RAM option
+         (37 violations, 2 matched)
+         Best match: "Nova X5 has RAM configurations of 8 GB..." (99.24%)
+
+File 5 : ✅ DETECTED      - Wi-Fi 7
+         (39 violations, 1 matched)
+         Best match: "Nova X5 supports Wi-Fi 7..." (99.10%)
+
+File 6 : ✅ DETECTED      - Wireless charging
+         (40 violations, 5 matched)
+         Best match: "Nova X5 supports 10W Qi wireless charging..." (99.76%)
+
+File 7 : ✅ DETECTED      - Hourly antivirus scanning
+         (40 violations, 1 matched)
+         Best match: "Nova X5 features a built-in antivirus engine that scans apps..." (99.69%)
+
+File 8 : ✅ DETECTED      - Offline AI video rendering
+         (40 violations, 1 matched)
+         Best match: "Nova X5 includes offline AI-generated video rendering..." (99.43%)
+
+File 9 : ✅ DETECTED      - 60W fast charging
+         (37 violations, 1 matched)
+         Best match: "Nova X5 supports 60W USB-C fast charging..." (99.74%)
+
+File 10: ✅ DETECTED      - External SSD via SIM tray
+         (39 violations, 1 matched)
+         Best match: "Nova X5 supports external SSD expansion via the SIM tray..." (98.47%)
+
+================================================================================
+SUMMARY
+================================================================================
+Detection Rate: 10/10 (100%)
+Average violations per file: 38.9
+Total violations: 389
+
+================================================================================
+MELATONIN DETECTION ANALYSIS
+================================================================================
+
+File 1 : ✅ DETECTED      - Dosage 5 mg (should be 3 mg)
+         (15 violations, 1 matched)
+         Best match: "Each tablet contains 5 mg of melatonin per serving..." (99.59%)
+
+File 2 : ✅ DETECTED      - 100 tablets (should be 120)
+         (15 violations, 1 matched)
+         Best match: "Each bottle contains 100 tablets..." (96.41%)
+
+File 3 : ✅ DETECTED      - Vegan + fish ingredients
+         (16 violations, 1 matched)
+         Best match: "Tablets contain natural fish-derived ingredients..." (99.71%)
+
+File 4 : ✅ DETECTED      - Wheat traces despite 0 mg gluten
+         (16 violations, 1 matched)
+         Best match: "Tablets may include trace amounts of wheat..." (98.90%)
+
+File 5 : ✅ DETECTED      - Lead 5 mcg/ppm (should be <0.5)
+         (15 violations, 2 matched)
+         Best match: "Tablets are third-party tested for identity and heavy metals..." (99.72%)
+
+File 6 : ✅ DETECTED      - Storage 0°C (too cold)
+         (16 violations, 1 matched)
+         Best match: "Store at exactly 0°C..." (98.71%)
+
+File 7 : ✅ DETECTED      - Take every 2 hours
+         (16 violations, 1 matched)
+         Best match: "Melatonin should be taken every 2 hours for best results..." (98.00%)
+
+File 8 : ✅ DETECTED      - FDA approved
+         (15 violations, 2 matched)
+         Best match: "This product is approved by the FDA for sleep regulation..." (99.18%)
+
+File 9 : ✅ DETECTED      - Avoid if over 18 (age reversal)
+         (16 violations, 1 matched)
+         Best match: "Avoid using this product if you are over 18 years old..." (95.21%)
+
+File 10: ✅ DETECTED      - Permanent drowsiness
+         (15 violations, 1 matched)
+         Best match: "Tablets may cause permanent drowsiness..." (98.93%)
+
+================================================================================
+SUMMARY
+================================================================================
+Detection Rate: 10/10 (100%)
+Average violations per file: 15.5
+Total violations: 155
+
+================================================================================
+OVERALL PILOT STUDY RESULTS
+================================================================================
+Total Detection Rate: 30/30 (100%)
+Average violations per file: 33.5
+
+Breakdown by product:
+  CoreCoin:    10/10 (100%)
+  Smartphone:  10/10 (100%)
+  Melatonin:   10/10 (100%)
+================================================================================
+

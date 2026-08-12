@@ -1,0 +1,28 @@
+Upon reviewing the marketing text against the product specifications, I have identified several errors and contradictions:
+
+1. **Incorrect Claim**: "The serving size is 1 tablet, which contains 5 mg of melatonin per serving."
+   - **Correction**: The serving size is 1 tablet, which contains 3 mg of melatonin per serving.
+   - **Reason**: The product specifications clearly state that each tablet contains 3 mg of melatonin.
+   - **Confidence Level**: High
+
+2. **Incorrect Claim**: "Each bottle contains 100 tablets."
+   - **Correction**: Each bottle contains 120 tablets.
+   - **Reason**: The product specifications indicate that each bottle contains 120 tablets.
+   - **Confidence Level**: High
+
+3. **Incorrect Claim**: "Yes, these tablets are suitable for vegans and vegetarians, and also contain natural fish-derived ingredients."
+   - **Correction**: Yes, these tablets are suitable for vegans and vegetarians, and do not contain any fish-derived ingredients.
+   - **Reason**: The product specifications state that the formulation is vegan and contains no animal-derived ingredients.
+   - **Confidence Level**: High
+
+4. **Incorrect Claim**: "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving, but may include trace amount of wheat."
+   - **Correction**: The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving, and do not include wheat.
+   - **Reason**: The product specifications confirm that the tablets are free from gluten, soy, and dairy, and do not mention any wheat content.
+   - **Confidence Level**: High
+
+5. **Incorrect Claim**: "Store at exactly 0°C."
+   - **Correction**: Store at room temperature (15-30°C / 59-86°F) and do not store at 0°C or below.
+   - **Reason**: The product specifications clearly state that the product should not be stored at 0°C or below.
+   - **Confidence Level**: High
+
+Overall, the marketing text contains several factual inaccuracies when compared to the product specifications.

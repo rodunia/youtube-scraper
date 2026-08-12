@@ -65,6 +65,45 @@ class PlaywrightCommentExtractor:
             except Exception:
                 continue
 
+    def resolve_channel_url(self, *, query: str) -> str | None:
+        try:
+            from playwright.sync_api import sync_playwright
+        except Exception as exc:  # pragma: no cover - runtime dependency
+            raise PlaywrightExtractorError(
+                "Playwright is not available. Install dependency and run `playwright install chromium`."
+            ) from exc
+
+        search_url = f"https://www.youtube.com/results?search_query={query.replace(' ', '+')}"
+
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(headless=self.headless)
+            page = browser.new_page()
+            try:
+                page.goto(search_url, wait_until="domcontentloaded", timeout=60000)
+                page.wait_for_timeout(2000)
+                self._accept_youtube_consent(page)
+                if "consent.youtube.com" in (page.url or ""):
+                    return None
+                page.wait_for_timeout(1200)
+
+                selectors = [
+                    "a[href^='/@']",
+                    "a[href^='/channel/UC']",
+                ]
+                for selector in selectors:
+                    for link in page.query_selector_all(selector):
+                        href = (link.get_attribute("href") or "").strip()
+                        if not href:
+                            continue
+                        if href.startswith("/@") or href.startswith("/channel/UC"):
+                            return f"https://www.youtube.com{href.split('?', 1)[0]}"
+            except Exception as exc:
+                raise PlaywrightExtractorError(f"Failed Playwright channel search for {query}: {exc}") from exc
+            finally:
+                browser.close()
+
+        return None
+
     def list_recent_video_ids(
         self,
         *,
@@ -102,10 +141,16 @@ class PlaywrightCommentExtractor:
                 page.wait_for_timeout(1200)
 
                 for _ in range(8):
-                    links = page.query_selector_all("a[href*='/watch?v=']")
+                    if content_type == "shorts":
+                        links = page.query_selector_all("a[href*='/shorts/']")
+                    else:
+                        links = page.query_selector_all("a[href*='/watch?v=']")
                     for link in links:
                         href = link.get_attribute("href") or ""
-                        match = re.search(r"v=([A-Za-z0-9_-]{11})", href)
+                        if content_type == "shorts":
+                            match = re.search(r"/shorts/([A-Za-z0-9_-]{11})", href)
+                        else:
+                            match = re.search(r"v=([A-Za-z0-9_-]{11})", href)
                         if not match:
                             continue
                         vid = match.group(1)

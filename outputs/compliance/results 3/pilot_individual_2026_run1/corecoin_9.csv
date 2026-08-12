@@ -1,0 +1,46 @@
+Filename,Status,Violated_Rule,Extracted_Claim,Confidence_Score
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),CoreCoin is a decentralized Layer-1 digital asset,0.9595
+user_corecoin_9.txt,FAIL,Protocol changes without on-chain governance process,CoreCoin operates on a Proof-of-Stake (PoS) blockchain,0.9820
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),CoreCoin supports smart contracts,0.9127
+user_corecoin_9.txt,FAIL,Claims that it functions as traditional currency,CoreCoin supports decentralized applications,0.9425
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),Average block time is ~5 seconds,0.9473
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),"Maximum supply is 2,000,000,000 CORE",0.9128
+user_corecoin_9.txt,FAIL,"Don't miss out, moonshot, limited-time opportunity",Transactions are secured through cryptographic signatures,0.9697
+user_corecoin_9.txt,FAIL,Enables users to keep their digital assets in their own custody and under their control,The network relies on distributed validator participation,0.9614
+user_corecoin_9.txt,FAIL,Documentation version-controlled and publicly maintained,CoreCoin's market value is highly volatile,0.9502
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),CoreCoin's market value is influenced by liquidity,0.9694
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),CoreCoin's market value is influenced by market sentiment,0.9730
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),CoreCoin's market value is influenced by macroeconomic conditions,0.9581
+user_corecoin_9.txt,FAIL,Documentation version-controlled and publicly maintained,Price discovery occurs through decentralized market mechanisms,0.9973
+user_corecoin_9.txt,FAIL,Self-custody model with no third-party key recovery,Trading is subject to 24/7 global activity,0.9926
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),CoreCoin can be stored on hardware wallets,0.9536
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),CoreCoin can be stored on mobile wallets,0.9573
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),CoreCoin can be stored on desktop clients,0.9550
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),Compatibility varies by software,0.9762
+user_corecoin_9.txt,FAIL,On-chain governance votes publicly recorded,Users must securely store their private keys,0.9477
+user_corecoin_9.txt,FAIL,On-chain activity permanently recorded and viewable through public block explorers,Private keys cannot be recovered if lost,0.9640
+user_corecoin_9.txt,FAIL,Equating to regulated financial products without disclaimers,The self-custody model places responsibility on the user,0.9919
+user_corecoin_9.txt,FAIL,On-chain governance votes publicly recorded,No third-party key recovery is available,0.9477
+user_corecoin_9.txt,FAIL,Smart contract execution requires gas fees (NOT gas-free or zero-fee),CoreCoin supports smart contracts and decentralized application integration,0.9262
+user_corecoin_9.txt,FAIL,"Pump, moon, or other speculative terminology",CoreCoin is compatible with PoS-compatible virtual machines,0.9810
+user_corecoin_9.txt,FAIL,Protocol changes without on-chain governance process,CoreCoin enables the development and execution of programmable smart contracts on its blockchain,0.9943
+user_corecoin_9.txt,FAIL,"Pump, moon, or other speculative terminology","CoreCoin employs a community-driven, on-chain governance model",0.9933
+user_corecoin_9.txt,FAIL,Decentralized digital asset (operates independently of government/bank control),Protocol updates require community or validator approval,0.9802
+user_corecoin_9.txt,FAIL,"Exists only in digital form (not a physical coin, certificate, or bearer instrument)",Governance participation depends on wallet integration and token ownership,0.9881
+user_corecoin_9.txt,FAIL,Digital-only asset requiring compatible wallet software,On-chain governance votes are publicly recorded,0.9858
+user_corecoin_9.txt,FAIL,"Pump, moon, or other speculative terminology",CoreCoin is not natively cross-chain compatible unless explicitly specified,0.9740
+user_corecoin_9.txt,FAIL,Enables peer-to-peer value transfer,Interoperability with other blockchains is not a built-in feature of CoreCoin's architecture,0.9613
+user_corecoin_9.txt,FAIL,Provides peer-to-peer value transfer without intermediaries,Staking CoreCoin requires locking tokens for defined protocol periods,0.9609
+user_corecoin_9.txt,FAIL,Decentralized digital asset (operates independently of government/bank control),Locking periods are variable by governance,0.9892
+user_corecoin_9.txt,FAIL,"Don't miss out, moonshot, limited-time opportunity",The minimum stake is a protocol-defined threshold,0.9706
+user_corecoin_9.txt,FAIL,Provides peer-to-peer value transfer without intermediaries,The lockup period is governance-defined,0.9908
+user_corecoin_9.txt,FAIL,Automatic execution of proposals without community vote,Rewards depend on network participation and validator performance,0.9848
+user_corecoin_9.txt,FAIL,Governance proposals auto-approve or auto-pass without voting,Cryptocurrency investments involve risk and are highly volatile,0.9835
+user_corecoin_9.txt,FAIL,Claims of hack-proof or 100% secure status,Do not invest funds you cannot afford to lose,0.9532
+user_corecoin_9.txt,FAIL,"Guaranteed profit, yields, interest, or returns",CoreCoin is not backed by the FDIC or any government entity,0.9707
+user_corecoin_9.txt,FAIL,"2,000,000,000 CORE",Past performance is not indicative of future results,0.9471
+user_corecoin_9.txt,FAIL,Users retain control of their private keys and funds,Loss of private keys leads to permanent loss of funds,0.9960
+user_corecoin_9.txt,FAIL,Claims of hack-proof or 100% secure status,Digital assets may be vulnerable to hacking or protocol exploits,0.9964
+user_corecoin_9.txt,FAIL,Documentation version-controlled and publicly maintained,Market conditions can change rapidly and unpredictably,0.9971
+user_corecoin_9.txt,FAIL,Self-custody model with no third-party key recovery,Regulatory changes may affect accessibility or legality,0.9868
+user_corecoin_9.txt,FAIL,Provides peer-to-peer value transfer without intermediaries,Validator inactivity may temporarily lock governance rights,0.9716
